@@ -6,7 +6,25 @@
   <h3><%= @room.building.name %></h3>
 <% end %>
 
-<h4><%= @room.floor %></h4>
+<h4>Этаж: <%= @room.floor %></h4>
 
 <%= link_to 'Edit', edit_room_path(@room) %> |
 <%= link_to 'Back', rooms_path %>
+
+<br>
+
+Стойки:<br>
+<table class="table">
+  <thead>
+  <tr>
+    <th>Название</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @room.boxes.each do |box| %>
+    <tr>
+      <td><%= link_to box.name, box %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

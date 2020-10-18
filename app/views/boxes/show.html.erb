@@ -1,0 +1,10 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @box.name %></h1>
+
+<% if @box.room %>
+  <h3><%= @box.room.name %></h3>
+<% end %>
+
+<%= link_to 'Edit', edit_box_path(@box) %> |
+<%= link_to 'Back', boxes_path %>

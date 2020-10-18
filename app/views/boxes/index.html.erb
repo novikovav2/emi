@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Стойки</h1>
+
+<%= link_to 'Добавить стойку', new_box_path, class: 'btn btn-primary' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Помещение</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @boxes.each do |box| %>
+      <tr>
+        <td><%= link_to box.name, box %></td>
+        <% if  box.room %>
+          <td><%= link_to box.room.name, box.room %></td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+        <td><%= link_to 'Edit', edit_box_path(box) %></td>
+        <td><%= link_to 'Destroy', box, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
