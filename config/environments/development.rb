@@ -59,9 +59,9 @@ Rails.application.configure do
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
   #
 
-  config.neo4j.driver.url = ENV.fetch("NEO4j_URL")
-  config.neo4j.driver.username = ENV.fetch("NEO4j_USER")
-  config.neo4j.driver.password = ENV.fetch("NEO4j_PASS")
+  config.neo4j.driver.url = ENV["NEO4J_URL"]
+  config.neo4j.driver.username = ENV["NEO4J_USER"]
+  config.neo4j.driver.password = ENV["NEO4J_PASS"]
   config.neo4j.driver.encryption = false
 
 end
