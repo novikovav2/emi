@@ -1,7 +1,7 @@
 Rails.application.configure do
-  config.neo4j.driver.url = 'neo4j://localhost:7472'
-  config.neo4j.driver.auth_token = Neo4j::Driver::AuthTokens.basic('neo4j', 'password')
-  config.neo4j.driver.encryption = false
+  # config.neo4j.driver.url = 'neo4j://localhost:7472'
+  # config.neo4j.driver.auth_token = Neo4j::Driver::AuthTokens.basic('neo4j', 'password')
+  # config.neo4j.driver.encryption = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
@@ -57,4 +57,11 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   # config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+  #
+
+  config.neo4j.driver.url = ENV.fetch("NEO4j_URL")
+  config.neo4j.driver.username = ENV.fetch("NEO4j_USER")
+  config.neo4j.driver.password = ENV.fetch("NEO4j_PASS")
+  config.neo4j.driver.encryption = false
+
 end
