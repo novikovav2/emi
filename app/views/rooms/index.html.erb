@@ -1,0 +1,36 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rooms</h1>
+
+<%= link_to 'Добавить', new_room_path, class: 'btn btn-primary' %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Здание</th>
+      <th>Этаж</th>
+      <th colspan="2">Действия</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td><%= link_to room.name, room %></td>
+        <% if  room.building %>
+          <td><%= link_to room.building.name, room.building %></td>
+         <% else %>
+          <td>-</td>
+        <% end %>
+        <td><%= room.floor %></td>
+        <td><%= link_to 'Edit', edit_room_path(room) %></td>
+        <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+

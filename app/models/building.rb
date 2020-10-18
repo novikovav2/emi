@@ -3,6 +3,6 @@ class Building
   property :name, type: String
   property :address, type: String
 
-
+  has_many :in, :rooms, type: :rooms
 
 end

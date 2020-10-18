@@ -1,20 +1,23 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Buildings</h1>
+<h1>Здания</h1>
 
-<table>
+<%= link_to 'Добавить', new_building_path, class: "btn btn-primary" %>
+
+<table class="table">
   <thead>
     <tr>
-      <th colspan="3"></th>
+      <th>Название</th>
+      <th>Адрес</th>
+      <th colspan="2">Действия</th>
     </tr>
   </thead>
 
   <tbody>
     <% @buildings.each do |building| %>
       <tr>
-        <td><%= building.name %></td>
+        <td><%= link_to building.name, building %></td>
         <td><%= building.address %></td>
-        <td><%= link_to 'Show', building %></td>
         <td><%= link_to 'Edit', edit_building_path(building) %></td>
         <td><%= link_to 'Destroy', building, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -24,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Building', new_building_path %>
+

@@ -15,6 +15,8 @@
 - CONSTRAINT ON ( `activegraph::migrations::schemamigration`:`ActiveGraph::Migrations::SchemaMigration`
   ) ASSERT (`activegraph::migrations::schemamigration`.migration_id) IS UNIQUE
 - CONSTRAINT ON ( building:Building ) ASSERT (building.uuid) IS UNIQUE
+- CONSTRAINT ON ( room:Room ) ASSERT (room.uuid) IS UNIQUE
 :indexes: []
 :versions:
 - '20201018092842'
+- '20201018114854'

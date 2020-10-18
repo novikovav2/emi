@@ -1,10 +1,29 @@
 <p id="notice"><%= notice %></p>
 
+<%= link_to 'Edit', edit_building_path(@building) %> |
+<%= link_to 'Back', buildings_path %>
+
 <h1><%= @building.name %></h1>
 
 <br>
 
 <h3><%= @building.address %></h3>
 
-<%= link_to 'Edit', edit_building_path(@building) %> |
-<%= link_to 'Back', buildings_path %>
+Комнаты:<br>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Этаж</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @building.rooms.each do |room| %>
+    <tr>
+      <td><%= link_to room.name, room %></td>
+      <td><%= room.floor %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
