@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   resources :buildings
   resources :rooms
   resources :boxes
+  resources :devices
 
 end

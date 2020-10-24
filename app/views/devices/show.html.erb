@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @device.name %></h1>
+<br>
+<% if @device.box %>
+  <p>
+    Установлен в стойке: <%= link_to @device.box.name, @device.box %>
+  </p>
+<% end %>
+
+<%= link_to 'Edit', edit_device_path(@device) %> |
+<%= link_to 'Back', devices_path %>
+
+<br>
+
+<h4>Интерфейсы</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @device.interfaces.each do |interface| %>
+      <tr>
+        <td><%= interface.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

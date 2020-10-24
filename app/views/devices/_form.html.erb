@@ -1,0 +1,22 @@
+<%= form_with(model: device, local: true) do |form| %>
+  <% if device.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(device.errors.count, "error") %> prohibited this device from being saved:</h2>
+
+      <ul>
+        <% device.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name, 'Название' %>
+    <%= form.text_field :name, class: 'form-control', placeholder: 'OIK1-ODUSV' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Сохранить', class: 'btn btn-primary' %>
+  </div>
+<% end %>

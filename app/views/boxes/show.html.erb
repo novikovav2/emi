@@ -8,3 +8,19 @@
 
 <%= link_to 'Edit', edit_box_path(@box) %> |
 <%= link_to 'Back', boxes_path %>
+
+<h4>Оборудование в стойке</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Название</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @box.devices.each do |device| %>
+      <tr>
+        <td><%= link_to device.name, device %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
