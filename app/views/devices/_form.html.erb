@@ -16,6 +16,11 @@
     <%= form.text_field :name, class: 'form-control', placeholder: 'OIK1-ODUSV' %>
   </div>
 
+  <div class="form-group">
+    <%= form.label :box, 'Здание' %>
+    <%= form.select :box, Box.all.collect {|x| [x.name, x.id]}, {}, class: 'form-control' %>
+  </div>
+
   <div class="actions">
     <%= form.submit 'Сохранить', class: 'btn btn-primary' %>
   </div>

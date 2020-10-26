@@ -1,4 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_interface_path(@interface) %> |
-<%= link_to 'Back', interfaces_path %>
+<%= link_to 'Edit', edit_device_interface_path(@device, @interface) %> |
+<%= link_to 'Назад к устройству', device_path(@device) %>
+
+<h1><%= @interface.name %></h1>

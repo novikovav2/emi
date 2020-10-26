@@ -69,6 +69,6 @@ class DevicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def device_params
-      params.fetch(:device, {}).permit(:name)
+      params.fetch(:device, {}).permit(:name, :box)
     end
 end

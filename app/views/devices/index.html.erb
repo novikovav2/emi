@@ -1,11 +1,14 @@
 <p id="notice"><%= notice %></p>
 
 <h1>Devices</h1>
-
+<br>
+<%= link_to 'New Device', new_device_path, class: 'btn btn-primary' %>
+<br>
 <table class="table">
   <thead>
     <tr>
       <th>Название</th>
+      <th>Стойка</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -14,6 +17,11 @@
     <% @devices.each do |device| %>
       <tr>
         <td><%= link_to device.name, device %></td>
+        <% if device.box %>
+          <td><%= device.box.name %></td>
+        <% else %>
+          <td>-</td>
+        <% end %>
         <td><%= link_to 'Edit', edit_device_path(device) %></td>
         <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
@@ -23,4 +31,4 @@
 
 <br>
 
-<%= link_to 'New Device', new_device_path %>
+

@@ -2,5 +2,5 @@
 
 <%= render 'form', interface: @interface %>
 
-<%= link_to 'Show', @interface %> |
-<%= link_to 'Back', interfaces_path %>
+<%= link_to 'Show', device_interface_path(@device, @interface) %> |
+<%= link_to 'Назад к устройству', device_path(@device) %>

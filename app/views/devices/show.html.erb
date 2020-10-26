@@ -13,17 +13,23 @@
 
 <br>
 
+
+<%= link_to 'New Interface', new_device_interface_path(@device) %>
 <h4>Интерфейсы</h4>
 <table class="table">
   <thead>
     <tr>
       <th>Название</th>
+      <th>Тип</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    <% @device.interfaces.each do |interface| %>
+    <% @device.interfaces.order_by(:name).each do |interface| %>
       <tr>
-        <td><%= interface.name %></td>
+        <td><%= link_to interface.name, device_interface_path(@device, interface) %></td>
+        <td><%= interface.type %></td>
+        <td><%= link_to 'Destroy', device_interface_path(@device, interface), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

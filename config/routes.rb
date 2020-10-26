@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :buildings
   resources :rooms
   resources :boxes
-  resources :devices
+  resources :devices do
+    resources :interfaces, except: [:index]
+  end
 
 end
