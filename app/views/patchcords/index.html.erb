@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Patchcords</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>From device</th>
+      <th>From port</th>
+      <th>To device</th>
+      <th>to port</th>
+      <th>Material</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @patchcords.each do |patchcord| %>
+      <tr>
+        <td><%= patchcord.from_node.device.name %></td>
+        <td><%= patchcord.from_node.name %></td>
+        <td><%= patchcord.to_node.device.name %></td>
+        <td><%= patchcord.from_node.name %></td>
+        <td><%= patchcord.material %></td>
+        <td><%= link_to 'Show', patchcord %></td>
+        <td><%= link_to 'Destroy', patchcord, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Patchcord', new_patchcord_path %>

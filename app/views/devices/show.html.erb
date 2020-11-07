@@ -20,7 +20,8 @@
   <thead>
     <tr>
       <th>Название</th>
-      <th>Тип</th>
+      <th>Материал</th>
+      <th>Подключен?</th>
       <th></th>
     </tr>
   </thead>
@@ -28,7 +29,8 @@
     <% @device.interfaces.order_by(:name).each do |interface| %>
       <tr>
         <td><%= link_to interface.name, device_interface_path(@device, interface) %></td>
-        <td><%= interface.type %></td>
+        <td><%= interface.material %></td>
+        <td><%= interface.connected %></td>
         <td><%= link_to 'Destroy', device_interface_path(@device, interface), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>

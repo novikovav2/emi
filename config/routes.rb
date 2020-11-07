@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :devices do
     resources :interfaces, except: [:index]
   end
-  resources :logical_links, except: [:edit, :update]
+  resources :logical_links, except: [:edit, :update] # Объекты Relationship нельзя редактировать
+  resources :patchcords, except: [:edit, :update]
 
 end

@@ -1,0 +1,11 @@
+<p id="notice"><%= notice %></p>
+
+From: <%= @patchcord.from_node.device.name %> (<%= @patchcord.from_node.name %>)
+<br>
+To: <%= @patchcord.to_node.device.name %> (<%= @patchcord.to_node.name %>)
+<br>
+<br>
+
+
+
+<%= link_to 'Back', patchcords_path %>

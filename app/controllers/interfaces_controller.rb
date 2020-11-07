@@ -71,7 +71,7 @@ class InterfacesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def interface_params
-      params.fetch(:interface, {}).permit(:name, :device_id, :type)
+      params.fetch(:interface, {}).permit(:name, :device_id, :material)
     end
 
   def set_device

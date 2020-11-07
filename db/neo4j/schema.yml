@@ -21,6 +21,7 @@
 - CONSTRAINT ON ( rack:Rack ) ASSERT (rack.uuid) IS UNIQUE
 - CONSTRAINT ON ( room:Room ) ASSERT (room.uuid) IS UNIQUE
 :indexes:
+- INDEX FOR (n:Interface) ON (n.material)
 - INDEX FOR (n:Interface) ON (n.type)
 :versions:
 - '20201018092842'
@@ -30,3 +31,4 @@
 - '20201024110601'
 - '20201024122521'
 - '20201025061842'
+- '20201107124412'
