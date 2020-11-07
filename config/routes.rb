@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   resources :devices do
     resources :interfaces, except: [:index]
   end
+  resources :logical_links, except: [:edit, :update]
 
 end

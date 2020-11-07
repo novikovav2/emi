@@ -9,6 +9,8 @@
     <tr>
       <th>Название</th>
       <th>Стойка</th>
+      <th>К-во оптических инт.</th>
+      <th>К-во медных инт.</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -22,6 +24,8 @@
         <% else %>
           <td>-</td>
         <% end %>
+        <td><%= device.interfaces ? device.interfaces.where(type: 'optic').count : 0 %></td>
+        <td><%= device.interfaces ? device.interfaces.where(type: 'copper').count : 0 %></td>
         <td><%= link_to 'Edit', edit_device_path(device) %></td>
         <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

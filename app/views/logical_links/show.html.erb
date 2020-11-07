@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+From: <%= @logical_link.from_node.device.name %> (<%= @logical_link.from_node.name %>)
+<br>
+To: <%= @logical_link.to_node.device.name %> (<%= @logical_link.to_node.name %>)
+<br>
+<br>
+
+<%= link_to 'Back', logical_links_path %>

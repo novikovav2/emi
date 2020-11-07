@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Logical Links</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>From device</th>
+      <th>From port</th>
+      <th>To device</th>
+      <th>to port</th>
+      <th>Type</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @logical_links.each do |logical_link| %>
+      <tr>
+        <td><%= link_to logical_link.from_node.device.name, device_path(logical_link.from_node.device.id) %></td>
+        <td><%= logical_link.from_node.name %></td>
+        <td><%= link_to logical_link.to_node.device.name, device_path(logical_link.to_node.device.id) %></td>
+        <td><%= logical_link.to_node.name %></td>
+        <td><%= logical_link.from_node.type %></td>
+        <td><%= link_to 'Show', logical_link %></td>
+        <td><%= link_to 'Destroy', logical_link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Logical Link', new_logical_link_path %>
