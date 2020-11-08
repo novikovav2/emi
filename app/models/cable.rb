@@ -1,12 +1,10 @@
-class Patchcord
+class Cable
   include ActiveGraph::Relationship
-
 
   from_class :Interface
   to_class :Interface
+
   after_create :set_material
-  after_create :connect_interfaces
-  before_destroy :disconnect_interfaces
 
   property :length, type: Integer
   enum material: [:copper, :optic]
@@ -24,14 +22,5 @@ class Patchcord
     self.save
   end
 
-  def connect_interfaces
-    from_node.update(connected: true)
-    to_node.update(connected: true)
-  end
-
-  def disconnect_interfaces
-    from_node.update(connected: false)
-    to_node.update(connected: false)
-  end
 
 end

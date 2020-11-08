@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+From: <%= @cable.from_node.device.name %> (<%= @cable.from_node.name %>)
+<br>
+To: <%= @cable.to_node.device.name %> (<%= @cable.to_node.name %>)
+<br>
+Material: <%= @cable.material %>
+<br>
+Length: <%= @cable.length %>
+<br>
+Id: <%= @cable.id %>
+<br>
+
+<%= link_to 'Edit', edit_cable_path(@cable) %> |
+<%= link_to 'Back', cables_path %>

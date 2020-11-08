@@ -8,5 +8,6 @@ class Interface
 
   has_one :both, :logical_linked_to, rel_class: :LogicalLink
   has_one :both, :pathcorded_to, rel_class: :Patchcord
+  has_one :both, :sks_to, rel_class: :Cable
 
 end
