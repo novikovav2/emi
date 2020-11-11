@@ -4,11 +4,13 @@ class Patchcord
 
   from_class :Interface
   to_class :Interface
+  type :PHYSICAL_PATCHCORD
+
   after_create :set_material
   after_create :connect_interfaces
   before_destroy :disconnect_interfaces
 
-  property :length, type: Integer
+  property :length, type: Integer, default: 2
   enum material: [:copper, :optic]
 
   validate :correct_interfaces_materials

@@ -3,8 +3,8 @@ class Room
   property :name, type: String
   property :floor, type: Integer
 
-  has_one :out, :building, type: :rooms
-  has_many :in, :boxes, type: :racks
+  has_one :out, :building, rel_class: :RoomInBuilding
+  has_many :in, :boxes, rel_class: :BoxInRoom
 
 
 end

@@ -3,10 +3,11 @@ class Cable
 
   from_class :Interface
   to_class :Interface
+  type :PHYSICAL_CABLE
 
   after_create :set_material
 
-  property :length, type: Integer
+  property :length, type: Integer, default: 25
   enum material: [:copper, :optic]
 
   validate :correct_interfaces_materials

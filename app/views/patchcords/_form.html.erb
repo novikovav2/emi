@@ -14,7 +14,7 @@
   <div class="form-group">
     <%= form.label :from_node, 'From' %>
     <%= form.select :from_node, options_for_select(
-                    Interface.all.collect {|i| [i.device.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
+                    Interface.all.collect {|i| [i.device.box.name + ': ' + i.device.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
                                                 i.id]}, patchcord.from_node.id),
                     {}, class: 'form-control' %>
   </div>
@@ -22,7 +22,7 @@
   <div class="form-group">
     <%= form.label :to_node, 'To' %>
     <%= form.select :to_node, options_for_select(
-                    Interface.all.collect {|i| [i.device.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
+                    Interface.all.collect {|i| [i.device.box.name + ': '+ i.device.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
                                                 i.id]}, patchcord.to_node.id),
                     {}, class: 'form-control' %>
   </div>
