@@ -26,9 +26,7 @@ class LogicalLink
         result = true
       end
     end
-
     return result
-
   end
 
 end

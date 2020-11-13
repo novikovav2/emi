@@ -10,4 +10,19 @@ class Interface
   has_one :both, :patchcorded_to, rel_class: :Patchcord
   has_one :both, :sks_to, rel_class: :Cable
 
+
+  # Находим куда физически подключен этот интерфейс
+    def connected_to
+      if self.connected
+        request = ActiveGraph::Base.query('match
+                                        (start {uuid: $start_id})-
+                                        [r:PHYSICAL_PATCHCORD|PHYSICAL_CABLE *1..100]-
+                                        (end)
+                                        RETURN last(collect(end))', start_id: self.id)
+        return request.first.values[0]
+      else
+        return nil
+      end
+      end
+
 end
