@@ -22,7 +22,7 @@ class LogicalLink
                   (end {uuid: $end_id}) RETURN r',
                   start_id: self.from_node.id, end_id: self.to_node.id)
 
-      if request.to_a[0]
+      if request.first
         result = true
       end
     end

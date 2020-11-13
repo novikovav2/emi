@@ -4,6 +4,38 @@ From: <%= @logical_link.from_node.device.name %> (<%= @logical_link.from_node.na
 <br>
 To: <%= @logical_link.to_node.device.name %> (<%= @logical_link.to_node.name %>)
 <br>
+Connected: <%= @logical_link.connected? %>
+<br>
+<%= link_to 'Back', logical_links_path %>
 <br>
 
-<%= link_to 'Back', logical_links_path %>
+
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Тип</th>
+      <th>Начало (стойка)</th>
+      <th>Начало (устройство)</th>
+      <th>Начало (Порт)</th>
+      <th>Конец (стойка)</th>
+      <th>Конец (устройство)</th>
+      <th>Конец (Порт)</th>
+      <th>Уже подключено?</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @relations.each do |relation| %>
+      <tr>
+        <td><%= relation["type"] %></td>
+        <td><%= relation["from"].device.box.name %></td>
+        <td><%= relation["from"].device.name %></td>
+        <td><%= relation["from"].name %></td>
+        <td><%= relation["to"].device.box.name %></td>
+        <td><%= relation["to"].device.name %></td>
+        <td><%= relation["to"].name %></td>
+        <td><%= relation["connected"] %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>

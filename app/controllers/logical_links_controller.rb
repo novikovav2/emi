@@ -10,6 +10,101 @@ class LogicalLinksController < ApplicationController
   # GET /logical_links/1
   # GET /logical_links/1.json
   def show
+    # Создаем массив соединений
+    # Каждое соединение - хеш с полями: from, to, type, connected
+    @relations = []
+    if @logical_link.connected?
+      relations_raw = ActiveGraph::Base.query(
+          'match (start {uuid: $start_id})-
+                   [r:PHYSICAL_PATCHCORD|PHYSICAL_CABLE *1..100]-
+                   (end {uuid: $end_id}) RETURN r',
+          start_id: @logical_link.from_node.id,
+          end_id: @logical_link.to_node.id)
+          .first.values[0]
+
+      relation = {}
+      relations_raw.each do |relation_raw|
+        relation = {}
+        case relation_raw.type
+        when :PHYSICAL_PATCHCORD
+          rel = Patchcord.find(relation_raw.id)
+          relation["type"] = "patchcord"
+        when :PHYSICAL_CABLE
+          rel = Cable.find(relation_raw.id)
+          relation["type"] = "sks"
+        end
+
+        relation["from"] = rel.from_node
+        relation["to"] = rel.to_node
+        relation["connected"] = true
+        @relations << relation
+      end
+
+
+    else
+      request = ActiveGraph::Base.query("MATCH (start:Interface {uuid: $start_id}),
+                                         (end:Interface {uuid: $end_id})
+                                         CALL gds.alpha.shortestPath.stream({
+                                          nodeQuery: 'match (n) return id(n) as id',
+                                          relationshipQuery: 'match (n)-[r]-(m) return id(n) as source, id(m) as target, r.length as weight',
+                                          startNode: start,
+                                          endNode: end,
+                                          relationshipWeightProperty: 'weight'
+                                        })
+                                        YIELD nodeId, cost
+                                        RETURN gds.util.asNode(nodeId) AS name, cost",
+                                        start_id: @logical_link.from_node.id,
+                                        end_id: @logical_link.to_node.id)
+      nodes = []
+      loop do
+        begin
+          node_raw = request.next.values[0]
+          case node_raw.labels[0]
+            when :Interface
+              node = Interface.where(neo_id: node_raw.id).first
+            # when :Device
+            #   node = Device.where(neo_id: node_raw.id).first
+            # when :Box
+            #   node = box.where(neo_id: node_raw.id).first
+            # when :Room
+            #   node = Room.where(neo_id: node_raw.id).first
+            # when :Building
+            #   node = Building.where(neo_id: node_raw.id).first
+          end
+          nodes << node
+        rescue
+          break
+        end
+      end
+
+      relation = {}
+      nodes.each do |node|
+        if relation["from"].nil?
+          relation["from"] = node
+        else
+          relation["to"] = node
+          if relation["from"].patchcorded_to == relation["to"]   # Если интефейсы уже физически подключены патчкордом
+            relation["type"] = "patchcord"
+            relation["connected"] = true
+          elsif  relation["from"].sks_to == relation["to"]   # Если интефейсы уже физически подключены СКС
+            relation["type"] = "sks"
+            relation["connected"] = true
+          else
+            relation["type"] = "new_patchcord"
+            relation["connected"] = false
+          end
+        end
+
+        if relation["from"] and relation["to"]
+          @relations << relation
+          relation = {}
+          relation["from"] = node
+        end
+
+      end
+
+    end
+
   end
 
   # GET /logical_links/new
