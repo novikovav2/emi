@@ -20,19 +20,8 @@
     </nav>
 
     <div class="row">
-      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column">
-            <li class="nav-item"><%= link_to 'Здания', buildings_path, class: "nav-link active" %></li>
-            <li class="nav-item"><%= link_to 'Комнаты', rooms_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to 'Racks', boxes_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to 'Devices', devices_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to 'LogicalLinks', logical_links_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to 'Patchcords', patchcords_path, class: "nav-link" %></li>
-            <li class="nav-item"><%= link_to 'SKS', cables_path, class: "nav-link" %></li>
-          </ul>
-        </div>
-      </nav>
+
+      <%= render 'layouts/sidebar' %>
 
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
         <%= yield %>

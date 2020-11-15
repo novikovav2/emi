@@ -1,0 +1,41 @@
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+  <div class="sidebar-sticky">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <%= link_to  buildings_path, class: "nav-link active" do %>
+          <i class="far fa-building"></i> Здания
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to  rooms_path, class: "nav-link" do %>
+          <i class="fab fa-perbyte"></i> Помещения
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to boxes_path, class: "nav-link" do %>
+          <i class="fas fa-pause"></i> Стойки
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to devices_path, class: "nav-link" do %>
+          <i class="fas fa-microchip"></i> Устройства
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to logical_links_path, class: "nav-link" do %>
+          <i class="fas fa-angle-double-right"></i> Логические связи
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to patchcords_path, class: "nav-link" do %>
+          <i class="fas fa-arrows-alt-h"></i> Патчкорды
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to cables_path, class: "nav-link" do %>
+          <i class="fas fa-equals"></i> СКС
+        <% end %>
+      </li>
+    </ul>
+  </div>
+</nav>
