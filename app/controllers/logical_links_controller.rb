@@ -1,4 +1,5 @@
 class LogicalLinksController < ApplicationController
+  before_action :set_page_title
   before_action :set_logical_link, only: [:show, :destroy]
 
   # GET /logical_links
@@ -109,6 +110,7 @@ class LogicalLinksController < ApplicationController
 
   # GET /logical_links/new
   def new
+    @page_title << 'Новая логическая связь'
     @logical_link = LogicalLink.new(from_node: Interface.new(),
                                     to_node: Interface.new())
   end
@@ -152,5 +154,9 @@ class LogicalLinksController < ApplicationController
     # Only allow a list of trusted parameters through.
     def logical_link_params
       params.fetch(:logical_link, {}).permit(:from_node, :to_node)
+    end
+
+    def set_page_title
+      @page_title = ['Логические связи']
     end
 end

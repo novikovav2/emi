@@ -1,4 +1,5 @@
 class RoomsController < ApplicationController
+  before_action :set_page_title
   before_action :set_room, only: [:show, :edit, :update, :destroy]
 
   # GET /rooms
@@ -14,6 +15,7 @@ class RoomsController < ApplicationController
 
   # GET /rooms/new
   def new
+    @page_title << 'Новое помещение'
     @room = Room.new
   end
 
@@ -65,10 +67,15 @@ class RoomsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_room
       @room = Room.find(params[:id])
+      @page_title << @room.name
     end
 
     # Only allow a list of trusted parameters through.
     def room_params
       params.fetch(:room, {}).permit(:name, :floor, :building)
+    end
+
+    def set_page_title
+      @page_title = ['Помещения']
     end
 end

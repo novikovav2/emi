@@ -1,4 +1,5 @@
 class DevicesController < ApplicationController
+  before_action :set_page_title
   before_action :set_device, only: [:show, :edit, :update, :destroy]
 
   # GET /devices
@@ -14,6 +15,7 @@ class DevicesController < ApplicationController
 
   # GET /devices/new
   def new
+    @page_title << 'Новое оборудование'
     @device = Device.new
   end
 
@@ -65,10 +67,15 @@ class DevicesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_device
       @device = Device.find(params[:id])
+      @page_title << @device.name
     end
 
     # Only allow a list of trusted parameters through.
     def device_params
       params.fetch(:device, {}).permit(:name, :box)
+    end
+
+    def set_page_title
+      @page_title = ['Оборудование']
     end
 end

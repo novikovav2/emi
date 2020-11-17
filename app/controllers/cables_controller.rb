@@ -1,4 +1,5 @@
 class CablesController < ApplicationController
+  before_action :set_page_title
   before_action :set_cable, only: [:show, :edit, :update, :destroy]
 
   # GET /cables
@@ -14,6 +15,7 @@ class CablesController < ApplicationController
 
   # GET /cables/new
   def new
+    @page_title << 'Новый кабель'
     @cable = Cable.new(from_node: Interface.new(),
                        to_node: Interface.new())
   end
@@ -75,5 +77,9 @@ class CablesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def cable_params
       params.fetch(:cable, {}).permit(:from_node, :to_node, :length)
+    end
+
+    def set_page_title
+      @page_title = ['СКС']
     end
 end

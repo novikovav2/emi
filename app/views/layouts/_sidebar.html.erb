@@ -1,39 +1,63 @@
+<% case controller.controller_name
+    when 'buildings'
+      active_buildings = 'active'
+    when 'rooms'
+      active_rooms = 'active'
+    when 'boxes'
+     active_boxes = 'active'
+    when 'devices'
+     active_devices = 'active'
+    when 'logical_links'
+     active_logical_links = 'active'
+    when 'patchcords'
+     active_patchcords = 'active'
+    when 'cables'
+     active_cables = 'active'
+   end
+%>
+
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
   <div class="sidebar-sticky">
     <ul class="nav flex-column">
       <li class="nav-item">
-        <%= link_to  buildings_path, class: "nav-link active" do %>
-          <i class="far fa-building"></i> Здания
+        <%= link_to devices_path, class: "nav-link #{active_devices}" do %>
+          <i class="fas fa-microchip"></i> Оборудование
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to  rooms_path, class: "nav-link" do %>
-          <i class="fab fa-perbyte"></i> Помещения
-        <% end %>
-      </li>
-      <li class="nav-item">
-        <%= link_to boxes_path, class: "nav-link" do %>
-          <i class="fas fa-pause"></i> Стойки
-        <% end %>
-      </li>
-      <li class="nav-item">
-        <%= link_to devices_path, class: "nav-link" do %>
-          <i class="fas fa-microchip"></i> Устройства
-        <% end %>
-      </li>
-      <li class="nav-item">
-        <%= link_to logical_links_path, class: "nav-link" do %>
+        <%= link_to logical_links_path, class: "nav-link #{active_logical_links}" do %>
           <i class="fas fa-angle-double-right"></i> Логические связи
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to patchcords_path, class: "nav-link" do %>
+        <%= link_to patchcords_path, class: "nav-link #{active_patchcords}" do %>
           <i class="fas fa-arrows-alt-h"></i> Патчкорды
         <% end %>
       </li>
       <li class="nav-item">
-        <%= link_to cables_path, class: "nav-link" do %>
+        <%= link_to cables_path, class: "nav-link #{active_cables}" do %>
           <i class="fas fa-equals"></i> СКС
+        <% end %>
+      </li>
+    </ul>
+
+    <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+      Справочники
+    </h6>
+    <ul class="nav flex-column mb-2">
+      <li class="nav-item">
+        <%= link_to  buildings_path, class: "nav-link #{active_buildings}"  do %>
+          <i class="far fa-building"></i> Здания
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to  rooms_path, class: "nav-link #{active_rooms}" do %>
+          <i class="fab fa-perbyte"></i> Помещения
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to boxes_path, class: "nav-link #{active_boxes}" do %>
+          <i class="fas fa-pause"></i> Монтажные шкафы
         <% end %>
       </li>
     </ul>

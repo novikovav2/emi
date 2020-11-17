@@ -1,4 +1,5 @@
 class PatchcordsController < ApplicationController
+  before_action :set_page_title
   before_action :set_patchcord, only: [:show, :edit, :update, :destroy]
 
   # GET /patchcords
@@ -14,6 +15,7 @@ class PatchcordsController < ApplicationController
 
   # GET /patchcords/new
   def new
+    @page_title << 'Новый патчкорд'
     @patchcord = Patchcord.new(from_node: Interface.new,
                                to_node: Interface.new)
   end
@@ -56,5 +58,9 @@ class PatchcordsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def patchcord_params
       params.fetch(:patchcord, {}).permit(:from_node, :to_node)
+    end
+
+    def set_page_title
+      @page_title = ['Патчкорды']
     end
 end

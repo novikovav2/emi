@@ -1,4 +1,5 @@
 class InterfacesController < ApplicationController
+  before_action :set_page_title
   before_action :set_interface, only: [:show, :edit, :update, :destroy]
   before_action :set_device
 
@@ -15,6 +16,7 @@ class InterfacesController < ApplicationController
 
   # GET /interfaces/new
   def new
+    @page_title << 'Новый интерфейс'
     @interface = Interface.new
   end
 
@@ -76,5 +78,10 @@ class InterfacesController < ApplicationController
 
   def set_device
     @device = Device.find(params[:device_id])
+    @page_title << @device.name
+  end
+
+  def set_page_title
+    @page_title = ['Оборудование']
   end
 end

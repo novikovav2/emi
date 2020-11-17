@@ -1,4 +1,5 @@
 class BoxesController < ApplicationController
+  before_action :set_page_title
   before_action :set_box, only: [:show, :edit, :update, :destroy]
 
   # GET /boxes
@@ -14,6 +15,7 @@ class BoxesController < ApplicationController
 
   # GET /boxes/new
   def new
+    @page_title << 'Новый монтажный шкаф'
     @box = Box.new
   end
 
@@ -65,10 +67,15 @@ class BoxesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_box
       @box = Box.find(params[:id])
+      @page_title << @box.name
     end
 
     # Only allow a list of trusted parameters through.
     def box_params
       params.fetch(:box, {}).permit(:name, :room)
+    end
+
+    def set_page_title
+      @page_title = ['Монтажные шкафы']
     end
 end

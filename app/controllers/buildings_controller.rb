@@ -1,24 +1,30 @@
 class BuildingsController < ApplicationController
+  before_action :set_page_title
   before_action :set_building, only: [:show, :edit, :update, :destroy]
+
 
   # GET /buildings
   # GET /buildings.json
   def index
+
     @buildings = Building.all
   end
 
   # GET /buildings/1
   # GET /buildings/1.json
   def show
+
   end
 
   # GET /buildings/new
   def new
+    @page_title << 'Новое здание'
     @building = Building.new
   end
 
   # GET /buildings/1/edit
   def edit
+    @page_title << 'Изменить'
   end
 
   # POST /buildings
@@ -65,10 +71,15 @@ class BuildingsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_building
       @building = Building.find(params[:id])
+      @page_title << @building.name
     end
 
     # Only allow a list of trusted parameters through.
     def building_params
       params.fetch(:building, {}).permit(:name, :address)
+    end
+
+    def set_page_title
+      @page_title = ['Здания']
     end
 end

@@ -11,13 +11,18 @@
     </div>
   <% end %>
 
-  <%= form.label :name, "Название здания:" %>
-  <%= form.text_field :name %>
-  <br>
-  <%= form.label :address, "Адрес здания:" %>
-  <%= form.text_field :address %>
+  <div class="form-group">
+    <%= form.label :name, "Название здания:" %>
+    <%= form.text_field :name, required: true,  class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :address, "Адрес:" %>
+    <%= form.text_field :address, class: 'form-control' %>
+  </div>
+
 
   <div class="actions">
-    <%= form.submit 'Сохранить', class: 'btn btn-primary' %>
+    <%= form.submit 'Сохранить', class: 'btn btn-secondary' %>
   </div>
 <% end %>

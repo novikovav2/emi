@@ -1,0 +1,29 @@
+<% if !@page_title
+     @page_title = []
+     end
+%>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb pt-3 mb-3 border-bottom">
+    <li class="breadcrumb-item " aria-current="page">
+      <a href="#">Главная</a>
+    </li>
+    <% @page_title.each_with_index do |item, index| %>
+      <% if index != @page_title.size - 1 %>
+        <li class="breadcrumb-item " aria-current="page">
+          <%= item %>
+      <% else %>
+        <li class="breadcrumb-item active" aria-current="page">
+      <% end %>
+
+      </li>
+    <% end %>
+
+  </ol>
+</nav>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+  <h2 class="h2">
+    <%= @page_title.last %>
+  </h2>
+</div>
