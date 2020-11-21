@@ -8,6 +8,7 @@ class Box
 
   has_one :out, :room, rel_class: :BoxInRoom
   has_many :in, :devices, rel_class: :DeviceInBox
+  has_many :in, :patchpanels, rel_class: :PatchpanelInBox
 
 
 end

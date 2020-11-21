@@ -1,6 +1,12 @@
-<h1>Editing Box</h1>
+<%= link_to 'Отмена', @box, class: 'btn btn-outline-secondary btn-sm mb-3'  %>
 
-<%= render 'form', box: @box %>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', box: @box %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Show', @box %> |
-<%= link_to 'Back', boxes_path %>
