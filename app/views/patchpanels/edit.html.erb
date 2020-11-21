@@ -1,0 +1,12 @@
+<%= link_to 'Отмена', @patchpanel, class: 'btn btn-outline-secondary btn-sm mb-3'  %>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', patchpanel: @patchpanel, disabled: true %>
+      </div>
+    </div>
+  </div>
+</div>
+

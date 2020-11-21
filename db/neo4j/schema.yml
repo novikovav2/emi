@@ -18,11 +18,13 @@
 - CONSTRAINT ON ( building:Building ) ASSERT (building.uuid) IS UNIQUE
 - CONSTRAINT ON ( device:Device ) ASSERT (device.uuid) IS UNIQUE
 - CONSTRAINT ON ( interface:Interface ) ASSERT (interface.uuid) IS UNIQUE
+- CONSTRAINT ON ( patchpanel:Patchpanel ) ASSERT (patchpanel.uuid) IS UNIQUE
 - CONSTRAINT ON ( rack:Rack ) ASSERT (rack.uuid) IS UNIQUE
 - CONSTRAINT ON ( room:Room ) ASSERT (room.uuid) IS UNIQUE
 :indexes:
 - INDEX FOR (n:Interface) ON (n.material)
 - INDEX FOR (n:Interface) ON (n.type)
+- INDEX FOR (n:Patchpanel) ON (n.material)
 :versions:
 - '20201018092842'
 - '20201018114854'
@@ -32,3 +34,7 @@
 - '20201024122521'
 - '20201025061842'
 - '20201107124412'
+- '20201120032708'
+- '20201120042728'
+- '20201120050827'
+- '20201120050851'

@@ -11,5 +11,7 @@ Rails.application.routes.draw do
   resources :logical_links, except: [:edit, :update] # Объекты Relationship нельзя редактировать
   resources :patchcords, except: [:edit, :update]
   resources :cables
-
+  resources :patchpanels do
+    resources :interfaces, except: [:index]
+  end
 end

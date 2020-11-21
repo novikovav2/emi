@@ -1,7 +1,9 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Добавить', new_building_path, class: "btn btn-outline-secondary btn-sm" %>
-<br>
+<%= link_to new_building_path, class: "btn btn-outline-secondary btn-sm" do %>
+  <i class="fas fa-plus"></i> Добавить
+<% end %>
+
 <div class="row mt-3">
   <% @buildings.each do |building| %>
     <div class="card-group col-xl-4 col-md-5">

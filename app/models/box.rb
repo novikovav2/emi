@@ -4,6 +4,8 @@ class Box
   include ActiveGraph::Node
   property :name, type: String
 
+  validates :name, presence: true
+
   has_one :out, :room, rel_class: :BoxInRoom
   has_many :in, :devices, rel_class: :DeviceInBox
 

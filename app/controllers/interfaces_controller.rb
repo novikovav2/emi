@@ -1,7 +1,7 @@
 class InterfacesController < ApplicationController
   before_action :set_page_title
   before_action :set_interface, only: [:show, :edit, :update, :destroy]
-  before_action :set_device
+  before_action :set_owner
 
   # GET /interfaces
   # GET /interfaces.json
@@ -18,6 +18,9 @@ class InterfacesController < ApplicationController
   def new
     @page_title << 'Новый интерфейс'
     @interface = Interface.new
+    if @patchnanel
+      @interface.material = @patchnanel.material
+    end
   end
 
   # GET /interfaces/1/edit
@@ -28,14 +31,31 @@ class InterfacesController < ApplicationController
   # POST /interfaces.json
   def create
     @interface = Interface.new(interface_params)
-    @interface.device = @device
+    if @device
+      @interface.device = @device
+    else
+      @interface.patchpanel = @patchnanel
+    end
+
 
     respond_to do |format|
       if @interface.save
-        format.html { redirect_to device_path(@device), notice: 'Interface was successfully created.' }
+        format.html {
+          if @device
+            redirect_to device_path(@device), notice: 'Interface was successfully created.'
+          else
+            redirect_to patchpanel_path(@patchnanel), notice: 'Interface was successfully created.'
+          end
+        }
         format.json { render :show, status: :created, location: @interface }
       else
-        format.html { redirect_to device_path(@device), notice: 'Proccesed with errors.' }
+        format.html {
+          if @device
+            redirect_to device_path(@device), notice: 'Proccesed with errors.'
+          else
+            redirect_to patchpanel_path(@patchnanel), notice: 'Proccesed with errors.'
+          end
+        }
         format.json { render json: @interface.errors, status: :unprocessable_entity }
       end
     end
@@ -46,7 +66,13 @@ class InterfacesController < ApplicationController
   def update
     respond_to do |format|
       if @interface.update(interface_params)
-        format.html { redirect_to device_path(@device), notice: 'Interface was successfully updated.' }
+        format.html {
+          if @device
+            redirect_to device_path(@device), notice: 'Interface was successfully updated.'
+          else
+            redirect_to patchpanel_path(@patchnanel), notice: 'Interface was successfully updated.'
+          end
+        }
         format.json { render :show, status: :ok, location: @interface }
       else
         format.html { render :edit }
@@ -60,7 +86,13 @@ class InterfacesController < ApplicationController
   def destroy
     @interface.destroy
     respond_to do |format|
-      format.html { redirect_to device_path(@device), notice: 'Interface was successfully destroyed.' }
+      format.html {
+        if @device
+          redirect_to device_path(@device), notice: 'Interface was successfully destroyed.'
+        else
+          redirect_to patchpanel_path(@patchnanel), notice: 'Interface was successfully destroyed.'
+        end
+      }
       format.json { head :no_content }
     end
   end
@@ -76,12 +108,23 @@ class InterfacesController < ApplicationController
       params.fetch(:interface, {}).permit(:name, :device_id, :material)
     end
 
-  def set_device
-    @device = Device.find(params[:device_id])
-    @page_title << @device.name
+  def set_owner
+    if params[:device_id]
+      @device = Device.find(params[:device_id])
+      @page_title << @device.name
+    else
+      @patchnanel = Patchpanel.find(params[:patchpanel_id])
+      @page_title << @patchnanel.name
+    end
+
   end
 
   def set_page_title
     @page_title = ['Оборудование']
+    if params[:device_id]
+      @page_title = ['Оборудование']
+    else
+      @page_title = ['Патчпанели']
+    end
   end
 end

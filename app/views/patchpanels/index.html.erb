@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<%= link_to  new_box_path, class: "btn btn-outline-secondary btn-sm" do %>
+<%= link_to new_patchpanel_path, class: "btn btn-outline-secondary btn-sm" do %>
   <i class="fas fa-plus"></i> Добавить
 <% end %>
 
@@ -12,25 +12,27 @@
           <thead>
           <tr>
             <th>Название</th>
-            <th>Помещение</th>
+            <th>Стойка</th>
+            <th>К-во интерфейсов</th>
             <th>Действия</th>
           </tr>
           </thead>
 
           <tbody>
-          <% @boxes.each do |box| %>
+          <% @patchpanels.each do |patchpanel| %>
             <tr>
-              <td><%= link_to box.name, box %></td>
-              <% if  box.room %>
-                <td><%= link_to box.room.name, box.room %></td>
+              <td><%= link_to patchpanel.name, patchpanel %></td>
+              <% if patchpanel.box %>
+                <td><%= patchpanel.box.name %></td>
               <% else %>
                 <td>-</td>
               <% end %>
+              <td><%= patchpanel.interfaces ? patchpanel.interfaces.count : 0 %></td>
               <td>
-                <%= link_to edit_box_path(box), class: 'text-muted text-right mr-3' do %>
+                <%= link_to edit_patchpanel_path(patchpanel), class: 'text-muted text-right mr-3' do %>
                   <i class="far fa-edit"></i>
                 <% end %>
-                <%= link_to box, method: :delete, data: { confirm: 'Are you sure?' },
+                <%= link_to patchpanel, method: :delete, data: { confirm: 'Are you sure?' },
                             class: 'text-muted text-right' do %>
                   <i class="far fa-trash-alt"></i>
                 <% end %>
@@ -43,5 +45,4 @@
     </div>
   </div>
 </div>
-
 

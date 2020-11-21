@@ -1,0 +1,82 @@
+<p id="notice"><%= notice %></p>
+
+<div class="d-flex justify-content-between">
+  <div class="ml-0">
+    <%= link_to 'Назад', patchpanels_path, class: 'btn btn-outline-secondary mr-2 btn-sm' %>
+    <%= link_to 'Редактировать', edit_patchpanel_path(@patchpanel), class: 'btn btn-secondary btn-sm' %>
+  </div>
+  <div class="mr-0">
+    <%= link_to 'Удалить', @patchpanel, method: :delete, data: { confirm: 'Are you sure?' },
+                class: 'btn btn-outline-danger btn-sm' %>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <p class="mb-0 text-muted font-weight-bold text-uppercase">
+              Стойка
+            </p>
+            <p class="mb-0">
+              <%= link_to @patchpanel.box.name, @patchpanel.box %>
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="mb-0 text-muted font-weight-bold text-uppercase">
+              Тип
+            </p>
+            <p class="mb-0">
+              <%= @patchpanel.material %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="text-muted font-weight-bold text-uppercase">
+            Интерфейсы
+          </div>
+          <%= link_to 'Добавить', new_patchpanel_interface_path(@patchpanel),
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
+        <table class="table table-sm table-striped mt-2">
+          <thead>
+          <tr>
+            <th>Название</th>
+            <th>Подключен?</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @patchpanel.interfaces.order(:name).each do |interface| %>
+            <tr>
+              <td><%= interface.name %></td>
+              <td><%= interface.connected? %></td>
+              <td>
+                <%= link_to edit_patchpanel_interface_path(@patchpanel, interface), class: 'text-muted text-right mr-3' do %>
+                  <i class="far fa-edit"></i>
+                <% end %>
+                <%= link_to patchpanel_interface_path(@patchpanel, interface),
+                            method: :delete, data: { confirm: 'Are you sure?' },
+                            class: 'text-muted text-right' do %>
+                  <i class="far fa-trash-alt"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

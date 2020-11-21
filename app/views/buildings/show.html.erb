@@ -2,31 +2,69 @@
 
 
 
-<div class="row ml-0">
-  <%= link_to 'Назад', buildings_path, class: 'btn btn-outline-secondary mr-2 btn-sm' %>
-  <%= link_to 'Редактировать', edit_building_path(@building), class: 'btn btn-secondary btn-sm' %>
+<div class="d-flex justify-content-between">
+  <div class="ml-0">
+    <%= link_to 'Назад', buildings_path, class: 'btn btn-outline-secondary mr-2 btn-sm' %>
+    <%= link_to 'Редактировать', edit_building_path(@building), class: 'btn btn-secondary btn-sm' %>
+  </div>
+  <div class="mr-0">
+    <%= link_to 'Удалить', @building, method: :delete, data: { confirm: 'Are you sure?' },
+                class: 'btn btn-outline-danger btn-sm' %>
+  </div>
 </div>
 
-<h6 class="h6 text-muted mt-4 mb-3">Адрес: <%= @building.address %></h6>
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <p class="mb-0 text-muted font-weight-bold text-uppercase">
+              Адрес
+            </p>
+            <p class="mb-0">
+              <%= @building.address %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p>
-  Помещения:
-</p>
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="text-muted font-weight-bold text-uppercase">
+            Помещения
+          </div>
+          <%= link_to 'Добавить', new_room_path,
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
+        <table class="table table-striped table-sm mt-2">
+          <thead>
+          <tr>
+            <th>Название</th>
+            <th>Этаж</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @building.rooms.order(:name).each do |room| %>
+            <tr>
+              <td><%= link_to room.name, room  %></td>
+              <td><%= room.floor %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Название</th>
-      <th>Этаж</th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @building.rooms.each do |room| %>
-    <tr>
-      <td><%= link_to room.name, room %></td>
-      <td><%= room.floor %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+
+
+
 

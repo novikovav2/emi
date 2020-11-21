@@ -1,4 +1,23 @@
+<% if @device
+     @owner = @device
+    @disabled = false%>
+  <%= link_to 'Отмена', device_path(@device), class: 'btn btn-outline-secondary btn-sm mb-3' %>
+<% else
+     @owner = @patchnanel
+     @disabled  = true %>
+  <%= link_to 'Отмена', patchpanel_path(@patchnanel), class: 'btn btn-outline-secondary btn-sm mb-3' %>
+<% end %>
 
-<%= render 'form', interface: @interface %>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', interface: @interface, owner: @owner, disabled: @disabled %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Back', device_path(@device) %>
+
+
+

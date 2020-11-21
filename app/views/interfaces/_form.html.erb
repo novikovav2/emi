@@ -1,4 +1,5 @@
-<%= form_with(model: [@device, interface], local: true) do |form| %>
+
+<%= form_with(model: [owner, interface], local: true) do |form| %>
   <% if interface.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(interface.errors.count, "error") %> prohibited this interface from being saved:</h2>
@@ -13,15 +14,19 @@
 
   <div class="form-group">
     <%= form.label :name, 'Название' %>
-    <%= form.text_field :name, class: 'form-control', placeholder: 'vmnic0' %>
+    <%= form.text_field :name, class: 'form-control', placeholder: 'Пример: vmnic0' %>
   </div>
 
   <div class="form-group">
-    <%= form.label :material, 'Здание' %>
-    <%= form.select :material, options_for_select(["optic", "copper"], interface.material), {}, class: 'form-control' %>
+    <%= form.label :material, 'Тип' %>
+    <%= form.select :material, options_for_select(["optic", "copper"], interface.material), {},
+                    class: 'form-control',
+                    disabled: disabled
+
+    %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit 'Сохранить', class: 'btn btn-secondary'  %>
   </div>
 <% end %>

@@ -13,6 +13,8 @@
      active_patchcords = 'active'
     when 'cables'
      active_cables = 'active'
+   when 'patchpanels'
+     active_patchpanels = 'active'
    end
 %>
 
@@ -58,6 +60,11 @@
       <li class="nav-item">
         <%= link_to boxes_path, class: "nav-link #{active_boxes}" do %>
           <i class="fas fa-pause"></i> Монтажные шкафы
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to patchpanels_path, class: "nav-link #{active_patchpanels}" do %>
+          <i class="fas fa-dice-six"></i> Патчпанели
         <% end %>
       </li>
     </ul>
