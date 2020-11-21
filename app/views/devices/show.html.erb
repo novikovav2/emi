@@ -1,43 +1,86 @@
 <p id="notice"><%= notice %></p>
 
+<div class="d-flex justify-content-between">
+  <div class="ml-0">
+    <%= link_to 'Назад', devices_path, class: 'btn btn-outline-secondary mr-2 btn-sm' %>
+    <%= link_to 'Редактировать', edit_device_path(@device), class: 'btn btn-secondary btn-sm' %>
+  </div>
+  <div class="mr-0">
+    <%= link_to 'Удалить', @device, method: :delete, data: { confirm: 'Are you sure?' },
+                class: 'btn btn-outline-danger btn-sm' %>
+  </div>
+</div>
 
-<br>
-<% if @device.box %>
-  <p>
-    Установлен в стойке: <%= link_to @device.box.name, @device.box %>
-  </p>
-<% end %>
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <p class="mb-0 text-muted font-weight-bold text-uppercase">
+              Стойка
+            </p>
+            <p class="mb-0">
+              <%= link_to @device.box.name, @device.box %>
+            </p>
+          </div>
+          <div class="col-6">
 
-<%= link_to 'Edit', edit_device_path(@device) %> |
-<%= link_to 'Back', devices_path %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<br>
-
-
-<%= link_to 'New Interface', new_device_interface_path(@device) %>
-<h4>Интерфейсы</h4>
-<table class="table">
-  <thead>
-    <tr>
-      <th>Название</th>
-      <th>Материал</th>
-      <th>Логически подключен в</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @device.interfaces.order_by(:name).each do |interface| %>
-      <tr>
-        <td><%= link_to interface.name, device_interface_path(@device, interface) %></td>
-        <td><%= interface.material %></td>
-        <td>
-          <% if interface.connected_to %>
-            <%= interface.connected_to.device.name %>_
-            <%= interface.connected_to.name %>
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="text-muted font-weight-bold text-uppercase">
+            Интерфейсы
+          </div>
+          <%= link_to 'Добавить', new_device_interface_path(@device),
+                      class: 'btn btn-secondary btn-sm' %>
+        </div>
+        <table class="table table-sm table-striped mt-2">
+          <thead>
+          <tr>
+            <th>Название</th>
+            <th>Материал</th>
+            <th>Логически подключен в</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @device.interfaces.order_by(:name).each do |interface| %>
+            <tr>
+              <td><%= link_to interface.name, device_interface_path(@device, interface) %></td>
+              <td><%= interface.material %></td>
+              <td>
+                <% if interface.connected_to %>
+                  <%= interface.connected_to.device.name %>_
+                  <%= interface.connected_to.name %>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to edit_device_interface_path(@device, interface), class: 'text-muted text-right mr-3' do %>
+                  <i class="far fa-edit"></i>
+                <% end %>
+                <%= link_to device_interface_path(@device, interface),
+                            method: :delete, data: { confirm: 'Are you sure?' },
+                            class: 'text-muted text-right' do %>
+                  <i class="far fa-trash-alt"></i>
+                <% end %>
+              </td>
+            </tr>
           <% end %>
-        </td>
-        <td><%= link_to 'Destroy', device_interface_path(@device, interface), method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+

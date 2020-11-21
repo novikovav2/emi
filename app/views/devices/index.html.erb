@@ -15,7 +15,7 @@
             <th>Стойка</th>
             <th>К-во оптических инт.</th>
             <th>К-во медных инт.</th>
-            <th colspan="2"></th>
+            <th>Действия</th>
           </tr>
           </thead>
 
@@ -30,8 +30,15 @@
               <% end %>
               <td><%= device.interfaces ? device.interfaces.where(material: 'optic').count : 0 %></td>
               <td><%= device.interfaces ? device.interfaces.where(material: 'copper').count : 0 %></td>
-              <td><%= link_to 'Edit', edit_device_path(device) %></td>
-              <td><%= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+              <td>
+                <%= link_to edit_device_path(device), class: 'text-muted text-right mr-3' do %>
+                  <i class="far fa-edit"></i>
+                <% end %>
+                <%= link_to device, method: :delete, data: { confirm: 'Are you sure?' },
+                            class: 'text-muted text-right' do %>
+                  <i class="far fa-trash-alt"></i>
+                <% end %>
+              </td>
             </tr>
           <% end %>
           </tbody>
