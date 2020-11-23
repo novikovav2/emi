@@ -30,10 +30,10 @@ class RoomsController < ApplicationController
 
     respond_to do |format|
       if @room.save
-        format.html { redirect_to @room, notice: 'Room was successfully created.' }
+        format.html { redirect_to @room, notice: 'Помещение успешно добавлено' }
         format.json { render :show, status: :created, location: @room }
       else
-        format.html { render :new }
+        format.html { render :new, alert: 'Что-то пошло не так' }
         format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end
@@ -47,7 +47,7 @@ class RoomsController < ApplicationController
         format.html { redirect_to @room, notice: 'Room was successfully updated.' }
         format.json { render :show, status: :ok, location: @room }
       else
-        format.html { render :edit }
+        format.html { render :edit, alert: 'Что-то пошло не так' }
         format.json { render json: @room.errors, status: :unprocessable_entity }
       end
     end
@@ -58,7 +58,7 @@ class RoomsController < ApplicationController
   def destroy
     @room.destroy
     respond_to do |format|
-      format.html { redirect_to rooms_url, notice: 'Room was successfully destroyed.' }
+      format.html { redirect_to rooms_url, notice: 'Помещение успешно удалено' }
       format.json { head :no_content }
     end
   end
@@ -78,4 +78,5 @@ class RoomsController < ApplicationController
     def set_page_title
       @page_title = ['Помещения']
     end
+
 end
