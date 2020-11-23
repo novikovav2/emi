@@ -10,15 +10,17 @@
   </head>
 
   <body class="container-fluid" >
+
     <%= render 'layouts/navbar' %>
     <div class="row">
       <%= render 'layouts/sidebar' %>
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4" role="main">
+        <%= render 'layouts/toast' %>
         <%= render 'layouts/page_title' %>
         <%= yield %>
       </main>
-
     </div>
+
 
 
   </body>

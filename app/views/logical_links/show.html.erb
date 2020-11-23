@@ -98,11 +98,11 @@
           <% @relations.each do |relation| %>
             <tr>
               <td><%= relation["type"] %></td>
-              <td><%= relation["from"].device.box.name %></td>
-              <td><%= relation["from"].device.name %></td>
+              <td><%= relation["from"].owner.box.name %></td>
+              <td><%= relation["from"].owner.name %></td>
               <td><%= relation["from"].name %></td>
-              <td><%= relation["to"].device.box.name %></td>
-              <td><%= relation["to"].device.name %></td>
+              <td><%= relation["to"].owner.box.name %></td>
+              <td><%= relation["to"].owner.name %></td>
               <td><%= relation["to"].name %></td>
               <td><%= relation["connected"] %></td>
             </tr>
