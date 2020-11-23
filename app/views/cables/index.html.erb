@@ -1,36 +1,54 @@
 <p id="notice"><%= notice %></p>
 
+<%= link_to new_cable_path, class: "btn btn-outline-secondary btn-sm" do %>
+  <i class="fas fa-plus"></i> Добавить
+<% end %>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>From device</th>
-      <th>From port</th>
-      <th>To device</th>
-      <th>to port</th>
-      <th>Material</th>
-      <th>Length</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped table-sm">
+          <thead>
+          <tr>
+            <th>From patchpanel</th>
+            <th>From port</th>
+            <th>To patchpanel</th>
+            <th>to port</th>
+            <th>Material</th>
+            <th>Length</th>
+            <th></th>
+          </tr>
+          </thead>
 
-  <tbody>
-    <% @cables.each do |cable| %>
-      <tr>
-        <td><%= cable.from_node.device.name %></td>
-        <td><%= cable.from_node.name %></td>
-        <td><%= cable.to_node.device.name %></td>
-        <td><%= cable.to_node.name %></td>
-        <td><%= cable.material %></td>
-        <td><%= cable.length %></td>
-        <td><%= link_to 'Show', cable %></td>
-        <td><%= link_to 'Edit', edit_cable_path(cable) %></td>
-        <td><%= link_to 'Destroy', cable, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          <tbody>
+          <% @cables.each do |cable| %>
+            <tr>
+              <td><%= cable.from_node.patchpanel.name %></td>
+              <td><%= cable.from_node.name %></td>
+              <td><%= cable.to_node.patchpanel.name %></td>
+              <td><%= cable.to_node.name %></td>
+              <td><%= cable.material %></td>
+              <td><%= cable.length %></td>
+              <td>
+                <%= link_to cable, class: 'text-muted text-right mr-3' do %>
+                  <i class="far fa-eye"></i>
+                <% end %>
+                <%= link_to edit_cable_path(cable), class: 'text-muted text-right mr-3' do %>
+                  <i class="far fa-edit"></i>
+                <% end %>
+                <%= link_to cable, method: :delete, data: { confirm: 'Are you sure?' },
+                            class: 'text-muted text-right' do %>
+                  <i class="far fa-trash-alt"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
-<br>
 
-<%= link_to 'New Cable', new_cable_path %>

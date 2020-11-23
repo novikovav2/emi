@@ -18,8 +18,8 @@ class InterfacesController < ApplicationController
   def new
     @page_title << 'Новый интерфейс'
     @interface = Interface.new
-    if @patchnanel
-      @interface.material = @patchnanel.material
+    if @patchpanel
+      @interface.material = @patchpanel.material
     end
   end
 
@@ -34,7 +34,8 @@ class InterfacesController < ApplicationController
     if @device
       @interface.device = @device
     else
-      @interface.patchpanel = @patchnanel
+      @interface.patchpanel = @patchpanel
+      @interface.update(material: @patchpanel.material)
     end
 
 
@@ -44,7 +45,7 @@ class InterfacesController < ApplicationController
           if @device
             redirect_to device_path(@device), notice: 'Interface was successfully created.'
           else
-            redirect_to patchpanel_path(@patchnanel), notice: 'Interface was successfully created.'
+            redirect_to patchpanel_path(@patchpanel), notice: 'Interface was successfully created.'
           end
         }
         format.json { render :show, status: :created, location: @interface }
@@ -53,7 +54,7 @@ class InterfacesController < ApplicationController
           if @device
             redirect_to device_path(@device), notice: 'Proccesed with errors.'
           else
-            redirect_to patchpanel_path(@patchnanel), notice: 'Proccesed with errors.'
+            redirect_to patchpanel_path(@patchpanel), notice: 'Proccesed with errors.'
           end
         }
         format.json { render json: @interface.errors, status: :unprocessable_entity }
@@ -70,7 +71,7 @@ class InterfacesController < ApplicationController
           if @device
             redirect_to device_path(@device), notice: 'Interface was successfully updated.'
           else
-            redirect_to patchpanel_path(@patchnanel), notice: 'Interface was successfully updated.'
+            redirect_to patchpanel_path(@patchpanel), notice: 'Interface was successfully updated.'
           end
         }
         format.json { render :show, status: :ok, location: @interface }
@@ -90,7 +91,7 @@ class InterfacesController < ApplicationController
         if @device
           redirect_to device_path(@device), notice: 'Interface was successfully destroyed.'
         else
-          redirect_to patchpanel_path(@patchnanel), notice: 'Interface was successfully destroyed.'
+          redirect_to patchpanel_path(@patchpanel), notice: 'Interface was successfully destroyed.'
         end
       }
       format.json { head :no_content }
@@ -113,8 +114,8 @@ class InterfacesController < ApplicationController
       @device = Device.find(params[:device_id])
       @page_title << @device.name
     else
-      @patchnanel = Patchpanel.find(params[:patchpanel_id])
-      @page_title << @patchnanel.name
+      @patchpanel = Patchpanel.find(params[:patchpanel_id])
+      @page_title << @patchpanel.name
     end
 
   end

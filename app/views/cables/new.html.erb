@@ -1,4 +1,15 @@
+<%= link_to 'Отмена', cables_path, class: 'btn btn-outline-secondary btn-sm mb-3' %>
 
-<%= render 'form', cable: @cable, disabled: false %>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', cable: @cable, disabled: false, interfaces: @interfaces %>
+      </div>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Back', cables_path %>
+
+
+

@@ -3,9 +3,9 @@
     @disabled = false %>
   <%= link_to 'Отмена', device_path(@device), class: 'btn btn-outline-secondary btn-sm mb-3' %>
 <% else
-     @owner = @patchnanel
+     @owner = @patchpanel
     @disabled = true %>
-  <%= link_to 'Отмена', patchpanel_path(@patchnanel), class: 'btn btn-outline-secondary btn-sm mb-3' %>
+  <%= link_to 'Отмена', patchpanel_path(@patchpanel), class: 'btn btn-outline-secondary btn-sm mb-3' %>
 <% end %>
 
 <div class="row">

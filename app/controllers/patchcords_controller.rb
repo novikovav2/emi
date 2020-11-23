@@ -18,6 +18,7 @@ class PatchcordsController < ApplicationController
     @page_title << 'Новый патчкорд'
     @patchcord = Patchcord.new(from_node: Interface.new,
                                to_node: Interface.new)
+    @interfaces = Interface.where(connected: false)
   end
 
   # POST /patchcords

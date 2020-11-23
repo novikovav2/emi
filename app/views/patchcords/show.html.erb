@@ -1,11 +1,80 @@
 <p id="notice"><%= notice %></p>
 
-From: <%= @patchcord.from_node.device.name %> (<%= @patchcord.from_node.name %>)
-<br>
-To: <%= @patchcord.to_node.device.name %> (<%= @patchcord.to_node.name %>)
-<br>
-<br>
+<div class="d-flex justify-content-between">
+  <div class="ml-0">
+    <%= link_to 'Назад', patchcords_path, class: 'btn btn-outline-secondary mr-2 btn-sm' %>
+  </div>
+  <div class="mr-0">
+    <%= link_to 'Удалить', @patchcord, method: :delete, data: { confirm: 'Are you sure?' },
+                class: 'btn btn-outline-danger btn-sm' %>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            <p class="mb-0 text-muted font-weight-bold text-uppercase">
+              Длина
+            </p>
+            <p class="mb-0">
+              <%= @patchcord.length %>м
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="mb-0 text-muted font-weight-bold text-uppercase">
+              Тип
+            </p>
+            <p class="mb-0">
+              <%= @patchcord.material %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-body">
+        <p class="mb-0 text-muted font-weight-bold text-uppercase">
+          Начало
+        </p>
+        <p class="mb-0">
+          <span class="text-black-50">Стойка:</span> <%= @patchcord.from_node.owner.box.name %>
+        </p>
+        <p class="mb-0">
+          <span class="text-black-50">Патчпанель:</span> <%= @patchcord.from_node.owner.name %>
+        </p>
+        <p class="mb-0">
+          <span class="text-black-50">Интерфейс:</span> <%= @patchcord.from_node.name %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-body">
+        <p class="mb-0 text-muted font-weight-bold text-uppercase">
+          Конец
+        </p>
+        <p class="mb-0">
+          <span class="text-black-50">Стойка:</span> <%= @patchcord.to_node.owner.box.name %>
+        </p>
+        <p class="mb-0">
+          <span class="text-black-50">Патчпанель:</span> <%= @patchcord.to_node.owner.name %>
+        </p>
+        <p class="mb-0">
+          <span class="text-black-50">Интерфейс:</span> <%= @patchcord.to_node.name %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
-<%= link_to 'Back', patchcords_path %>

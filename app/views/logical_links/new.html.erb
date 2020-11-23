@@ -1,4 +1,16 @@
+<%= link_to 'Отмена', logical_links_path, class: 'btn btn-outline-secondary btn-sm mb-3' %>
 
-<%= render 'form', logical_link: @logical_link %>
 
-<%= link_to 'Back', logical_links_path %>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <%= render 'form', logical_link: @logical_link, interfaces: @interfaces %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

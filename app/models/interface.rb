@@ -27,4 +27,11 @@ class Interface
       end
       end
 
+  def owner
+    if self.device
+      return self.device
+    else
+      return self.patchpanel
+    end
+  end
 end

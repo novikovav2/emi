@@ -18,10 +18,17 @@ class CablesController < ApplicationController
     @page_title << 'Новый кабель'
     @cable = Cable.new(from_node: Interface.new(),
                        to_node: Interface.new())
+    @interfaces = Interface.query_as(:i)
+                      .match("(i)-[:INTERFACE_OF_PATCHPANEL]->(:Patchpanel)
+                                    where not (i)-[:PHYSICAL_CABLE]-(:Interface)")
+                      .pluck(:i)
   end
 
   # GET /cables/1/edit
   def edit
+    @interfaces = Interface.query_as(:i)
+                      .match("(i)-[:INTERFACE_OF_PATCHPANEL]->(:Patchpanel)")
+                      .pluck(:i)
   end
 
   # POST /cables
@@ -72,6 +79,13 @@ class CablesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_cable
       @cable = Cable.find(params[:id])
+      @page_title << @cable.from_node.patchpanel.box.name + '.' +
+                      @cable.from_node.patchpanel.name + '.' +
+                      @cable.from_node.name +
+                      ' <-> ' +
+                      @cable.to_node.patchpanel.box.name + '.' +
+                      @cable.to_node.patchpanel.name + '.' +
+                      @cable.to_node.name
     end
 
     # Only allow a list of trusted parameters through.
