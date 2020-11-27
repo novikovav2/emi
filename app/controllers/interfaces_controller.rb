@@ -5,9 +5,13 @@ class InterfacesController < ApplicationController
 
   # GET /interfaces
   # GET /interfaces.json
-  # def index
-  #   @interfaces = Interface.all
-  # end
+  def index
+    if @device
+      @interfaces = @device.interfaces
+    else
+      @interfaces = @patchpanel.interfaces
+    end
+  end
 
   # GET /interfaces/1
   # GET /interfaces/1.json

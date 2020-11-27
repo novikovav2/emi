@@ -12,6 +12,6 @@ Rails.application.routes.draw do
   resources :patchcords, except: [:edit, :update]
   resources :cables
   resources :patchpanels do
-    resources :interfaces, except: [:index]
+    resources :interfaces
   end
 end

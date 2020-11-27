@@ -1,0 +1,59 @@
+<div class="collapse mt-2" id="cablesFilter">
+  <div class="card card-body pt-0 pb-1">
+    <%= form_with url: cables_path, method: :get do |form| %>
+      <div class="form-row mb-0">
+        <div class="form-group col-xl-4 mb-0">
+          <%= form.label :from_box, 'Стойка (начало)', class: 'col-form-label-sm pb-0'%>
+          <%= form.select :from_box, @boxes.collect {|x| [x.name, x.id]}, { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          id: 'from-box' %>
+        </div>
+        <div class="form-group col-xl-4 mb-0">
+          <%= form.label :from_patchpanel, 'Патчпанель (начало)', class: 'col-form-label-sm pb-0' %>
+          <%= form.select :from_patchpanel, %w(), { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          disabled: true,
+                          id: 'from-patchpanel' %>
+        </div>
+        <div class="form-group col-xl-4 mb-0">
+          <%= form.label :from_interface, 'Интерфейс (начало)', class: 'col-form-label-sm pb-0' %>
+          <%= form.select :from_interface, %w(), { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          disabled: true,
+                          id: 'from-interface' %>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-xl-4">
+          <%= form.label :to_box, 'Стойка конец', class: 'col-form-label-sm pb-0'%>
+          <%= form.select :to_box, @boxes.collect {|x| [x.name, x.id]}, { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          id: 'to-box' %>
+        </div>
+        <div class="form-group col-xl-4">
+          <%= form.label :to_patchpanel, 'Патчпанель конец', class: 'col-form-label-sm pb-0' %>
+          <%= form.select :to_patchpanel, %w(), { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          disabled: true,
+                          id: 'to-patchpanel' %>
+        </div>
+        <div class="form-group col-xl-4">
+          <%= form.label :to_interface, 'Интерфейс конец', class: 'col-form-label-sm pb-0' %>
+          <%= form.select :to_interface, %w(), { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          disabled: true,
+                          id: 'to-interface' %>
+        </div>
+      </div>
+
+
+      <div class="actions">
+        <%= form.submit 'Искать', class: 'btn btn-secondary btn-sm' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'cables-filters' %>

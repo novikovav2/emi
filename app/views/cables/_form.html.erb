@@ -11,25 +11,31 @@
     </div>
   <% end %>
 
-  <div class="form-group">
-    <%= form.label :from_node, 'From' %>
-    <%= form.select :from_node, options_for_select(
-        interfaces.collect {|i| [i.patchpanel.box.name + ': ' + i.patchpanel.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
-                                    i.id]}, cable.from_node.id),
-                    {}, class: 'form-control', disabled: disabled %>
+  <div class="form-group row">
+    <%= form.label :from_node, 'From', class: 'col-sm-1 col-form-label' %>
+    <div class="col-sm-11">
+      <%= form.select :from_node, options_for_select(
+          interfaces.collect {|i| [i.patchpanel.box.name + ': ' + i.patchpanel.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
+                                   i.id]}, cable.from_node.id),
+                      {}, class: 'form-control', disabled: disabled %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :to_node, 'To' %>
-    <%= form.select :to_node, options_for_select(
-        interfaces.collect {|i| [i.patchpanel.box.name + ': ' + i.patchpanel.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
-                                    i.id]}, cable.to_node.id),
-                    {}, class: 'form-control', disabled: disabled %>
+  <div class="form-group row">
+    <%= form.label :to_node, 'To', class: 'col-sm-1 col-form-label' %>
+    <div class="col-sm-11">
+      <%= form.select :to_node, options_for_select(
+          interfaces.collect {|i| [i.patchpanel.box.name + ': ' + i.patchpanel.name + ' (' + (i.name) + ')' + ' - ' + i.material.to_s,
+                                   i.id]}, cable.to_node.id),
+                      {}, class: 'form-control', disabled: disabled %>
+    </div>
   </div>
 
-  <div class="form-group">
-    <%= form.label :length, 'Длина' %>
-    <%= form.text_field :length, class: 'form-control', placeholder: '5' %>
+  <div class="form-group row">
+    <%= form.label :length, 'Длина', class: 'col-sm-1 col-form-label' %>
+    <div class="col-sm-11">
+      <%= form.text_field :length, class: 'form-control', placeholder: '5' %>
+    </div>
   </div>
 
   <div class="actions">

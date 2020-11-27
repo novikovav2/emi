@@ -5,7 +5,12 @@ class PatchpanelsController < ApplicationController
   # GET /patchpanels
   # GET /patchpanels.json
   def index
-    @patchpanels = Patchpanel.all.order(:name)
+    if params['box_id']
+      @patchpanels = Box.find(params['box_id']).patchpanels
+    else
+      @patchpanels = Patchpanel.all.order(:name)
+    end
+
   end
 
   # GET /patchpanels/1

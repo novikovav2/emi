@@ -1,11 +1,26 @@
 class CablesController < ApplicationController
   before_action :set_page_title
   before_action :set_cable, only: [:show, :edit, :update, :destroy]
+  before_action :set_where_hash, only: [:index]
 
   # GET /cables
   # GET /cables.json
   def index
-    @cables = Cable.all
+    @cables = Cable.first #без этого Rails не распознает тип Relation, которые получает дальше
+
+    search = "(b1:Box)-[]-(p1:Patchpanel)-[]-(i1:Interface)-[r:PHYSICAL_CABLE]-
+                (i2:Interface)-[]-(p2:Patchpanel)-[]-(b2:Box)"
+    request = ActiveGraph::Base.new_query.match(search)
+
+    if @where_hash == {}
+      @cables = request.pluck('distinct r')
+    else
+      @cables = request.where(@where_hash).pluck('distinct r')
+    end
+
+    # Находим все Box, из/в которые приходят кабели СКС
+    @boxes = request.pluck('distinct b1')
+
   end
 
   # GET /cables/1
@@ -96,4 +111,34 @@ class CablesController < ApplicationController
     def set_page_title
       @page_title = ['СКС']
     end
+
+  def set_where_hash
+    @where_hash = {}
+
+    if params['from_box'] and params['from_box'].length() > 0
+      @where_hash['b1.uuid'] = params['from_box']
+    end
+
+    if params['from_patchpanel'] and params['from_patchpanel'].length() > 0
+      @where_hash['p1.uuid'] = params['from_patchpanel']
+    end
+
+    if params['from_interface'] and params['from_interface'].length() > 0
+      @where_hash['i1.uuid'] = params['from_interface']
+    end
+
+    if params['to_box'] and params['to_box'].length() > 0
+      @where_hash['b2.uuid'] = params['to_box']
+    end
+
+    if params['to_patchpanel'] and params['to_patchpanel'].length() > 0
+      @where_hash['p2.uuid'] = params['to_patchpanel']
+    end
+
+    if params['to_interface'] and params['to_interface'].length() > 0
+      @where_hash['i2.uuid'] = params['to_interface']
+    end
+
+  end
+
 end

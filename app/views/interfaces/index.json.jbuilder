@@ -1,0 +1,1 @@
+json.array! @interfaces, :id, :name
