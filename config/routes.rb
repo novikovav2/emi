@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   resources :cables
   resources :patchpanels do
     resources :interfaces
+    post 'interfaces/generate', to: 'interfaces#generate'
   end
 end

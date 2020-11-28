@@ -1,6 +1,7 @@
 class PatchpanelsController < ApplicationController
   before_action :set_page_title
   before_action :set_patchpanel, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_skip, only: [:show]
 
   # GET /patchpanels
   # GET /patchpanels.json
@@ -16,6 +17,10 @@ class PatchpanelsController < ApplicationController
   # GET /patchpanels/1
   # GET /patchpanels/1.json
   def show
+    all_interfaces = @patchpanel.interfaces.order(:name)
+    @interfaces_count = all_interfaces.count
+    @interfaces = all_interfaces.skip(@skip).limit(@limit)
+
   end
 
   # GET /patchpanels/new
@@ -85,4 +90,10 @@ class PatchpanelsController < ApplicationController
     def set_page_title
       @page_title = ['Патчпанели']
     end
+
+  def set_limit_skip
+    @limit = 10
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
+  end
 end

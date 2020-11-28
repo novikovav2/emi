@@ -90,16 +90,25 @@ class InterfacesController < ApplicationController
   # DELETE /interfaces/1.json
   def destroy
     @interface.destroy
+    flash[:notice] = 'Interface was successfully destroyed.'
     respond_to do |format|
       format.html {
-        if @device
-          redirect_to device_path(@device), notice: 'Interface was successfully destroyed.'
-        else
-          redirect_to patchpanel_path(@patchpanel), notice: 'Interface was successfully destroyed.'
-        end
+        @device ? redirect_back(fallback_location: device_path(@device)) :
+            redirect_back(fallback_location: patchpanel_path(@patchpanel))
       }
       format.json { head :no_content }
     end
+  end
+
+  def generate
+    if generate_params.to_i
+      (1..generate_params.to_i).each do |i|
+        int = Interface.create(name: i, material: @patchpanel.material)
+        @patchpanel.interfaces << int
+      end
+      redirect_to patchpanel_path(@patchpanel), notice: 'Interface was successfully generated.'
+    end
+
   end
 
   private
@@ -112,6 +121,10 @@ class InterfacesController < ApplicationController
     def interface_params
       params.fetch(:interface, {}).permit(:name, :device_id, :material)
     end
+
+  def generate_params
+    params.fetch(:number)
+  end
 
   def set_owner
     if params[:device_id]

@@ -1,0 +1,49 @@
+<%
+  number_of_pages = items_number % limit == 0 ? items_number / @limit : items_number / @limit + 1
+  start_page = current_page > 3 ? current_page - 2 : 1
+  stop_page = (number_of_pages - current_page) > 2 ? current_page + 2 : number_of_pages
+%>
+
+<% if items_number > 0 %>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination pagination-sm mb-0" >
+
+    <li class="page-item <%= current_page == 1 ? 'disabled' : '' %>" >
+      <%= link_to url_for(page: 1), class: 'page-link' do %>
+        <i class="fas fa-fast-backward"></i>
+      <% end %>
+    </li>
+
+    <li class="page-item <%= current_page == 1 ? 'disabled' : '' %>" >
+      <%= link_to url_for(page: current_page - 1), class: 'page-link', tabindex: -1 do %>
+        <i class="fas fa-caret-left"></i>
+      <% end %>
+    </li>
+
+
+    <% (start_page..stop_page).each do |page| %>
+      <li class="page-item <%= current_page == page ? 'active' : '' %>" >
+        <%= link_to page, url_for( page: page), class: 'page-link' %>
+      </li>
+    <% end %>
+
+    <li class="page-item <%= current_page == number_of_pages ? 'disabled' : '' %>" >
+      <%= link_to url_for(page: current_page + 1), class: 'page-link' do %>
+        <i class="fas fa-caret-right"></i>
+      <% end %>
+    </li>
+
+    <li class="page-item <%= current_page == number_of_pages ? 'disabled' : '' %>" >
+      <%= link_to url_for(page: number_of_pages), class: 'page-link' do %>
+        <i class="fas fa-fast-forward"></i>
+      <% end %>
+    </li>
+
+    <li class="page-item ml-2 pt-2">
+      <small class="text-muted">Всего элементов: <%= items_number %></small>
+    </li>
+  </ul>
+</nav>
+
+<% end %>
