@@ -25,7 +25,7 @@ $(document).ready(function() {
 
     $('#from-patchpanel').change(function(event){
         patchpanelId = $(this).val();
-        var selectInterface = $('#from-interface');
+        var selectInterface = $('#from-interfacew');
         selectInterface.empty();
         selectInterface.append('<option value=""></option>');
         if (patchpanelId) {

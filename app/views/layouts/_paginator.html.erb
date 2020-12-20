@@ -10,13 +10,13 @@
   <ul class="pagination pagination-sm mb-0" >
 
     <li class="page-item <%= current_page == 1 ? 'disabled' : '' %>" >
-      <%= link_to url_for(page: 1), class: 'page-link' do %>
+      <%= link_to request.params.merge(page: 1), class: 'page-link' do %>
         <i class="fas fa-fast-backward"></i>
       <% end %>
     </li>
 
     <li class="page-item <%= current_page == 1 ? 'disabled' : '' %>" >
-      <%= link_to url_for(page: current_page - 1), class: 'page-link', tabindex: -1 do %>
+      <%= link_to request.params.merge(page: current_page - 1), class: 'page-link', tabindex: -1 do %>
         <i class="fas fa-caret-left"></i>
       <% end %>
     </li>
@@ -24,18 +24,18 @@
 
     <% (start_page..stop_page).each do |page| %>
       <li class="page-item <%= current_page == page ? 'active' : '' %>" >
-        <%= link_to page, url_for( page: page), class: 'page-link' %>
+        <%= link_to page, request.params.merge( page: page), class: 'page-link' %>
       </li>
     <% end %>
 
     <li class="page-item <%= current_page == number_of_pages ? 'disabled' : '' %>" >
-      <%= link_to url_for(page: current_page + 1), class: 'page-link' do %>
+      <%= link_to request.params.merge(page: current_page + 1), class: 'page-link' do %>
         <i class="fas fa-caret-right"></i>
       <% end %>
     </li>
 
     <li class="page-item <%= current_page == number_of_pages ? 'disabled' : '' %>" >
-      <%= link_to url_for(page: number_of_pages), class: 'page-link' do %>
+      <%= link_to request.params.merge(page: number_of_pages), class: 'page-link' do %>
         <i class="fas fa-fast-forward"></i>
       <% end %>
     </li>

@@ -1,10 +1,11 @@
 <div class="collapse mt-2" id="cablesFilter">
   <div class="card card-body pt-0 pb-1">
-    <%= form_with url: cables_path, method: :get do |form| %>
+    <%= form_with url: cables_path, method: :get, local: true do |form| %>
       <div class="form-row mb-0">
         <div class="form-group col-xl-4 mb-0">
           <%= form.label :from_box, 'Стойка (начало)', class: 'col-form-label-sm pb-0'%>
-          <%= form.select :from_box, @boxes.collect {|x| [x.name, x.id]}, { include_blank: true },
+          <%= form.select :from_box, options_for_select(@boxes.collect {|x| [x.name, x.id]}, request.params['from_box']),
+                          { include_blank: true },
                           class: 'form-control form-control-sm',
                           id: 'from-box' %>
         </div>

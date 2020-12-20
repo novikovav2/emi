@@ -3,26 +3,31 @@ class CablesController < ApplicationController
   before_action :set_cable, only: [:show, :edit, :update, :destroy]
   before_action :set_where_hash, only: [:index]
   before_action :set_limit_skip, only: [:index]
+  before_action :set_order, only: [:index]
 
   # GET /cables
   # GET /cables.json
   def index
     @cables = Cable.new #без этого Rails не распознает тип Relation, которые получает дальше
 
-    search = "(b1:Box)-[]-(p1:Patchpanel)-[]-(i1:Interface)-[r:PHYSICAL_CABLE]-
+    search = "(b1:Box)-[]-(p1:Patchpanel)-[]-(i1:Interface)-[r:PHYSICAL_CABLE]->
                 (i2:Interface)-[]-(p2:Patchpanel)-[]-(b2:Box)"
-    request = ActiveGraph::Base.new_query.match(search).skip(@skip).limit(@limit)
+    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
 
     if @where_hash == {}
-      @cables = request.pluck('distinct r')
+      @cables = request.pluck(' r')
     else
-      @cables = request.where(@where_hash).pluck('distinct r')
+      @cables = request.where(@where_hash).pluck(' r')
     end
 
-    @cables_count = @cables.count
+    @cables_count = ActiveGraph::Base.new_query
+                                     .match("(:Box)-[]-(:Patchpanel)-[]-(:Interface)-[r:PHYSICAL_CABLE]->(:Interface)")
+                                     .pluck('r').count
 
     # Находим все Box, из/в которые приходят кабели СКС
-    @boxes = request.pluck('distinct b1')
+    @boxes = ActiveGraph::Base.new_query
+                .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
+                .pluck('distinct b')
 
   end
 
@@ -147,6 +152,30 @@ class CablesController < ApplicationController
     @limit = 10
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
+  end
+
+  def set_order
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'from_box'
+
+    if @current_sort == 'from_box'
+      @sort_string = 'b1.name'
+    elsif @current_sort == 'from_patchpanel'
+      @sort_string = 'p1.name'
+    elsif @current_sort == 'from_interface'
+      @sort_string = 'i1.name'
+    elsif @current_sort == 'to_box'
+        @sort_string = 'b2.name'
+    elsif @current_sort == 'to_patchpanel'
+      @sort_string = 'p2.name'
+    elsif @current_sort == 'to_interface'
+      @sort_string = 'i2.name'
+    end
+
+    if @current_order == 1
+      @sort_string += ' desc'
+    end
+
   end
 
 end

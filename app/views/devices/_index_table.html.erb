@@ -7,9 +7,7 @@
           Название <%= sort_angle(@current_order) %>
         <% end %>
       <% else %>
-        <%= link_to url_for(sort: 'name', order: 0 ), class: 'thead'  do %>
-          Название
-        <% end %>
+        <%= link_to 'Название', url_for(sort: 'name', order: 0 ), class: 'thead'%>
       <% end %>
     </th>
     <th>
@@ -18,9 +16,7 @@
           Стойка <%= sort_angle(@current_order) %>
         <% end %>
       <% else %>
-        <%= link_to url_for(sort: 'box', order: 0 ), class: 'thead'  do %>
-          Стойка
-        <% end %>
+        <%= link_to 'Стойка', url_for(sort: 'box', order: 0 ), class: 'thead' %>
       <% end %>
     </th>
     <th>К-во оптических инт.</th>
@@ -33,11 +29,13 @@
   <% devices.each do |device| %>
     <tr>
       <td><%= link_to device.name, device %></td>
+
       <% if device.box %>
-        <td><%= device.box.name %></td>
+        <td><%= link_to device.box.name, box_path(device.box) %></td>
       <% else %>
         <td>-</td>
       <% end %>
+
       <td><%= device.interfaces ? device.interfaces.where(material: 'optic').count : 0 %></td>
       <td><%= device.interfaces ? device.interfaces.where(material: 'copper').count : 0 %></td>
       <td>
