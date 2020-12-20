@@ -55,7 +55,7 @@
           <% @device.interfaces.order_by(:name).each do |interface| %>
             <tr>
               <td><%= link_to interface.name, device_interface_path(@device, interface) %></td>
-              <td><%= interface.material %></td>
+              <td><%= human_material(interface.material) %></td>
               <td>
                 <% if interface.connected_to %>
                   <%= interface.connected_to.device.name %>_

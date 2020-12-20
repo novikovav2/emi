@@ -7,5 +7,11 @@ module ApplicationHelper
     end
   end
 
-
+  def human_material(material)
+    if material == :optic
+      'OM3'
+    elsif material == :copper
+      'RJ45'
+    end
+  end
 end

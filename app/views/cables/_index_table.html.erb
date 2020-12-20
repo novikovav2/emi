@@ -71,7 +71,7 @@
       <td><%= cable.to_node.patchpanel.box.name %></td>
       <td><%= cable.to_node.patchpanel.name %></td>
       <td><%= cable.to_node.name %></td>
-      <td><%= cable.material %></td>
+      <td><%= human_material(cable.material) %></td>
       <td><%= cable.length %></td>
       <td>
         <%= link_to cable, class: 'text-muted text-right mr-3' do %>

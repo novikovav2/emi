@@ -50,7 +50,7 @@
       <td><%= logical_link.from_node.name %></td>
       <td><%= link_to logical_link.to_node.device.name, device_path(logical_link.to_node.device.id) %></td>
       <td><%= logical_link.to_node.name %></td>
-      <td><%= logical_link.from_node.material %></td>
+      <td><%= human_material(logical_link.from_node.material) %></td>
       <td><%= logical_link.connected? %></td>
       <td>
         <%= link_to logical_link, class: 'text-muted text-right mr-3' do %>

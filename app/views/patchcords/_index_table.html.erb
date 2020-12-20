@@ -71,7 +71,7 @@
       <td><%= patchcord.to_node.owner.box.name %></td>
       <td><%= patchcord.to_node.owner.name %></td>
       <td><%= patchcord.to_node.name %></td>
-      <td><%= patchcord.material %></td>
+      <td><%= human_material(patchcord.material) %></td>
       <td>
         <%= link_to patchcord, class: 'text-muted text-right mr-3' do %>
           <i class="far fa-eye"></i>

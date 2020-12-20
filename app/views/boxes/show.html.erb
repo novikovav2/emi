@@ -54,7 +54,7 @@
           <% @box.patchpanels.order(:name).each do |patchpanel| %>
             <tr>
               <td><%= link_to patchpanel.name, patchpanel %></td>
-              <td><%= patchpanel.material %></td>
+              <td><%= human_material(patchpanel.material) %></td>
               <td>
                 <%= patchpanel.interfaces.where(connected: false).count %>
                 /
