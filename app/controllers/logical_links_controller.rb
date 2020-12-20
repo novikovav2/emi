@@ -1,11 +1,23 @@
 class LogicalLinksController < ApplicationController
   before_action :set_page_title
   before_action :set_logical_link, only: [:show, :destroy]
+  before_action :set_limit_skip, only: [:index]
+  before_action :set_order, only: [:index]
 
   # GET /logical_links
   # GET /logical_links.json
   def index
-    @logical_links = LogicalLink.all
+    # @logical_links = LogicalLink.all
+    @logical_links = LogicalLink.new
+
+    search = "(d1:Device)-[]-(i1:Interface)-[r:LOGICAL_LINK]->
+                (i2:Interface)-[]-(d2:Device)"
+    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+    @logical_links = request.pluck(' r')
+
+    @logical_links_count = ActiveGraph::Base.new_query
+                                     .match(search).pluck('r').count
+
   end
 
   # GET /logical_links/1
@@ -160,4 +172,29 @@ class LogicalLinksController < ApplicationController
     def set_page_title
       @page_title = ['Логические связи']
     end
+
+  def set_limit_skip
+    @limit = 20
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
+  end
+
+  def set_order
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'from_device'
+
+    if @current_sort == 'from_device'
+      @sort_string = 'd1.name'
+    elsif @current_sort == 'from_interface'
+      @sort_string = 'i1.name'
+    elsif @current_sort == 'to_device'
+      @sort_string = 'd2.name'
+    elsif @current_sort == 'to_interface'
+      @sort_string = 'i2.name'
+    end
+
+    if @current_order == 1
+      @sort_string += ' desc'
+    end
+  end
 end

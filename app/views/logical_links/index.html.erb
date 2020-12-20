@@ -6,41 +6,7 @@
   <div class="col-xl-12">
     <div class="card">
       <div class="card-body">
-        <table class="table table-striped table-sm">
-          <thead>
-          <tr>
-            <th>From device</th>
-            <th>From port</th>
-            <th>To device</th>
-            <th>to port</th>
-            <th>Material</th>
-            <th>Физически подключены?</th>
-            <th>Действия</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <% @logical_links.each do |logical_link| %>
-            <tr>
-              <td><%= link_to logical_link.from_node.device.name, device_path(logical_link.from_node.device.id) %></td>
-              <td><%= logical_link.from_node.name %></td>
-              <td><%= link_to logical_link.to_node.device.name, device_path(logical_link.to_node.device.id) %></td>
-              <td><%= logical_link.to_node.name %></td>
-              <td><%= logical_link.from_node.material %></td>
-              <td><%= logical_link.connected? %></td>
-              <td>
-                <%= link_to logical_link, class: 'text-muted text-right mr-3' do %>
-                  <i class="far fa-eye"></i>
-                <% end %>
-                <%= link_to logical_link, method: :delete, data: { confirm: 'Are you sure?' },
-                            class: 'text-muted text-right' do %>
-                  <i class="far fa-trash-alt"></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+        <%= render 'index_table', logical_links: @logical_links %>
       </div>
     </div>
   </div>
