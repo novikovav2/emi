@@ -89,7 +89,7 @@
           <% end %>
           </tbody>
         </table>
-        <%= render 'show_paginator', items_number: @interfaces_count,
+        <%= render 'layouts/paginator', items_number: @interfaces_count,
                                       current_page: @page,
                                       limit: @limit %>
       </div>

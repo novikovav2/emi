@@ -39,6 +39,9 @@
           <% end %>
           </tbody>
         </table>
+        <%= render 'layouts/paginator', items_number: @rooms_count,
+                   current_page: @page,
+                   limit: @limit %>
       </div>
     </div>
   </div>

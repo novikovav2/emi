@@ -47,7 +47,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @building.rooms.order(:name).each do |room| %>
+          <% @rooms.each do |room| %>
             <tr>
               <td><%= link_to room.name, room  %></td>
               <td><%= room.floor %></td>
@@ -55,6 +55,9 @@
           <% end %>
           </tbody>
         </table>
+        <%= render 'layouts/paginator', items_number: @rooms_count,
+                   current_page: @page,
+                   limit: @limit %>
       </div>
     </div>
   </div>

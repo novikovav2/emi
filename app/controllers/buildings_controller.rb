@@ -1,6 +1,7 @@
 class BuildingsController < ApplicationController
   before_action :set_page_title
   before_action :set_building, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_skip, only: [:show]
 
 
   # GET /buildings
@@ -13,7 +14,8 @@ class BuildingsController < ApplicationController
   # GET /buildings/1
   # GET /buildings/1.json
   def show
-
+    @rooms_count = @building.rooms.count
+    @rooms = @building.rooms.order(:name).skip(@skip).limit(@limit)
   end
 
   # GET /buildings/new
@@ -82,4 +84,10 @@ class BuildingsController < ApplicationController
     def set_page_title
       @page_title = ['Здания']
     end
+
+  def set_limit_skip
+    @limit = 10
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
+  end
 end

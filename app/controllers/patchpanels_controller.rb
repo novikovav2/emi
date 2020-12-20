@@ -1,15 +1,16 @@
 class PatchpanelsController < ApplicationController
   before_action :set_page_title
   before_action :set_patchpanel, only: [:show, :edit, :update, :destroy]
-  before_action :set_limit_skip, only: [:show]
+  before_action :set_limit_skip, only: [:index, :show]
 
   # GET /patchpanels
   # GET /patchpanels.json
   def index
-    if params['box_id']
+    if params['box_id'] # Используется в форме фильтрации
       @patchpanels = Box.find(params['box_id']).patchpanels
     else
-      @patchpanels = Patchpanel.all.order(:name)
+      @patchpanels_count = Patchpanel.all.count
+      @patchpanels = Patchpanel.all.order(:name).skip(@skip).limit(@limit)
     end
 
   end

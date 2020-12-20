@@ -1,16 +1,19 @@
 class BoxesController < ApplicationController
   before_action :set_page_title
   before_action :set_box, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_skip, only: [:index, :show]
 
   # GET /boxes
   # GET /boxes.json
   def index
-    @boxes = Box.all
+    @boxes_count = Box.all.count
+    @boxes = Box.all.order(:name).skip(@skip).limit(@limit)
   end
 
   # GET /boxes/1
   # GET /boxes/1.json
   def show
+
   end
 
   # GET /boxes/new
@@ -78,4 +81,10 @@ class BoxesController < ApplicationController
     def set_page_title
       @page_title = ['Монтажные шкафы']
     end
+
+  def set_limit_skip
+    @limit = 10
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
+  end
 end

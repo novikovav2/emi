@@ -1,11 +1,30 @@
 class DevicesController < ApplicationController
   before_action :set_page_title
   before_action :set_device, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_skip, only: [:index]
 
   # GET /devices
   # GET /devices.json
   def index
-    @devices = Device.all
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'name'
+
+    search = "(n:Device)-[]-(b:Box)"
+    request = ActiveGraph::Base.new_query.match(search).skip(@skip).limit(@limit)
+
+    if @current_sort == 'box'
+      order_string = "b.name"
+    else
+      order_string = "n.name"
+    end
+    if @current_order > 0
+      order_string = order_string + " desc"
+    end
+    request = request.order(order_string)
+    @devices = Device.new
+    @devices = request.pluck('n')
+
+    @devices_count = Device.all.count
   end
 
   # GET /devices/1
@@ -78,5 +97,11 @@ class DevicesController < ApplicationController
 
     def set_page_title
       @page_title = ['Оборудование']
+    end
+
+    def set_limit_skip
+      @limit = 10
+      @page = params['page'] ?  params['page'].to_i : 1
+      @skip = @limit * ( @page - 1 )
     end
 end

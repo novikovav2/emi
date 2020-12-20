@@ -40,3 +40,6 @@
   <% end %>
   </tbody>
 </table>
+<%= render 'layouts/paginator', items_number: @cables_count,
+           current_page: @page,
+           limit: @limit %>

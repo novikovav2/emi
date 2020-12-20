@@ -2,21 +2,24 @@ class CablesController < ApplicationController
   before_action :set_page_title
   before_action :set_cable, only: [:show, :edit, :update, :destroy]
   before_action :set_where_hash, only: [:index]
+  before_action :set_limit_skip, only: [:index]
 
   # GET /cables
   # GET /cables.json
   def index
-    @cables = Cable.first #без этого Rails не распознает тип Relation, которые получает дальше
+    @cables = Cable.new #без этого Rails не распознает тип Relation, которые получает дальше
 
     search = "(b1:Box)-[]-(p1:Patchpanel)-[]-(i1:Interface)-[r:PHYSICAL_CABLE]-
                 (i2:Interface)-[]-(p2:Patchpanel)-[]-(b2:Box)"
-    request = ActiveGraph::Base.new_query.match(search)
+    request = ActiveGraph::Base.new_query.match(search).skip(@skip).limit(@limit)
 
     if @where_hash == {}
       @cables = request.pluck('distinct r')
     else
       @cables = request.where(@where_hash).pluck('distinct r')
     end
+
+    @cables_count = @cables.count
 
     # Находим все Box, из/в которые приходят кабели СКС
     @boxes = request.pluck('distinct b1')
@@ -138,7 +141,12 @@ class CablesController < ApplicationController
     if params['to_interface'] and params['to_interface'].length() > 0
       @where_hash['i2.uuid'] = params['to_interface']
     end
+  end
 
+  def set_limit_skip
+    @limit = 10
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
   end
 
 end

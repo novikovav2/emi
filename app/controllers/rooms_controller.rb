@@ -1,16 +1,20 @@
 class RoomsController < ApplicationController
   before_action :set_page_title
   before_action :set_room, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_skip, only: [:index, :show]
 
   # GET /rooms
   # GET /rooms.json
   def index
-    @rooms = Room.all
+    @rooms_count = Room.all.count
+    @rooms = Room.all.order(:name).skip(@skip).limit(@limit)
   end
 
   # GET /rooms/1
   # GET /rooms/1.json
   def show
+    @boxes_count = @room.boxes.count
+    @boxes = @room.boxes.order(:name).skip(@skip).limit(@limit)
   end
 
   # GET /rooms/new
@@ -78,5 +82,11 @@ class RoomsController < ApplicationController
     def set_page_title
       @page_title = ['Помещения']
     end
+
+  def set_limit_skip
+    @limit = 10
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
+  end
 
 end

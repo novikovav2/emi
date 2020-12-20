@@ -5,42 +5,8 @@
 <div class="row mt-3">
   <div class="col-xl-12">
     <div class="card">
-      <div class="card-body">
-        <table class="table table-striped table-sm">
-          <thead>
-          <tr>
-            <th>Название</th>
-            <th>Стойка</th>
-            <th>К-во оптических инт.</th>
-            <th>К-во медных инт.</th>
-            <th>Действия</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <% @devices.each do |device| %>
-            <tr>
-              <td><%= link_to device.name, device %></td>
-              <% if device.box %>
-                <td><%= device.box.name %></td>
-              <% else %>
-                <td>-</td>
-              <% end %>
-              <td><%= device.interfaces ? device.interfaces.where(material: 'optic').count : 0 %></td>
-              <td><%= device.interfaces ? device.interfaces.where(material: 'copper').count : 0 %></td>
-              <td>
-                <%= link_to edit_device_path(device), class: 'text-muted text-right mr-3' do %>
-                  <i class="far fa-edit"></i>
-                <% end %>
-                <%= link_to device, method: :delete, data: { confirm: 'Are you sure?' },
-                            class: 'text-muted text-right' do %>
-                  <i class="far fa-trash-alt"></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+      <div class="card-body" id='devices-table'>
+        <%= render 'index_table', devices: @devices %>
       </div>
     </div>
   </div>

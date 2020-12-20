@@ -50,13 +50,16 @@
           </tr>
           </thead>
           <tbody>
-          <% @room.boxes.each do |box| %>
+          <% @boxes.each do |box| %>
             <tr>
               <td><%= link_to box.name, box %></td>
             </tr>
           <% end %>
           </tbody>
         </table>
+        <%= render 'layouts/paginator', items_number: @boxes_count,
+                   current_page: @page,
+                   limit: @limit %>
       </div>
     </div>
   </div>

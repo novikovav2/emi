@@ -4,7 +4,7 @@
   stop_page = (number_of_pages - current_page) > 2 ? current_page + 2 : number_of_pages
 %>
 
-<% if items_number > 0 %>
+<% if items_number > limit %>
 
 <nav aria-label="Page navigation example">
   <ul class="pagination pagination-sm mb-0" >
@@ -40,10 +40,12 @@
       <% end %>
     </li>
 
-    <li class="page-item ml-2 pt-2">
-      <small class="text-muted">Всего элементов: <%= items_number %></small>
-    </li>
+
   </ul>
 </nav>
 
 <% end %>
+
+<div>
+  <small class="text-muted">Всего элементов: <%= items_number %></small>
+</div>
