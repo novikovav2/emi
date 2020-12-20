@@ -2,12 +2,17 @@ class BoxesController < ApplicationController
   before_action :set_page_title
   before_action :set_box, only: [:show, :edit, :update, :destroy]
   before_action :set_limit_skip, only: [:index, :show]
+  before_action :set_order, only: [:index]
 
   # GET /boxes
   # GET /boxes.json
   def index
     @boxes_count = Box.all.count
-    @boxes = Box.all.order(:name).skip(@skip).limit(@limit)
+
+    search = "(b:Box)-[]->(r:Room)"
+    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+
+    @boxes = request.pluck('b')
   end
 
   # GET /boxes/1
@@ -86,5 +91,20 @@ class BoxesController < ApplicationController
     @limit = 10
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
+  end
+
+  def set_order
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'name'
+
+    if @current_sort == 'name'
+      @sort_string = 'b.name'
+    elsif @current_sort == 'room'
+      @sort_string = 'r.name'
+    end
+
+    if @current_order == 1
+      @sort_string += ' desc'
+    end
   end
 end

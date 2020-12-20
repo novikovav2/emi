@@ -6,40 +6,7 @@
   <div class="col-xl-12">
     <div class="card">
       <div class="card-body">
-        <table class="table table-striped table-sm">
-          <thead>
-          <tr>
-            <th>Название</th>
-            <th>Помещение</th>
-            <th>Действия</th>
-          </tr>
-          </thead>
-
-          <tbody>
-          <% @boxes.each do |box| %>
-            <tr>
-              <td><%= link_to box.name, box %></td>
-              <% if  box.room %>
-                <td><%= link_to box.room.name, box.room %></td>
-              <% else %>
-                <td>-</td>
-              <% end %>
-              <td>
-                <%= link_to edit_box_path(box), class: 'text-muted text-right mr-3' do %>
-                  <i class="far fa-edit"></i>
-                <% end %>
-                <%= link_to box, method: :delete, data: { confirm: 'Are you sure?' },
-                            class: 'text-muted text-right' do %>
-                  <i class="far fa-trash-alt"></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
-        <%= render 'layouts/paginator', items_number: @boxes_count,
-                   current_page: @page,
-                   limit: @limit %>
+        <%= render 'index_table', boxes: @boxes %>
       </div>
     </div>
   </div>
