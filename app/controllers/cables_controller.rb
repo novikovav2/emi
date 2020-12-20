@@ -149,7 +149,7 @@ class CablesController < ApplicationController
   end
 
   def set_limit_skip
-    @limit = 10
+    @limit = 20
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
   end
@@ -175,7 +175,6 @@ class CablesController < ApplicationController
     if @current_order == 1
       @sort_string += ' desc'
     end
-
   end
 
 end

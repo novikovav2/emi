@@ -1,0 +1,90 @@
+<table class="table table-striped table-sm">
+  <thead>
+  <tr>
+    <th>
+      <% if @current_sort == 'from_box' %>
+        <%= link_to request.params.merge(sort: 'from_box', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Стойка <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Стойка', request.params.merge(sort: 'from_box', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>
+      <% if @current_sort == 'from_owner' %>
+        <%= link_to request.params.merge(sort: 'from_owner', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Оборудование <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Оборудование', request.params.merge(sort: 'from_owner', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>
+      <% if @current_sort == 'from_interface' %>
+        <%= link_to request.params.merge(sort: 'from_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Порт <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Порт', request.params.merge(sort: 'from_interface', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>
+      <% if @current_sort == 'to_box' %>
+        <%= link_to request.params.merge(sort: 'to_box', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Стойка <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Стойка', request.params.merge(sort: 'to_box', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>
+      <% if @current_sort == 'to_owner' %>
+        <%= link_to request.params.merge(sort: 'to_owner', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Оборудование <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Оборудование', request.params.merge(sort: 'to_owner', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>
+      <% if @current_sort == 'to_interface' %>
+        <%= link_to request.params.merge(sort: 'to_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Порт <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Порт', request.params.merge(sort: 'to_interface', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>Материал</th>
+    <th>Действия</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% patchcords.each do |patchcord| %>
+    <tr>
+      <td><%= patchcord.from_node.owner.box.name %></td>
+      <td>
+          <%= patchcord.from_node.owner.name %>
+      </td>
+      <td><%= patchcord.from_node.name %></td>
+      <td><%= patchcord.to_node.owner.box.name %></td>
+      <td><%= patchcord.to_node.owner.name %></td>
+      <td><%= patchcord.to_node.name %></td>
+      <td><%= patchcord.material %></td>
+      <td>
+        <%= link_to patchcord, class: 'text-muted text-right mr-3' do %>
+          <i class="far fa-eye"></i>
+        <% end %>
+        <%= link_to patchcord, method: :delete, data: { confirm: 'Are you sure?' },
+                    class: 'text-muted text-right' do %>
+          <i class="far fa-trash-alt"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= render 'layouts/paginator', items_number: @patchcords_count,
+           current_page: @page,
+           limit: @limit %>

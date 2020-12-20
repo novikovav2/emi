@@ -1,11 +1,24 @@
 class PatchcordsController < ApplicationController
   before_action :set_page_title
   before_action :set_patchcord, only: [:show, :edit, :update, :destroy]
+  before_action :set_limit_skip, only: [:index]
+  before_action :set_order, only: [:index]
 
   # GET /patchcords
   # GET /patchcords.json
   def index
-    @patchcords = Patchcord.all
+    @patchcords = Patchcord.new
+
+    search = "(b1:Box)-[]-(p1)-[]-(i1:Interface)-[r:PHYSICAL_PATCHCORD]->
+                (i2:Interface)-[]-(p2)-[]-(b2:Box)"
+    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+
+    @patchcords = request.pluck('r')
+
+    @patchcords_count = ActiveGraph::Base.new_query
+                                     .match("(:Box)-[]-()-[]-(:Interface)-[r:PHYSICAL_PATCHCORD]->(:Interface)")
+                                     .pluck('r').count
+
   end
 
   # GET /patchcords/1
@@ -64,4 +77,33 @@ class PatchcordsController < ApplicationController
     def set_page_title
       @page_title = ['Патчкорды']
     end
+
+  def set_limit_skip
+    @limit = 20
+    @page = params['page'] ?  params['page'].to_i : 1
+    @skip = @limit * ( @page - 1 )
+  end
+
+  def set_order
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'from_box'
+
+    if @current_sort == 'from_box'
+      @sort_string = 'b1.name'
+    elsif @current_sort == 'from_owner'
+      @sort_string = 'p1.name'
+    elsif @current_sort == 'from_interface'
+      @sort_string = 'i1.name'
+    elsif @current_sort == 'to_box'
+      @sort_string = 'b2.name'
+    elsif @current_sort == 'to_owner'
+      @sort_string = 'p2.name'
+    elsif @current_sort == 'to_interface'
+      @sort_string = 'i2.name'
+    end
+
+    if @current_order == 1
+      @sort_string += ' desc'
+    end
+  end
 end
