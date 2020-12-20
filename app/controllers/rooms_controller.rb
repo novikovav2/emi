@@ -2,12 +2,17 @@ class RoomsController < ApplicationController
   before_action :set_page_title
   before_action :set_room, only: [:show, :edit, :update, :destroy]
   before_action :set_limit_skip, only: [:index, :show]
+  before_action :set_order, only: [:index]
 
   # GET /rooms
   # GET /rooms.json
   def index
     @rooms_count = Room.all.count
-    @rooms = Room.all.order(:name).skip(@skip).limit(@limit)
+
+    search = "(r:Room)-[]->(b:Building)"
+    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+
+    @rooms = request.pluck('r')
   end
 
   # GET /rooms/1
@@ -87,6 +92,21 @@ class RoomsController < ApplicationController
     @limit = 10
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
+  end
+
+  def set_order
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'name'
+
+    if @current_sort == 'name'
+      @sort_string = 'r.name'
+    elsif @current_sort == 'building'
+      @sort_string = 'b.name'
+    end
+
+    if @current_order == 1
+      @sort_string += ' desc'
+    end
   end
 
 end

@@ -1,0 +1,52 @@
+<table class="table table-striped table-sm">
+  <thead>
+  <tr>
+    <th>
+      <% if @current_sort == 'name' %>
+        <%= link_to request.params.merge(sort: 'name', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Название <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Название', request.params.merge(sort: 'name', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>
+      <% if @current_sort == 'building' %>
+        <%= link_to request.params.merge(sort: 'building', order: 1 - @current_order ), class: 'thead_sort' do %>
+          Здание <%= sort_angle(@current_order) %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Здание', request.params.merge(sort: 'building', order: 0 ), class: 'thead'%>
+      <% end %>
+    </th>
+    <th>Этаж</th>
+    <th>Действия</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% rooms.each do |room| %>
+    <tr>
+      <td><%= link_to room.name, room %></td>
+      <% if  room.building %>
+        <td><%= link_to room.building.name, room.building %></td>
+      <% else %>
+        <td>-</td>
+      <% end %>
+      <td><%= room.floor %></td>
+      <td>
+        <%= link_to edit_room_path(room), class: 'text-muted text-right mr-3' do %>
+          <i class="far fa-edit"></i>
+        <% end %>
+        <%= link_to room, method: :delete, data: { confirm: 'Are you sure?' },
+                    class: 'text-muted text-right' do %>
+          <i class="far fa-trash-alt"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= render 'layouts/paginator', items_number: @rooms_count,
+           current_page: @page,
+           limit: @limit %>
