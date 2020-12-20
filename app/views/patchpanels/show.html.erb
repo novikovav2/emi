@@ -73,7 +73,7 @@
           <% @interfaces.each do |interface| %>
             <tr>
               <td><%= interface.name %></td>
-              <td><%= interface.connected? %></td>
+              <td><%= pretty_status(interface.connected?) %></td>
               <td>
                 <%= link_to edit_patchpanel_interface_path(@patchpanel, interface), class: 'text-muted text-right mr-3' do %>
                   <i class="far fa-edit"></i>

@@ -58,7 +58,7 @@
               <td><%= human_material(interface.material) %></td>
               <td>
                 <% if interface.connected_to %>
-                  <%= interface.connected_to.device.name %>_
+                  <%= interface.connected_to.owner.name %>_
                   <%= interface.connected_to.name %>
                 <% end %>
               </td>

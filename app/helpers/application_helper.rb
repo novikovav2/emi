@@ -14,4 +14,12 @@ module ApplicationHelper
       'RJ45'
     end
   end
+
+  def pretty_status(status)
+    if status
+      "<i class='fas fa-check'></i> Да".html_safe
+    else
+      "<i class='fas fa-exclamation-triangle'></i> Нет".html_safe
+    end
+  end
 end

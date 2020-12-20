@@ -18,7 +18,7 @@
               Физически подключена
             </p>
             <p class="mb-0">
-              <%= @logical_link.connected? %>
+              <%= pretty_status(@logical_link.connected?) %>
             </p>
           </div>
           <div class="col-6">
@@ -101,7 +101,7 @@
               <td><%= relation["to"].owner.box.name %></td>
               <td><%= relation["to"].owner.name %></td>
               <td><%= relation["to"].name %></td>
-              <td><%= relation["connected"] %></td>
+              <td><%= pretty_status(relation["connected"]) %></td>
             </tr>
           <% end %>
           </tbody>
