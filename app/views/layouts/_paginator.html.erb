@@ -47,5 +47,8 @@
 <% end %>
 
 <div>
+  <% if @filtered_count %>
+    <small class="text-muted">Отфильтровано: <%= @filtered_count %>.</small>
+  <% end %>
   <small class="text-muted">Всего элементов: <%= items_number %></small>
 </div>

@@ -14,16 +14,19 @@ class CablesController < ApplicationController
                 (i2:Interface)-[]-(p2:Patchpanel)-[]-(b2:Box)"
     request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
 
-    if @where_hash == {}
-      @cables = request.pluck(' r')
-    else
-      @cables = request.where(@where_hash).pluck(' r')
-    end
+
+    @cables = request.where(@where_string).pluck(' r')
+
 
     @cables_count = ActiveGraph::Base.new_query
-                                     .match("(:Box)-[]-(:Patchpanel)-[]-(:Interface)-[r:PHYSICAL_CABLE]->(:Interface)")
+                                     .match(search)
                                      .pluck('r').count
-
+    if @where_string.length > 1
+      @filtered_count = ActiveGraph::Base.new_query
+                                       .match(search)
+                                       .where(@where_string)
+                                       .pluck('r').count
+    end
     # Находим все Box, из/в которые приходят кабели СКС
     @boxes = ActiveGraph::Base.new_query
                 .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
@@ -121,30 +124,43 @@ class CablesController < ApplicationController
     end
 
   def set_where_hash
-    @where_hash = {}
+    # @where_hash = {}
+    @where_string = ''
 
     if params['from_box'] and params['from_box'].length() > 0
-      @where_hash['b1.uuid'] = params['from_box']
+      # @where_hash['b1.uuid'] = params['from_box']
+      @where_string += '(b1.uuid = "' + params['from_box'] + '" OR b2.uuid = "' + params['from_box'] + '")'
+      @from_box = Box.find(params['from_box'])
     end
 
     if params['from_patchpanel'] and params['from_patchpanel'].length() > 0
-      @where_hash['p1.uuid'] = params['from_patchpanel']
+      # @where_hash['p1.uuid'] = params['from_patchpanel']
+      @where_string += ' AND (p1.uuid = "' + params['from_patchpanel'] + '" OR p2.uuid = "' + params['from_patchpanel'] + '")'
+      @from_patchpanel = Patchpanel.find(params['from_patchpanel'])
     end
 
     if params['from_interface'] and params['from_interface'].length() > 0
-      @where_hash['i1.uuid'] = params['from_interface']
+      # @where_hash['i1.uuid'] = params['from_interface']
+      @where_string += ' AND (i1.uuid = "' + params['from_interface'] + '" OR i2.uuid = "' + params['from_interface'] + '")'
+      @from_interface = Interface.find(params['from_interface'])
     end
 
     if params['to_box'] and params['to_box'].length() > 0
-      @where_hash['b2.uuid'] = params['to_box']
+      # @where_hash['b2.uuid'] = params['to_box']
+      @where_string += ' AND (b2.uuid = "' + params['to_box'] + '")'
+      @to_box = Box.find(params['to_box'])
     end
 
     if params['to_patchpanel'] and params['to_patchpanel'].length() > 0
-      @where_hash['p2.uuid'] = params['to_patchpanel']
+      # @where_hash['p2.uuid'] = params['to_patchpanel']
+      @where_string += ' AND (p2.uuid = "' + params['to_patchpanel'] + '")'
+      @to_patchpanel = Patchpanel.find(params['to_patchpanel'])
     end
 
     if params['to_interface'] and params['to_interface'].length() > 0
-      @where_hash['i2.uuid'] = params['to_interface']
+      # @where_hash['i2.uuid'] = params['to_interface']
+      @where_string += ' AND (i2.uuid = "' + params['to_interface'] + '")'
+      @to_interface = Interface.find(params['to_interface'])
     end
   end
 

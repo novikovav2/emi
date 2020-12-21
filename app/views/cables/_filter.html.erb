@@ -11,43 +11,79 @@
         </div>
         <div class="form-group col-xl-4 mb-0">
           <%= form.label :from_patchpanel, 'Патчпанель (начало)', class: 'col-form-label-sm pb-0' %>
-          <%= form.select :from_patchpanel, %w(), { include_blank: true },
-                          class: 'form-control form-control-sm',
-                          disabled: true,
-                          id: 'from-patchpanel' %>
+
+          <% if @from_patchpanel %>
+            <%= form.select :from_patchpanel,
+                            options_for_select(@from_box.patchpanels.collect {|x| [x.name, x.id]}, @from_patchpanel.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'from-patchpanel' %>
+          <% else %>
+            <%= form.select :from_patchpanel, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'from-patchpanel' %>
+          <% end %>
         </div>
+
         <div class="form-group col-xl-4 mb-0">
           <%= form.label :from_interface, 'Интерфейс (начало)', class: 'col-form-label-sm pb-0' %>
-          <%= form.select :from_interface, %w(), { include_blank: true },
-                          class: 'form-control form-control-sm',
-                          disabled: true,
-                          id: 'from-interface' %>
+          <% if @from_interface %>
+            <%= form.select :from_interface,
+                            options_for_select(@from_patchpanel.interfaces.collect {|x| [x.name, x.id]}, @from_interface.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'from-interface' %>
+          <% else %>
+            <%= form.select :from_interface, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'from-interface' %>
+          <% end  %>
+
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-xl-4">
           <%= form.label :to_box, 'Стойка конец', class: 'col-form-label-sm pb-0'%>
-          <%= form.select :to_box, @boxes.collect {|x| [x.name, x.id]}, { include_blank: true },
+          <%= form.select :to_box, options_for_select(@boxes.collect {|x| [x.name, x.id]}, request.params['to_box']),
+                          { include_blank: true },
+                          disabled: true,
                           class: 'form-control form-control-sm',
                           id: 'to-box' %>
         </div>
         <div class="form-group col-xl-4">
           <%= form.label :to_patchpanel, 'Патчпанель конец', class: 'col-form-label-sm pb-0' %>
-          <%= form.select :to_patchpanel, %w(), { include_blank: true },
-                          class: 'form-control form-control-sm',
-                          disabled: true,
-                          id: 'to-patchpanel' %>
+          <% if @to_patchpanel %>
+            <%= form.select :to_patchpanel,
+                            options_for_select(@to_box.patchpanels.collect {|x| [x.name, x.id]}, @to_patchpanel.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-patchpanel' %>
+          <% else %>
+            <%= form.select :to_patchpanel, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'to-patchpanel' %>
+          <% end %>
         </div>
         <div class="form-group col-xl-4">
           <%= form.label :to_interface, 'Интерфейс конец', class: 'col-form-label-sm pb-0' %>
-          <%= form.select :to_interface, %w(), { include_blank: true },
-                          class: 'form-control form-control-sm',
-                          disabled: true,
-                          id: 'to-interface' %>
+          <% if @to_interface %>
+            <%= form.select :to_interface,
+                            options_for_select(@to_patchpanel.interfaces.collect {|x| [x.name, x.id]}, @to_interface.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-interface' %>
+          <% else %>
+            <%= form.select :to_interface, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'to-interface' %>
+          <% end  %>
         </div>
       </div>
-
 
       <div class="actions">
         <%= form.submit 'Искать', class: 'btn btn-secondary btn-sm' %>

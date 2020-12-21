@@ -3,6 +3,7 @@ $(document).ready(function() {
         boxId = $(this).val();
         var selectPatchpanel = $('#from-patchpanel');
         var selectInterface = $('#from-interface');
+        var selectToBox = $('#to-box');
         selectInterface.attr("disabled", true);
         selectPatchpanel.empty();
         selectPatchpanel.append('<option value=""></option>');
@@ -16,6 +17,7 @@ $(document).ready(function() {
                         selectPatchpanel.append('<option value="' + element.id + '">' + element.name + '</option>');
                     });
                     selectPatchpanel.removeAttr("disabled");
+                    selectToBox.removeAttr("disabled");
                 }
             });
         } else {
@@ -25,7 +27,7 @@ $(document).ready(function() {
 
     $('#from-patchpanel').change(function(event){
         patchpanelId = $(this).val();
-        var selectInterface = $('#from-interfacew');
+        var selectInterface = $('#from-interface');
         selectInterface.empty();
         selectInterface.append('<option value=""></option>');
         if (patchpanelId) {
