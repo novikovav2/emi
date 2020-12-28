@@ -2,28 +2,15 @@
   <thead>
   <tr>
     <th>
-      <% if @current_sort == 'name' %>
-        <%= link_to request.params.merge(sort: 'name', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Название <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Название', request.params.merge(sort: 'name', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
     </th>
     <th>
-      <% if @current_sort == 'box' %>
-        <%= link_to request.params.merge(sort: 'box', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Стойка <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Стойка', request.params.merge(sort: 'box', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'box' %>
     </th>
     <th>К-во интерфейсов</th>
     <th>Действия</th>
   </tr>
   </thead>
-
   <tbody>
   <% patchpanels.each do |patchpanel| %>
     <tr>

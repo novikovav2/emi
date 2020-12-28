@@ -1,0 +1,35 @@
+<table class="table table-sm table-striped mt-2">
+  <thead>
+  <tr>
+    <th>
+      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
+    </th>
+    <th>
+      <%= render 'layouts/column_header', human_name: 'Подключен?', sort_name: 'connected' %>
+    </th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% interfaces.each do |interface| %>
+    <tr>
+      <td><%= interface.name %></td>
+      <td><%= pretty_status(interface.connected?) %></td>
+      <td>
+        <%= link_to edit_patchpanel_interface_path(@patchpanel, interface), class: 'text-muted text-right mr-3' do %>
+          <i class="far fa-edit"></i>
+        <% end %>
+        <%= link_to patchpanel_interface_path(@patchpanel, interface),
+                    method: :delete, data: { confirm: 'Are you sure?' },
+                    class: 'text-muted text-right',
+                    remote: true do %>
+          <i class="far fa-trash-alt"></i>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= render 'layouts/paginator', items_number: @interfaces_count,
+           current_page: @page,
+           limit: @limit %>

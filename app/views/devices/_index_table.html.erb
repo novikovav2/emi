@@ -2,22 +2,10 @@
   <thead>
   <tr>
     <th>
-      <% if @current_sort == 'name' %>
-        <%= link_to url_for(sort: 'name', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Название <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Название', url_for(sort: 'name', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
     </th>
     <th>
-      <% if @current_sort == 'box' %>
-        <%= link_to url_for(sort: 'box', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Стойка <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Стойка', url_for(sort: 'box', order: 0 ), class: 'thead' %>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'box' %>
     </th>
     <th>К-во оптических инт.</th>
     <th>К-во медных инт.</th>

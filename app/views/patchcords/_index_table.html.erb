@@ -2,60 +2,27 @@
   <thead>
   <tr>
     <th>
-      <% if @current_sort == 'from_box' %>
-        <%= link_to request.params.merge(sort: 'from_box', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Стойка <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Стойка', request.params.merge(sort: 'from_box', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'from_box' %>
     </th>
     <th>
-      <% if @current_sort == 'from_owner' %>
-        <%= link_to request.params.merge(sort: 'from_owner', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Оборудование <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Оборудование', request.params.merge(sort: 'from_owner', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Оборудование', sort_name: 'from_owner' %>
     </th>
     <th>
-      <% if @current_sort == 'from_interface' %>
-        <%= link_to request.params.merge(sort: 'from_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Порт <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Порт', request.params.merge(sort: 'from_interface', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Порт', sort_name: 'from_interface' %>
     </th>
     <th>
-      <% if @current_sort == 'to_box' %>
-        <%= link_to request.params.merge(sort: 'to_box', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Стойка <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Стойка', request.params.merge(sort: 'to_box', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'to_box' %>
     </th>
     <th>
-      <% if @current_sort == 'to_owner' %>
-        <%= link_to request.params.merge(sort: 'to_owner', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Оборудование <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Оборудование', request.params.merge(sort: 'to_owner', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Оборудование', sort_name: 'to_owner' %>
     </th>
     <th>
-      <% if @current_sort == 'to_interface' %>
-        <%= link_to request.params.merge(sort: 'to_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Порт <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Порт', request.params.merge(sort: 'to_interface', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Порт', sort_name: 'to_interface' %>
     </th>
-    <th>Материал</th>
+    <th>
+      <%= render 'layouts/column_header', human_name: 'Материал', sort_name: 'material' %>
+
+    </th>
     <th>Действия</th>
   </tr>
   </thead>

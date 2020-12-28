@@ -2,61 +2,26 @@
   <thead>
   <tr>
     <th>
-      <% if @current_sort == 'from_box' %>
-        <%= link_to request.params.merge(sort: 'from_box', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Стойка <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Стойка', request.params.merge(sort: 'from_box', order: 0 ), class: 'thead'%>
-
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'from_box' %>
     </th>
     <th>
-      <% if @current_sort == 'from_patchpanel' %>
-        <%= link_to request.params.merge(sort: 'from_patchpanel', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Патчпанель <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Патчпанель', request.params.merge(sort: 'from_patchpanel', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Патчпанель', sort_name: 'from_patchpanel' %>
     </th>
     <th>
-      <% if @current_sort == 'from_interface' %>
-        <%= link_to request.params.merge(sort: 'from_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Порт <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Порт', request.params.merge(sort: 'from_interface', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Порт', sort_name: 'from_interface' %>
     </th>
     <th>
-      <% if @current_sort == 'to_box' %>
-        <%= link_to request.params.merge(sort: 'to_box', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Стойка <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Стойка', request.params.merge(sort: 'to_box', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'to_box' %>
     </th>
     <th>
-      <% if @current_sort == 'to_patchpanel' %>
-        <%= link_to request.params.merge(sort: 'to_patchpanel', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Патчпанель <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Патчпанель', request.params.merge(sort: 'to_patchpanel', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Патчпанель', sort_name: 'to_patchpanel' %>
     </th>
     <th>
-      <% if @current_sort == 'to_interface' %>
-        <%= link_to request.params.merge(sort: 'to_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Порт <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Порт', request.params.merge(sort: 'to_interface', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Порт', sort_name: 'to_interface' %>
     </th>
-    <th>Материал</th>
+    <th>
+      <%= render 'layouts/column_header', human_name: 'Материал', sort_name: 'material' %>
+    </th>
     <th>Длина</th>
     <th></th>
   </tr>

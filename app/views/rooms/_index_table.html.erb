@@ -2,22 +2,10 @@
   <thead>
   <tr>
     <th>
-      <% if @current_sort == 'name' %>
-        <%= link_to request.params.merge(sort: 'name', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Название <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Название', request.params.merge(sort: 'name', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
     </th>
     <th>
-      <% if @current_sort == 'building' %>
-        <%= link_to request.params.merge(sort: 'building', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Здание <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Здание', request.params.merge(sort: 'building', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Здание', sort_name: 'building' %>
     </th>
     <th>Этаж</th>
     <th>Действия</th>

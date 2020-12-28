@@ -2,40 +2,16 @@
   <thead>
   <tr>
     <th>
-      <% if @current_sort == 'from_device' %>
-        <%= link_to request.params.merge(sort: 'from_device', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Оборудование <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Оборудование', request.params.merge(sort: 'from_device', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Оборудование', sort_name: 'from_device' %>
     </th>
     <th>
-      <% if @current_sort == 'from_interface' %>
-        <%= link_to request.params.merge(sort: 'from_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Порт <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Порт', request.params.merge(sort: 'from_interface', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Порт', sort_name: 'from_interface' %>
     </th>
     <th>
-      <% if @current_sort == 'to_device' %>
-        <%= link_to request.params.merge(sort: 'to_device', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Оборудование <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Оборудование', request.params.merge(sort: 'to_device', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Оборудование', sort_name: 'to_device' %>
     </th>
     <th>
-      <% if @current_sort == 'to_interface' %>
-        <%= link_to request.params.merge(sort: 'to_interface', order: 1 - @current_order ), class: 'thead_sort' do %>
-          Порт <%= sort_angle(@current_order) %>
-        <% end %>
-      <% else %>
-        <%= link_to 'Порт', request.params.merge(sort: 'to_interface', order: 0 ), class: 'thead'%>
-      <% end %>
+      <%= render 'layouts/column_header', human_name: 'Порт', sort_name: 'to_interface' %>
     </th>
     <th>Материал</th>
     <th>Физически подключены?</th>

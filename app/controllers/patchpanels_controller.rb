@@ -2,7 +2,9 @@ class PatchpanelsController < ApplicationController
   before_action :set_page_title
   before_action :set_patchpanel, only: [:show, :edit, :update, :destroy]
   before_action :set_limit_skip, only: [:index, :show]
-  before_action :set_order, only: [:index]
+  before_action :set_order_for_index, only: [:index]
+  before_action :set_order_for_show, only: [:show]
+  before_action :change_sort_order, only: [:index, :show]
 
   # GET /patchpanels
   # GET /patchpanels.json
@@ -10,7 +12,7 @@ class PatchpanelsController < ApplicationController
     if params['box_id'] # Используется в форме фильтрации
       @patchpanels = Box.find(params['box_id']).patchpanels
     else
-      @patchpanels_count = Patchpanel.all.count
+      @patchpanels_count = Patchpanel.count
 
       search = "(p:Patchpanel)-[]->(b:Box)"
       request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
@@ -23,10 +25,10 @@ class PatchpanelsController < ApplicationController
   # GET /patchpanels/1
   # GET /patchpanels/1.json
   def show
-    all_interfaces = @patchpanel.interfaces.order(:name)
-    @interfaces_count = all_interfaces.count
-    @interfaces = all_interfaces.skip(@skip).limit(@limit)
-
+    search = "(p:Patchpanel)<-[:`INTERFACE_OF_PATCHPANEL`]-(i:Interface)"
+    query = ActiveGraph::Base.new_query.match(search).where('p.uuid = ' + '"' + @patchpanel.id + '"')
+    @interfaces_count = query.count
+    @interfaces = query.order(@sort_string).skip(@skip).limit(@limit).pluck(:i)
   end
 
   # GET /patchpanels/new
@@ -103,7 +105,7 @@ class PatchpanelsController < ApplicationController
     @skip = @limit * ( @page - 1 )
   end
 
-  def set_order
+  def set_order_for_index
     @current_order = params[:order].to_i || 0
     @current_sort = params[:sort] || 'name'
 
@@ -112,7 +114,20 @@ class PatchpanelsController < ApplicationController
     elsif @current_sort == 'box'
       @sort_string = 'b.name'
     end
+  end
 
+  def set_order_for_show
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'name'
+
+    if @current_sort == 'name'
+      @sort_string = 'i.name'
+    elsif @current_sort == 'connected'
+      @sort_string = 'i.connected'
+    end
+  end
+
+  def change_sort_order
     if @current_order == 1
       @sort_string += ' desc'
     end

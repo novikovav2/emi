@@ -186,6 +186,8 @@ class CablesController < ApplicationController
       @sort_string = 'p2.name'
     elsif @current_sort == 'to_interface'
       @sort_string = 'i2.name'
+    elsif @current_sort == 'material'
+      @sort_string = 'r.material'
     end
 
     if @current_order == 1

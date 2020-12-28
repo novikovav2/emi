@@ -1,0 +1,7 @@
+<% if @current_sort == sort_name %>
+  <%= link_to request.params.merge(sort: sort_name, order: 1 - @current_order ), class: 'thead_sort' do %>
+    <%= human_name %> <%= sort_angle(@current_order) %>
+  <% end %>
+<% else %>
+  <%= link_to human_name, request.params.merge(sort: sort_name, order: 0 ), class: 'thead'%>
+<% end %>
