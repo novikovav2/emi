@@ -2,10 +2,17 @@
   <i class="fas fa-plus"></i> Добавить
 <% end %>
 
+<a class="btn btn-light btn-sm" data-toggle="collapse" href="#cablesFilter" role="button"
+   aria-expanded="false" aria-controls="collapseExample">
+  <i class="fas fa-angle-down"></i> Фильтр
+</a>
+
+<%= render 'filter' %>
+
 <div class="row mt-3">
   <div class="col-xl-12">
     <div class="card">
-      <div class="card-body">
+      <div class="card-body" id='table'>
         <%= render 'index_table', patchcords: @patchcords %>
       </div>
     </div>

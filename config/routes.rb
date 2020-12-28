@@ -15,4 +15,7 @@ Rails.application.routes.draw do
     resources :interfaces
     post 'interfaces/generate', to: 'interfaces#generate'
   end
+
+  get '/box_children/:id', to: 'misc#box_children'
+  get '/get_interfaces/:id', to: 'misc#get_interfaces'
 end

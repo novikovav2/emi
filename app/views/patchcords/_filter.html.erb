@@ -1,0 +1,101 @@
+<div class="collapse mt-2" id="cablesFilter">
+  <div class="card card-body pt-0 pb-1">
+    <%= form_with url: patchcords_path, method: :get, local: true do |form| %>
+      <div class="form-row mb-0">
+        <div class="form-group col-xl-4 mb-0">
+          <%= form.label :from_box, 'Стойка (начало)', class: 'col-form-label-sm pb-0'%>
+          <%= form.select :from_box, options_for_select(@boxes.collect {|x| [x.name, x.id]}, request.params['from_box']),
+                          { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          id: 'from-box' %>
+        </div>
+        <div class="form-group col-xl-4 mb-0">
+          <%= form.label :from_owner, 'Оборудование (начало)', class: 'col-form-label-sm pb-0' %>
+
+          <% if @from_owner %>
+            <%= form.select :from_owner,
+                            options_for_select(@from_box.children.collect {|x| [x.name, x.id]}, @from_owner.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'from-owner' %>
+          <% else %>
+            <%= form.select :from_owner, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'from-owner' %>
+          <% end %>
+        </div>
+        <div class="form-group col-xl-4 mb-0">
+          <%= form.label :from_interface, 'Интерфейс (начало)', class: 'col-form-label-sm pb-0' %>
+          <% if @from_interface %>
+            <%= form.select :from_interface,
+                            options_for_select(@from_owner.interfaces.collect {|x| [x.name, x.id]}, @from_interface.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'from-interface' %>
+          <% else %>
+            <%= form.select :from_interface, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'from-interface' %>
+          <% end  %>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-xl-4">
+          <%= form.label :to_box, 'Стойка конец', class: 'col-form-label-sm pb-0'%>
+          <% if @to_box %>
+            <%= form.select :to_box, options_for_select(@boxes.collect {|x| [x.name, x.id]}, params['to_box']),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-box' %>
+          <% else %>
+            <%= form.select :to_box, options_for_select(@boxes.collect {|x| [x.name, x.id]}, params['to_box']),
+                            { include_blank: true },
+                            disabled:true,
+                            class: 'form-control form-control-sm',
+                            id: 'to-box' %>
+          <% end %>
+
+        </div>
+        <div class="form-group col-xl-4">
+          <%= form.label :to_owner, 'Патчпанель конец', class: 'col-form-label-sm pb-0' %>
+          <% if @to_owner %>
+            <%= form.select :to_owner,
+                            options_for_select(@to_box.children.collect {|x| [x.name, x.id]}, @to_owner.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-owner' %>
+          <% else %>
+            <%= form.select :to_owner, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'to-owner' %>
+          <% end %>
+        </div>
+        <div class="form-group col-xl-4">
+          <%= form.label :to_interface, 'Интерфейс конец', class: 'col-form-label-sm pb-0' %>
+          <% if @to_interface %>
+            <%= form.select :to_interface,
+                            options_for_select(@to_owner.interfaces.collect {|x| [x.name, x.id]}, @to_interface.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-interface' %>
+          <% else %>
+            <%= form.select :to_interface, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'to-interface' %>
+          <% end  %>
+        </div>
+      </div>
+
+      <div class="actions">
+        <%= form.submit 'Искать', class: 'btn btn-secondary btn-sm' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'patchcords-filters' %>

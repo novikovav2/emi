@@ -1,0 +1,1 @@
+json.array! @children, :id, :name

@@ -1,6 +1,7 @@
 class PatchcordsController < ApplicationController
   before_action :set_page_title
-  before_action :set_patchcord, only: [:show, :edit, :update, :destroy]
+  before_action :set_patchcord, only: [:show, :destroy]
+  before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index]
   before_action :set_order, only: [:index]
 
@@ -11,13 +12,22 @@ class PatchcordsController < ApplicationController
 
     search = "(b1:Box)-[]-(p1)-[]-(i1:Interface)-[r:PHYSICAL_PATCHCORD]->
                 (i2:Interface)-[]-(p2)-[]-(b2:Box)"
-    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+    request = ActiveGraph::Base.new_query.match(search)
 
-    @patchcords = request.pluck('r')
+    @patchcords = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit)
+                    .pluck('r')
 
-    @patchcords_count = ActiveGraph::Base.new_query
-                                     .match("(:Box)-[]-()-[]-(:Interface)-[r:PHYSICAL_PATCHCORD]->(:Interface)")
-                                     .pluck('r').count
+    @patchcords_count = request.count
+
+    if @where_string.length > 1
+      @filtered_count = request.where(@where_string).count
+    end
+
+    # Находим все Box, из/в которые приходят кабели СКС
+    # Это необходимо для фильтра
+    @boxes = ActiveGraph::Base.new_query
+                              .match("(b:Box)<-[]-()<-[]-(:Interface)-[:PHYSICAL_PATCHCORD]->(:Interface)")
+                              .pluck('distinct b')
 
   end
 
@@ -77,6 +87,48 @@ class PatchcordsController < ApplicationController
     def set_page_title
       @page_title = ['Патчкорды']
     end
+
+  def set_where_string
+    @where_string = ''
+
+    if params['from_box'] and params['from_box'].length() > 0
+      @where_string += '(b1.uuid = "' + params['from_box'] + '" OR b2.uuid = "' + params['from_box'] + '")'
+      @from_box = Box.find(params['from_box'])
+    end
+
+    if params['from_owner'] and params['from_owner'].length() > 0
+      @where_string += ' AND (p1.uuid = "' + params['from_owner'] + '" OR p2.uuid = "' + params['from_owner'] + '")'
+      begin
+        @from_owner = Patchpanel.find(params['from_owner'])
+      rescue
+        @from_owner = Device.find(params['from_owner'])
+      end
+    end
+
+    if params['from_interface'] and params['from_interface'].length() > 0
+      @where_string += ' AND (i1.uuid = "' + params['from_interface'] + '" OR i2.uuid = "' + params['from_interface'] + '")'
+      @from_interface = Interface.find(params['from_interface'])
+    end
+
+    if params['to_box'] and params['to_box'].length() > 0
+      @where_string += ' AND (b2.uuid = "' + params['to_box'] + '")'
+      @to_box = Box.find(params['to_box'])
+    end
+
+    if params['to_owner'] and params['to_owner'].length() > 0
+      @where_string += ' AND (p2.uuid = "' + params['to_owner'] + '")'
+      begin
+        @to_owner = Patchpanel.find(params['to_owner'])
+      rescue
+        @to_owner = Device.find(params['to_owner'])
+      end
+    end
+
+    if params['to_interface'] and params['to_interface'].length() > 0
+      @where_string += ' AND (i2.uuid = "' + params['to_interface'] + '")'
+      @to_interface = Interface.find(params['to_interface'])
+    end
+  end
 
   def set_limit_skip
     @limit = 20

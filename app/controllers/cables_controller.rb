@@ -12,15 +12,12 @@ class CablesController < ApplicationController
 
     search = "(b1:Box)-[]-(p1:Patchpanel)-[]-(i1:Interface)-[r:PHYSICAL_CABLE]->
                 (i2:Interface)-[]-(p2:Patchpanel)-[]-(b2:Box)"
-    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+    request = ActiveGraph::Base.new_query.match(search)
 
+    @cables = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck(' r')
 
-    @cables = request.where(@where_string).pluck(' r')
+    @cables_count = request.count
 
-
-    @cables_count = ActiveGraph::Base.new_query
-                                     .match(search)
-                                     .pluck('r').count
     if @where_string.length > 1
       @filtered_count = ActiveGraph::Base.new_query
                                        .match(search)
@@ -28,6 +25,7 @@ class CablesController < ApplicationController
                                        .pluck('r').count
     end
     # Находим все Box, из/в которые приходят кабели СКС
+    # Это необходимо для фильтра
     @boxes = ActiveGraph::Base.new_query
                 .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
                 .pluck('distinct b')

@@ -10,5 +10,15 @@ class Box
   has_many :in, :devices, rel_class: :DeviceInBox
   has_many :in, :patchpanels, rel_class: :PatchpanelInBox
 
+  def children
+    result = []
+    self.devices.each do |d|
+      result << d
+    end
+    self.patchpanels.each do |p|
+      result << p
+    end
 
+    return result
+  end
 end
