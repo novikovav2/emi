@@ -1,0 +1,80 @@
+<div class="collapse mt-2" id="cablesFilter">
+  <div class="card card-body pt-0 pb-1">
+    <%= form_with url: logical_links_path, method: :get, local: true do |form| %>
+      <div class="form-row mb-2">
+        <div class="form-group col-xl-3 mb-0">
+          <%= form.label :from_device, 'Оборудование (начало)', class: 'col-form-label-sm pb-0'%>
+          <%= form.select :from_device, options_for_select(@devices.collect {|x| [x.name, x.id]}, request.params['from_device']),
+                          { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          id: 'from-device' %>
+        </div>
+        <div class="form-group col-xl-3 mb-0">
+          <%= form.label :from_interface, 'Порт (начало)', class: 'col-form-label-sm pb-0' %>
+
+          <% if @from_interface %>
+            <%= form.select :from_interface,
+                            options_for_select(@from_device.interfaces.collect {|x| [x.name, x.id]}, @from_interface.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'from-interface' %>
+          <% else %>
+            <%= form.select :from_interface, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'from-interface' %>
+          <% end %>
+        </div>
+        <div class="form-group col-xl-3 mb-0">
+          <%= form.label :to_device, 'Оборудование (конец)', class: 'col-form-label-sm pb-0' %>
+
+          <% if @to_device %>
+            <%= form.select :to_device,
+                            options_for_select(@devices.collect {|x| [x.name, x.id]}, @to_device.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-device' %>
+          <% else %>
+            <%= form.select :to_device,
+                            options_for_select(@devices.collect {|x| [x.name, x.id]}),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'to-device' %>
+          <% end %>
+        </div>
+        <div class="form-group col-xl-3 mb-0">
+          <%= form.label :to_interface, 'Порт (конец)', class: 'col-form-label-sm pb-0' %>
+
+          <% if @to_interface %>
+            <%= form.select :to_interface,
+                            options_for_select(@to_device.interfaces.collect {|x| [x.name, x.id]}, @to_interface.id),
+                            { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            id: 'to-interface' %>
+          <% else %>
+            <%= form.select :to_interface, %w(), { include_blank: true },
+                            class: 'form-control form-control-sm',
+                            disabled: true,
+                            id: 'to-interface' %>
+          <% end %>
+        </div>
+        <div class="form-group col-xl-3 mb-0">
+          <%= form.label :material, 'Материал', class: 'col-form-label-sm pb-0' %>
+          <%= form.select :material,
+                          options_for_select(@materials.collect {|x| [human_material(x[:name]), x[:id]]}, @material),
+                          { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          id: 'material' %>
+        </div>
+      </div>
+
+      <div class="actions">
+        <%= form.submit 'Искать', class: 'btn btn-secondary btn-sm' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_pack_tag 'logical-links-filters' %>

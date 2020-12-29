@@ -1,22 +1,33 @@
 class LogicalLinksController < ApplicationController
   before_action :set_page_title
   before_action :set_logical_link, only: [:show, :destroy]
+  before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index]
   before_action :set_order, only: [:index]
 
   # GET /logical_links
   # GET /logical_links.json
   def index
-    # @logical_links = LogicalLink.all
     @logical_links = LogicalLink.new
 
     search = "(d1:Device)-[]-(i1:Interface)-[r:LOGICAL_LINK]->
                 (i2:Interface)-[]-(d2:Device)"
-    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
-    @logical_links = request.pluck(' r')
+    request = ActiveGraph::Base.new_query.match(search)
 
-    @logical_links_count = ActiveGraph::Base.new_query
-                                     .match(search).pluck('r').count
+    @logical_links = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck(' r')
+
+    @logical_links_count = request.count('r')
+    @filtered_count = request.where(@where_string).count
+
+    if @filtered_count == @logical_links_count
+      @filtered_count = nil
+    end
+
+    # Для фильтрации
+    @devices = ActiveGraph::Base.new_query
+                                  .match("(d:Device)-[]-(:Interface)-[:LOGICAL_LINK]-(:Interface)")
+                                  .pluck('distinct d')
+    @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 
   end
 
@@ -177,6 +188,35 @@ class LogicalLinksController < ApplicationController
     @limit = 20
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
+  end
+
+  def set_where_string
+    @where_string = '(EXISTS (i1.uuid))'
+
+    if params['from_device'] and params['from_device'].length() > 0
+      @where_string += 'AND (d1.uuid = "' + params['from_device'] + '" OR d2.uuid = "' + params['from_device'] + '")'
+      @from_device = Device.find(params['from_device'])
+    end
+
+    if params['from_interface'] and params['from_interface'].length() > 0
+      @where_string += ' AND (i1.uuid = "' + params['from_interface'] + '" OR i2.uuid = "' + params['from_interface'] + '")'
+      @from_interface = Interface.find(params['from_interface'])
+    end
+
+    if params['to_device'] and params['to_device'].length() > 0
+      @where_string += ' AND (d2.uuid = "' + params['to_device'] + '")'
+      @to_device = Device.find(params['to_device'])
+    end
+
+    if params['to_interface'] and params['to_interface'].length() > 0
+      @where_string += ' AND (i2.uuid = "' + params['to_interface'] + '")'
+      @to_interface = Interface.find(params['to_interface'])
+    end
+
+    if params['material'] and params['material'].length() > 0
+      @where_string += " AND (i1.material = #{params["material"]})"
+      @material = params['material']
+    end
   end
 
   def set_order

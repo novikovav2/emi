@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :rooms
   resources :boxes
   resources :devices do
-    resources :interfaces, except: [:index]
+    resources :interfaces
   end
   resources :logical_links, except: [:edit, :update] # Объекты Relationship нельзя редактировать
   resources :patchcords, except: [:edit, :update]
