@@ -15,11 +15,7 @@
   <% patchpanels.each do |patchpanel| %>
     <tr>
       <td><%= link_to patchpanel.name, patchpanel %></td>
-      <% if patchpanel.box %>
-        <td><%= patchpanel.box.name %></td>
-      <% else %>
-        <td>-</td>
-      <% end %>
+      <td><%= link_to patchpanel.box.name, box_path(patchpanel.box) %></td>
       <td><%= patchpanel.interfaces ? patchpanel.interfaces.count : 0 %></td>
       <td>
         <%= link_to edit_patchpanel_path(patchpanel), class: 'text-muted text-right mr-3' do %>

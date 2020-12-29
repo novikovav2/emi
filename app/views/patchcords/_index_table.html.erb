@@ -30,13 +30,11 @@
   <tbody>
   <% patchcords.each do |patchcord| %>
     <tr>
-      <td><%= patchcord.from_node.owner.box.name %></td>
-      <td>
-          <%= patchcord.from_node.owner.name %>
-      </td>
+      <td><%= link_to patchcord.from_node.owner.box.name, box_path(patchcord.from_node.owner.box) %></td>
+      <td><%= link_to patchcord.from_node.owner.name, owner_path(patchcord.from_node.owner) %></td>
       <td><%= patchcord.from_node.name %></td>
-      <td><%= patchcord.to_node.owner.box.name %></td>
-      <td><%= patchcord.to_node.owner.name %></td>
+      <td><%= link_to patchcord.to_node.owner.box.name, box_path(patchcord.from_node.owner.box) %></td>
+      <td><%= link_to patchcord.to_node.owner.name, owner_path(patchcord.to_node.owner) %></td>
       <td><%= patchcord.to_node.name %></td>
       <td><%= human_material(patchcord.material) %></td>
       <td>

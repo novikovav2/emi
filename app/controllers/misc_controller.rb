@@ -12,4 +12,12 @@ class MiscController < ApplicationController
     query = ActiveGraph::Base.new_query.match(search).where('b.uuid="' +params[:id] + '"').order('i.name')
     @interfaces = query.pluck(:i)
   end
+
+  def redirect_to_owner
+    begin
+      redirect_to device_path(Device.find(params[:id]))
+    rescue
+      redirect_to patchpanel_path(Patchpanel.find(params[:id]))
+    end
+  end
 end
