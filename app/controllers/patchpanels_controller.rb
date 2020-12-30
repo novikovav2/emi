@@ -2,6 +2,7 @@ class PatchpanelsController < ApplicationController
   before_action :set_page_title
   before_action :set_patchpanel, only: [:show, :edit, :update, :destroy]
   before_action :set_limit_skip, only: [:index, :show]
+  before_action :set_where_string, only: [:index]
   before_action :set_order_for_index, only: [:index]
   before_action :set_order_for_show, only: [:show]
   before_action :change_sort_order, only: [:index, :show]
@@ -15,11 +16,13 @@ class PatchpanelsController < ApplicationController
       @patchpanels_count = Patchpanel.count
 
       search = "(p:Patchpanel)-[]->(b:Box)"
-      request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+      request = ActiveGraph::Base.new_query.match(search)
 
-      @patchpanels = request.pluck('p')
+      @patchpanels = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('p')
+
+      @patchpaneles_list = request.pluck('distinct p')
+      @boxes = request.pluck('distinct b')
     end
-
   end
 
   # GET /patchpanels/1
@@ -98,6 +101,18 @@ class PatchpanelsController < ApplicationController
     def set_page_title
       @page_title = ['Патчпанели']
     end
+
+  def set_where_string
+    @where_string = '(EXISTS (b.uuid))'
+
+    if params['patchpanel'] and params['patchpanel'].length() > 0
+      @where_string += 'AND (p.uuid = "' + params['patchpanel'] + '")'
+    end
+
+    if params['box'] and params['box'].length() > 0
+      @where_string += ' AND (b.uuid = "' + params['box']  + '")'
+    end
+  end
 
   def set_limit_skip
     @limit = 10
