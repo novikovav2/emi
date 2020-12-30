@@ -1,30 +1,25 @@
 class DevicesController < ApplicationController
   before_action :set_page_title
   before_action :set_device, only: [:show, :edit, :update, :destroy]
+  before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index]
+  before_action :set_order, only: [:index]
 
   # GET /devices
   # GET /devices.json
   def index
-    @current_order = params[:order].to_i || 0
-    @current_sort = params[:sort] || 'name'
-
     search = "(n:Device)-[]-(b:Box)"
-    request = ActiveGraph::Base.new_query.match(search).skip(@skip).limit(@limit)
+    request = ActiveGraph::Base.new_query.match(search)
 
-    if @current_sort == 'box'
-      order_string = "b.name"
-    else
-      order_string = "n.name"
-    end
-    if @current_order > 0
-      order_string = order_string + " desc"
-    end
-    request = request.order(order_string)
     @devices = Device.new
-    @devices = request.pluck('n')
+    @devices = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('n')
 
-    @devices_count = Device.all.count
+    @devices_count = request.count('n')
+
+    # Для фильтрации
+    @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
+    @devices_list = request.pluck('distinct n')
+    @boxes = request.pluck('distinct b')
   end
 
   # GET /devices/1
@@ -99,9 +94,39 @@ class DevicesController < ApplicationController
       @page_title = ['Оборудование']
     end
 
+  def set_where_string
+    @where_string = '(EXISTS (n.uuid))'
+
+    if params['device'] and params['device'].length() > 0
+      @where_string += 'AND (n.uuid = "' + params['device'] + '")'
+      # @from_device = Device.find(params['from_device'])
+    end
+
+    if params['box'] and params['box'].length() > 0
+      @where_string += ' AND (b.uuid = "' + params['box']  + '")'
+      # @from_interface = Interface.find(params['from_interface'])
+    end
+
+  end
+
     def set_limit_skip
       @limit = 10
       @page = params['page'] ?  params['page'].to_i : 1
       @skip = @limit * ( @page - 1 )
     end
+
+  def set_order
+    @current_order = params[:order].to_i || 0
+    @current_sort = params[:sort] || 'name'
+
+    if @current_sort == 'box'
+      @sort_string = "b.name"
+    else
+      @sort_string = "n.name"
+    end
+
+    if @current_order == 1
+      @sort_string += ' desc'
+    end
+  end
 end
