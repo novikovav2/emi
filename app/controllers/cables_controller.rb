@@ -29,6 +29,7 @@ class CablesController < ApplicationController
     @boxes = ActiveGraph::Base.new_query
                 .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
                 .pluck('distinct b')
+    @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 
   end
 
@@ -122,43 +123,41 @@ class CablesController < ApplicationController
     end
 
   def set_where_hash
-    # @where_hash = {}
-    @where_string = ''
+    @where_string = '(EXISTS (i1.uuid))'
 
     if params['from_box'] and params['from_box'].length() > 0
-      # @where_hash['b1.uuid'] = params['from_box']
-      @where_string += '(b1.uuid = "' + params['from_box'] + '" OR b2.uuid = "' + params['from_box'] + '")'
+      @where_string += ' AND (b1.uuid = "' + params['from_box'] + '" OR b2.uuid = "' + params['from_box'] + '")'
       @from_box = Box.find(params['from_box'])
     end
 
     if params['from_patchpanel'] and params['from_patchpanel'].length() > 0
-      # @where_hash['p1.uuid'] = params['from_patchpanel']
       @where_string += ' AND (p1.uuid = "' + params['from_patchpanel'] + '" OR p2.uuid = "' + params['from_patchpanel'] + '")'
       @from_patchpanel = Patchpanel.find(params['from_patchpanel'])
     end
 
     if params['from_interface'] and params['from_interface'].length() > 0
-      # @where_hash['i1.uuid'] = params['from_interface']
       @where_string += ' AND (i1.uuid = "' + params['from_interface'] + '" OR i2.uuid = "' + params['from_interface'] + '")'
       @from_interface = Interface.find(params['from_interface'])
     end
 
     if params['to_box'] and params['to_box'].length() > 0
-      # @where_hash['b2.uuid'] = params['to_box']
       @where_string += ' AND (b2.uuid = "' + params['to_box'] + '")'
       @to_box = Box.find(params['to_box'])
     end
 
     if params['to_patchpanel'] and params['to_patchpanel'].length() > 0
-      # @where_hash['p2.uuid'] = params['to_patchpanel']
       @where_string += ' AND (p2.uuid = "' + params['to_patchpanel'] + '")'
       @to_patchpanel = Patchpanel.find(params['to_patchpanel'])
     end
 
     if params['to_interface'] and params['to_interface'].length() > 0
-      # @where_hash['i2.uuid'] = params['to_interface']
       @where_string += ' AND (i2.uuid = "' + params['to_interface'] + '")'
       @to_interface = Interface.find(params['to_interface'])
+    end
+
+    if params['material'] and params['material'].length() > 0
+      @where_string += " AND (r.material = #{params["material"]})"
+      @material = params['material']
     end
   end
 

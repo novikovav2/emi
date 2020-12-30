@@ -28,6 +28,7 @@ class PatchcordsController < ApplicationController
     @boxes = ActiveGraph::Base.new_query
                               .match("(b:Box)<-[]-()<-[]-(:Interface)-[:PHYSICAL_PATCHCORD]->(:Interface)")
                               .pluck('distinct b')
+    @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 
   end
 
@@ -89,10 +90,10 @@ class PatchcordsController < ApplicationController
     end
 
   def set_where_string
-    @where_string = ''
+    @where_string = '(EXISTS (i1.uuid))'
 
     if params['from_box'] and params['from_box'].length() > 0
-      @where_string += '(b1.uuid = "' + params['from_box'] + '" OR b2.uuid = "' + params['from_box'] + '")'
+      @where_string += ' AND (b1.uuid = "' + params['from_box'] + '" OR b2.uuid = "' + params['from_box'] + '")'
       @from_box = Box.find(params['from_box'])
     end
 
@@ -127,6 +128,11 @@ class PatchcordsController < ApplicationController
     if params['to_interface'] and params['to_interface'].length() > 0
       @where_string += ' AND (i2.uuid = "' + params['to_interface'] + '")'
       @to_interface = Interface.find(params['to_interface'])
+    end
+
+    if params['material'] and params['material'].length() > 0
+      @where_string += " AND (r.material = #{params["material"]})"
+      @material = params['material']
     end
   end
 

@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="form-row">
-        <div class="form-group col-xl-4">
+        <div class="form-group col-xl-4 mb-0">
           <%= form.label :to_box, 'Стойка конец', class: 'col-form-label-sm pb-0'%>
           <% if @to_box %>
             <%= form.select :to_box, options_for_select(@boxes.collect {|x| [x.name, x.id]}, params['to_box']),
@@ -58,7 +58,7 @@
           <% end %>
 
         </div>
-        <div class="form-group col-xl-4">
+        <div class="form-group col-xl-4 mb-0">
           <%= form.label :to_owner, 'Патчпанель конец', class: 'col-form-label-sm pb-0' %>
           <% if @to_owner %>
             <%= form.select :to_owner,
@@ -73,7 +73,7 @@
                             id: 'to-owner' %>
           <% end %>
         </div>
-        <div class="form-group col-xl-4">
+        <div class="form-group col-xl-4 mb-0">
           <%= form.label :to_interface, 'Интерфейс конец', class: 'col-form-label-sm pb-0' %>
           <% if @to_interface %>
             <%= form.select :to_interface,
@@ -87,6 +87,14 @@
                             disabled: true,
                             id: 'to-interface' %>
           <% end  %>
+        </div>
+        <div class="form-group col-xl-3">
+          <%= form.label :material, 'Материал', class: 'col-form-label-sm pb-0' %>
+          <%= form.select :material,
+                          options_for_select(@materials.collect {|x| [human_material(x[:name]), x[:id]]}, @material),
+                          { include_blank: true },
+                          class: 'form-control form-control-sm',
+                          id: 'material' %>
         </div>
       </div>
 
