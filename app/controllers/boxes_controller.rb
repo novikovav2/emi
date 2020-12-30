@@ -1,6 +1,7 @@
 class BoxesController < ApplicationController
   before_action :set_page_title
   before_action :set_box, only: [:show, :edit, :update, :destroy]
+  before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index, :show]
   before_action :set_order, only: [:index]
 
@@ -10,9 +11,13 @@ class BoxesController < ApplicationController
     @boxes_count = Box.all.count
 
     search = "(b:Box)-[]->(r:Room)"
-    request = ActiveGraph::Base.new_query.match(search).order(@sort_string).skip(@skip).limit(@limit)
+    request = ActiveGraph::Base.new_query.match(search)
 
-    @boxes = request.pluck('b')
+    @boxes = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('b')
+
+    # Для фильтрации
+    @boxes_list = request.pluck('distinct b')
+    @rooms = request.pluck('distinct r')
   end
 
   # GET /boxes/1
@@ -86,6 +91,18 @@ class BoxesController < ApplicationController
     def set_page_title
       @page_title = ['Монтажные шкафы']
     end
+
+  def set_where_string
+    @where_string = '(EXISTS (b.uuid))'
+
+    if params['room'] and params['room'].length() > 0
+      @where_string += 'AND (r.uuid = "' + params['room'] + '")'
+    end
+
+    if params['box'] and params['box'].length() > 0
+      @where_string += ' AND (b.uuid = "' + params['box']  + '")'
+    end
+  end
 
   def set_limit_skip
     @limit = 10

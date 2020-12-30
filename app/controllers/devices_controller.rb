@@ -99,12 +99,10 @@ class DevicesController < ApplicationController
 
     if params['device'] and params['device'].length() > 0
       @where_string += 'AND (n.uuid = "' + params['device'] + '")'
-      # @from_device = Device.find(params['from_device'])
     end
 
     if params['box'] and params['box'].length() > 0
       @where_string += ' AND (b.uuid = "' + params['box']  + '")'
-      # @from_interface = Interface.find(params['from_interface'])
     end
 
   end
