@@ -1,0 +1,1 @@
+json.array! @patchpanels, :id, :name

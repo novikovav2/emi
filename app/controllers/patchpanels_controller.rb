@@ -10,19 +10,13 @@ class PatchpanelsController < ApplicationController
   # GET /patchpanels
   # GET /patchpanels.json
   def index
-    if params['box_id'] # Используется в форме фильтрации
-      @patchpanels = Box.find(params['box_id']).patchpanels
-    else
-      @patchpanels_count = Patchpanel.count
-
       search = "(p:Patchpanel)-[]->(b:Box)"
       request = ActiveGraph::Base.new_query.match(search)
 
       @patchpanels = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('p')
-
+      @patchpanels_count = request.count
       @patchpaneles_list = request.pluck('distinct p')
       @boxes = request.pluck('distinct b')
-    end
   end
 
   # GET /patchpanels/1

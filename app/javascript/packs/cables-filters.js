@@ -10,8 +10,7 @@ $(document).ready(function() {
         if (boxId) {
             $.ajax({
                 type: "GET",
-                url: '/patchpanels.json',
-                data: {box_id: boxId},
+                url: '/get_patchpanels/' + boxId,
                 success: function (data) {
                     data.forEach(element => {
                         selectPatchpanel.append('<option value="' + element.id + '">' + element.name + '</option>');
@@ -56,8 +55,7 @@ $(document).ready(function() {
         if (boxId) {
             $.ajax({
                 type: "GET",
-                url: '/patchpanels.json',
-                data: {box_id: boxId},
+                url: '/get_patchpanels/' + boxId,
                 success: function (data) {
                     data.forEach(element => {
                         selectPatchpanel.append('<option value="' + element.id + '">' + element.name + '</option>');

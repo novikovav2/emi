@@ -13,6 +13,10 @@ class MiscController < ApplicationController
     @interfaces = query.pluck(:i)
   end
 
+  def get_patchpanels
+    @patchpanels = Box.find(params[:id]).patchpanels
+  end
+
   def redirect_to_owner
     begin
       redirect_to device_path(Device.find(params[:id]))

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get '/box_children/:id', to: 'misc#box_children'
   get '/get_interfaces/:id', to: 'misc#get_interfaces'
+  get '/get_patchpanels/:id', to: 'misc#get_patchpanels'
 
   get '/owner/:id', to: 'misc#redirect_to_owner', as: :owner
 end
