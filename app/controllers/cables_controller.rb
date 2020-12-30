@@ -41,8 +41,10 @@ class CablesController < ApplicationController
   # GET /cables/new
   def new
     @page_title << 'Новый кабель'
+
     @cable = Cable.new(from_node: Interface.new(),
                        to_node: Interface.new())
+    @rooms = Room.all.order(:name)
     @interfaces = Interface.query_as(:i)
                       .match("(i)-[:INTERFACE_OF_PATCHPANEL]->(:Patchpanel)
                                     where not (i)-[:PHYSICAL_CABLE]-(:Interface)")
@@ -70,7 +72,7 @@ class CablesController < ApplicationController
         format.html { redirect_to @cable, notice: 'Cable was successfully created.' }
         format.json { render :show, status: :created, location: @cable }
       else
-        format.html { render :new }
+        format.html { redirect_to new_cable_url, alert: @cable.errors }
         format.json { render json: @cable.errors, status: :unprocessable_entity }
       end
     end
