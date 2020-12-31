@@ -1,0 +1,16 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Стойка</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @patchpanels.each do |patchpanel| %>
+      <tr>
+        <td><%= link_to patchpanel.name, patchpanel_path(patchpanel) %></td>
+        <td><%= link_to patchpanel.box.name, box_path(patchpanel.box) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

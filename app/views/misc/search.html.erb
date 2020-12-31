@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <div class="card-body">
+        <% if @buildings[0] %>
+          <h4>Здания</h4>
+          <%= render 'misc/search_results/buildings' %>
+        <% end %>
+
+        <% if @rooms[0] %>
+          <h4>Помещения</h4>
+          <%= render 'misc/search_results/rooms' %>
+        <% end %>
+
+        <% if @boxes[0] %>
+          <h4>Монтажные шкафы</h4>
+          <%= render 'misc/search_results/boxes' %>
+        <% end %>
+
+        <% if @patchpanels[0] %>
+          <h4>Патчпанели</h4>
+          <%= render 'misc/search_results/patchpanels' %>
+        <% end %>
+
+        <% if @devices[0] %>
+          <h4>Оборудование</h4>
+          <%= render 'misc/search_results/devices' %>
+        <% end %>
+
+        <% if @logical_links[0] %>
+          <h4>логические связи</h4>
+          <%= render 'misc/search_results/logical_links' %>
+        <% end %>
+
+      </div>
+    </div>
+  </div>
+</div>

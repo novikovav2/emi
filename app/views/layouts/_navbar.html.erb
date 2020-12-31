@@ -1,9 +1,18 @@
 <nav class="navbar navbar-dark bg-dark fixed-top shadow flex-md-nowrap">
   <%= link_to 'ЭМИ', devices_path, class: 'navbar-brand col-sm-3 col-md-2 mr-0' %>
-  <div class="input-group">
-    <input class="form-control form-control-dark " type="input" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+
+  <%= form_with url: search_path, method: :post, local: true do |form| %>
+    <div class="input-group">
+      <%= form.text_field  :search_string, placeholder: 'Поиск',
+                           class: "form-control form-control-dark",
+                           'aria-label': "Search",
+                           'aria-describedby': "button-search"%>
+      <div class="input-group-append">
+        <%= form.button :submit, class: "btn btn-outline-secondary", id: 'button-search'  do %>
+          <i class="fas fa-search"></i>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
+
 </nav>

@@ -1,0 +1,20 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Оборудование</th>
+      <th>Порт</th>
+      <th>Оборудование</th>
+      <th>Порт</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @logical_links.each do |logical_link| %>
+      <tr>
+        <td><%= link_to logical_link.from_node.device.name, device_path(logical_link.from_node.device) %></td>
+        <td><%= logical_link.from_node.name %></td>
+        <td><%= link_to logical_link.to_node.device.name, device_path(logical_link.to_node.device) %></td>
+        <td><%= logical_link.to_node.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

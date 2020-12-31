@@ -1,0 +1,16 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Здание</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @rooms.each do |room| %>
+      <tr>
+        <td><%= link_to room.name, room_path(room) %></td>
+        <td><%= link_to room.building.name, building_path(room.building) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

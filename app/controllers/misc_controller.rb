@@ -51,4 +51,37 @@ class MiscController < ApplicationController
       redirect_to patchpanel_path(Patchpanel.find(params[:id]))
     end
   end
+
+  # Поиск элементов из header
+  # POST /search
+  def search
+    @page_title = ['Результаты поиска: ' + params[:search_string]]
+
+    @devices = Device.as(:d)
+                     .where("toLower(d.name) contains $search")
+                     .params(search: params[:search_string].downcase )
+                     .order('d.name')
+    @buildings = Building.as(:b)
+                         .where("toLower(b.name) contains $search")
+                         .params(search: params[:search_string].downcase )
+                         .order('b.name')
+    @rooms = Room.as(:r)
+                         .where("toLower(r.name) contains $search")
+                          .params(search: params[:search_string].downcase )
+                         .order('r.name')
+    @boxes = Box.as(:b)
+                         .where("toLower(b.name) contains $search")
+                          .params(search: params[:search_string].downcase )
+                         .order('b.name')
+    @patchpanels = Patchpanel.as(:p)
+                         .where("toLower(p.name) contains $search")
+                          .params(search: params[:search_string].downcase )
+                         .order('p.name')
+
+    search_logical_link = "(d:Device)-[]-(:Interface)-[r:LOGICAL_LINK]-(:Interface)"
+    query_logical_link = ActiveGraph::Base.new_query.match(search_logical_link)
+                                          .where("toLower(d.name) contains $search")
+                                          .params(search: params[:search_string].downcase )
+    @logical_links = query_logical_link.pluck('distinct r')
+  end
 end

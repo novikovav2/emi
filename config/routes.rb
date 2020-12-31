@@ -22,4 +22,6 @@ Rails.application.routes.draw do
   get '/get_boxes/:id', to: 'misc#get_boxes'
 
   get '/owner/:id', to: 'misc#redirect_to_owner', as: :owner
+
+  post '/search', to: 'misc#search', as: :search
 end

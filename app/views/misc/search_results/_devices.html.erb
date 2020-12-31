@@ -1,0 +1,16 @@
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Стойка</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @devices.each do |device| %>
+      <tr>
+        <td><%= link_to device.name, device_path(device) %></td>
+        <td><%= link_to device.box.name, box_path(device.box) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
