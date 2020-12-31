@@ -21,6 +21,10 @@ class MiscController < ApplicationController
       where_string += ' AND NOT (i)-[:PHYSICAL_PATCHCORD]-(:Interface)'
     end
 
+    if params[:without_logical_links]
+      where_string += ' AND NOT (i)-[:LOGICAL_LINK]-(:Interface)'
+    end
+
     search = "(b)<-[]-(i:Interface)"
     query = ActiveGraph::Base.new_query.match(search).where(where_string).order('i.name')
     @interfaces = query.pluck(:i)

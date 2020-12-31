@@ -136,7 +136,7 @@ class LogicalLinksController < ApplicationController
     @page_title << 'Новая логическая связь'
     @logical_link = LogicalLink.new(from_node: Interface.new(),
                                     to_node: Interface.new())
-    @interfaces = Interface.query_as(:i).match("(i)-[:INTERFACE_OF_DEVICE]->(:Device)").pluck(:i)
+    @devices = Device.all.order(:name)
   end
 
 
