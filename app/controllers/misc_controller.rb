@@ -1,6 +1,7 @@
 class MiscController < ApplicationController
 
-  # GET /owners/:id
+  # Получаем список оборудования или патчпанелей в стойке
+  # GET '/box_children/:id'
   def box_children
     search = "(b:Box)<-[]-(n)"
     query = ActiveGraph::Base.new_query.match(search).where('b.uuid="' +params[:id] + '"').order('n.name')

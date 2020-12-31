@@ -45,10 +45,6 @@ class CablesController < ApplicationController
     @cable = Cable.new(from_node: Interface.new(),
                        to_node: Interface.new())
     @rooms = Room.all.order(:name)
-    @interfaces = Interface.query_as(:i)
-                      .match("(i)-[:INTERFACE_OF_PATCHPANEL]->(:Patchpanel)
-                                    where not (i)-[:PHYSICAL_CABLE]-(:Interface)")
-                      .pluck(:i)
   end
 
   # GET /cables/1/edit

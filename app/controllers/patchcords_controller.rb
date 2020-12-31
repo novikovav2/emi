@@ -42,7 +42,8 @@ class PatchcordsController < ApplicationController
     @page_title << 'Новый патчкорд'
     @patchcord = Patchcord.new(from_node: Interface.new,
                                to_node: Interface.new)
-    @interfaces = Interface.where(connected: false)
+    @rooms = Room.all.order(:name)
+    # @interfaces = Interface.where(connected: false)
   end
 
   # POST /patchcords
@@ -58,7 +59,7 @@ class PatchcordsController < ApplicationController
         format.html { redirect_to @patchcord, notice: 'Patchcord was successfully created.' }
         format.json { render :show, status: :created, location: @patchcord }
       else
-        format.html { render :new }
+        format.html { redirect_to new_patchcord_url, alert: @patchcord.errors }
         format.json { render json: @patchcord.errors, status: :unprocessable_entity }
       end
     end
