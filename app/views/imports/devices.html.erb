@@ -1,0 +1,17 @@
+<p>Импорт файла с CSV формате. Обязательны следующие поля:</p>
+<ul>
+  <li>name - название оборудования</li>
+  <li>box - Название монтажного шкафа</li>
+</ul>
+
+<%= form_with url: import_devices_url, multipart: true, local: true do  |form| %>
+  <%= form.file_field :csv, required: true %>
+  <br>
+  <%= form.submit 'Импорт', class: "btn btn-secondary btn-sm mt-3" %>
+<!--  <div class="custom-file">-->
+    <%#= file_field_tag :csv, class: "custom-file-input", id: 'customFile' %>
+    <%#= label :csv, 'Выберите файл', class: "custom-file-label", for: "customFile" %>
+    <%#= submit_tag 'Импорт', class: "btn btn-secondary btn-sm mt-3" %>
+<!--  </div>-->
+
+<% end %>

@@ -24,4 +24,12 @@ Rails.application.routes.draw do
   get '/owner/:id', to: 'misc#redirect_to_owner', as: :owner
 
   post '/search', to: 'misc#search', as: :search
+
+  get 'import/devices', to: 'imports#devices', as: :import_devices
+  post 'import/devices', to: 'imports#load_devices'
+
+  get 'import/patchpanels', to: 'imports#patchpanels', as: :import_patchpanels
+  post 'import/patchpanels', to: 'imports#load_patchpanels'
+
+
 end

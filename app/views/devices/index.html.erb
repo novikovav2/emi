@@ -1,11 +1,23 @@
-<%= link_to  new_device_path, class: "btn btn-outline-secondary btn-sm" do %>
-  <i class="fas fa-plus"></i> Добавить
-<% end %>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="d-flex justify-content-between">
+      <div>
+        <%= link_to  new_device_path, class: "btn btn-outline-secondary btn-sm" do %>
+          <i class="fas fa-plus"></i> Добавить
+        <% end %>
+        <a class="btn btn-light btn-sm" data-toggle="collapse" href="#Filter" role="button"
+           aria-expanded="false" aria-controls="collapseExample">
+          <i class="fas fa-angle-down"></i> Фильтр
+        </a>
+      </div>
 
-<a class="btn btn-light btn-sm" data-toggle="collapse" href="#Filter" role="button"
-   aria-expanded="false" aria-controls="collapseExample">
-  <i class="fas fa-angle-down"></i> Фильтр
-</a>
+      <%= link_to 'Импорт', import_devices_path, class: "btn btn-outline-secondary btn-sm" %>
+    </div>
+  </div>
+</div>
+
+
+
 
 <%= render 'filter' %>
 

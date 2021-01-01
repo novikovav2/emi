@@ -1,0 +1,32 @@
+<%= link_to 'Назад', patchpanels_path, class: "btn btn-outline-secondary btn-sm mb-3" %>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>Название</th>
+      <th>Монтажный шкаф</th>
+      <th>Результат импорта</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data.each do |row| %>
+      <tr>
+        <td><%= row[:num] %></td>
+        <td><%= row[:name] %></td>
+        <td><%= row[:box] %></td>
+        <% if row[:success] %>
+          <td class="import-success">
+            <i class="fas fa-check-circle"></i>
+            <%= row[:status] %>
+          </td>
+        <% else %>
+          <td class="import-failed">
+            <i class="fas fa-times"></i>
+            <%= row[:status] %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
