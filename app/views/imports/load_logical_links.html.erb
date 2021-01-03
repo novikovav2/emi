@@ -1,0 +1,36 @@
+<%= link_to 'Назад', logical_links_path, class: "btn btn-outline-secondary btn-sm mb-3" %>
+
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>Оборудование</th>
+      <th>Порт</th>
+      <th>Оборудование</th>
+      <th>Порт</th>
+      <th>Результат импорта</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @data.each do |row| %>
+      <tr>
+        <td><%= row[:num] %></td>
+        <td><%= row[:from_device] %></td>
+        <td><%= row[:from_interface] %></td>
+        <td><%= row[:to_device] %></td>
+        <td><%= row[:to_interface] %></td>
+        <% if row[:success] %>
+          <td class="import-success">
+            <i class="fas fa-check-circle"></i>
+            <%= row[:status] %>
+          </td>
+        <% else %>
+          <td class="import-failed">
+            <i class="fas fa-times"></i>
+            <%= row[:status] %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

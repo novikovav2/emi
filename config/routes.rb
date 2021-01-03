@@ -31,5 +31,8 @@ Rails.application.routes.draw do
   get 'import/patchpanels', to: 'imports#patchpanels', as: :import_patchpanels
   post 'import/patchpanels', to: 'imports#load_patchpanels'
 
+  get 'import/logical_links', to: 'imports#logical_links', as: :import_logical_links
+  post 'import/logical_links', to: 'imports#load_logical_links'
+
 
 end
