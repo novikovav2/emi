@@ -30,10 +30,10 @@
   <tbody>
   <% cables.each do |cable| %>
     <tr>
-      <td><%= link_to cable.from_node.patchpanel.box.name, cable_path(cable.from_node.patchpanel.box) %></td>
+      <td><%= link_to cable.from_node.patchpanel.box.name, box_path(cable.from_node.patchpanel.box) %></td>
       <td><%= link_to cable.from_node.patchpanel.name, patchpanel_path(cable.from_node.patchpanel) %></td>
       <td><%= cable.from_node.name %></td>
-      <td><%= link_to cable.to_node.patchpanel.box.name, cable_path(cable.to_node.patchpanel.box) %></td>
+      <td><%= link_to cable.to_node.patchpanel.box.name, box_path(cable.to_node.patchpanel.box) %></td>
       <td><%= link_to cable.to_node.patchpanel.name, patchpanel_path(cable.to_node.patchpanel) %></td>
       <td><%= cable.to_node.name %></td>
       <td><%= human_material(cable.material) %></td>

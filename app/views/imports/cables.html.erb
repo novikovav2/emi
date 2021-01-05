@@ -1,0 +1,21 @@
+<p>Импорт файла с CSV формате. Обязательны следующие поля:</p>
+<ul>
+  <li>from_box - название монтажного шкафа</li>
+  <li>from_patchpanel - название патчпанели</li>
+  <li>from_interface - название интерфейса</li>
+  <li>to_box - название монтажного шкафа</li>
+  <li>to_patchpanel - название патчпанели</li>
+  <li>to_interface - название интерфейса</li>
+</ul>
+
+<%= form_with url: import_cables_url, multipart: true, local: true do  |form| %>
+  <%= form.file_field :csv, required: true %>
+  <br>
+  <%= form.submit 'Импорт', class: "btn btn-secondary btn-sm mt-3" %>
+<!--  <div class="custom-file">-->
+    <%#= file_field_tag :csv, class: "custom-file-input", id: 'customFile' %>
+    <%#= label :csv, 'Выберите файл', class: "custom-file-label", for: "customFile" %>
+    <%#= submit_tag 'Импорт', class: "btn btn-secondary btn-sm mt-3" %>
+<!--  </div>-->
+
+<% end %>

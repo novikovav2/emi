@@ -34,5 +34,9 @@ Rails.application.routes.draw do
   get 'import/logical_links', to: 'imports#logical_links', as: :import_logical_links
   post 'import/logical_links', to: 'imports#load_logical_links'
 
+  get 'import/cables', to: 'imports#cables', as: :import_cables
+  post 'import/cables', to: 'imports#load_cables'
 
+  get 'import/patchcords', to: 'imports#patchcords', as: :import_patchcords
+  post 'import/patchcords', to: 'imports#load_patchcords'
 end
