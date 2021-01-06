@@ -94,7 +94,7 @@
           <tbody>
           <% @relations.each do |relation| %>
             <tr>
-              <td><%= relation["type"] %></td>
+              <td><%= human_types(relation["type"]) %></td>
               <td><%= relation["from"].owner.box.name %></td>
               <td><%= relation["from"].owner.name %></td>
               <td><%= relation["from"].name %></td>
