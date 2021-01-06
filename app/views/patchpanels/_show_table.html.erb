@@ -5,7 +5,10 @@
       <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
     </th>
     <th>
-      <%= render 'layouts/column_header', human_name: 'Подключен?', sort_name: 'connected' %>
+      <%= render 'layouts/column_header', human_name: 'Патчкордом подключен в', sort_name: 'connected' %>
+    </th>
+    <th>
+      СКС связан с
     </th>
     <th></th>
   </tr>
@@ -14,7 +17,24 @@
   <% interfaces.each do |interface| %>
     <tr>
       <td><%= interface.name %></td>
-      <td><%= pretty_status(interface.connected?) %></td>
+      <td>
+        <% if interface.patchcorded_to %>
+          <%= link_to interface.patchcorded_to.owner.box.name, box_path(interface.patchcorded_to.owner.box) %>
+          <i class="fas fa-long-arrow-alt-right"></i>
+          <%= link_to interface.patchcorded_to.owner.name, owner_path(interface.patchcorded_to.owner) %>
+          <i class="fas fa-long-arrow-alt-right"></i>
+          <%= interface.patchcorded_to.name %>
+        <% end %>
+      </td>
+      <td>
+        <% if interface.sks_to %>
+          <%= link_to interface.sks_to.owner.box.name, box_path(interface.sks_to.owner.box) %>
+          <i class="fas fa-long-arrow-alt-right"></i>
+          <%= link_to interface.sks_to.owner.name, owner_path(interface.sks_to.owner) %>
+          <i class="fas fa-long-arrow-alt-right"></i>
+          <%= interface.sks_to.name %>
+        <% end %>
+      </td>
       <td>
         <%= link_to edit_patchpanel_interface_path(@patchpanel, interface), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-edit"></i>

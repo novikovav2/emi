@@ -47,18 +47,31 @@
           <tr>
             <th>Название</th>
             <th>Материал</th>
-            <th>Логически подключен в</th>
+            <th>Патчкордом подключен в</th>
+            <th>Конечное подключение</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <% @device.interfaces.order_by(:name).each do |interface| %>
             <tr>
-              <td><%= link_to interface.name, device_interface_path(@device, interface) %></td>
+              <td><%= interface.name %></td>
               <td><%= human_material(interface.material) %></td>
               <td>
+                <% if interface.patchcorded_to %>
+                  <%= link_to interface.patchcorded_to.owner.box.name, box_path(interface.patchcorded_to.owner.box) %>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <%= link_to interface.patchcorded_to.owner.name, owner_path(interface.patchcorded_to.owner) %>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <%= interface.patchcorded_to.name %>
+                <% end %>
+              </td>
+              <td>
                 <% if interface.connected_to %>
-                  <%= interface.connected_to.owner.name %>_
+                  <%= link_to interface.connected_to.owner.box.name, box_path(interface.connected_to.owner.box) %>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <%= link_to interface.connected_to.owner.name, owner_path(interface.connected_to.owner) %>
+                  <i class="fas fa-long-arrow-alt-right"></i>
                   <%= interface.connected_to.name %>
                 <% end %>
               </td>

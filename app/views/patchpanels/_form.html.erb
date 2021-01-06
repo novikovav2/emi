@@ -23,7 +23,8 @@
 
   <div class="form-group">
     <%= form.label :material, 'Тип' %>
-    <%= form.select :material, options_for_select(["optic", "copper"], patchpanel.material),
+    <%= form.select :material, options_for_select([[human_material(:optic),:optic], [human_material(:copper), :copper]],
+                                                  patchpanel.material),
                     {}, class: 'form-control',
                     disabled: disabled
     %>
