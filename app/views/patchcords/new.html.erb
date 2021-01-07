@@ -1,4 +1,4 @@
-<%= link_to 'Отмена', patchcords_path, class: 'btn btn-outline-secondary btn-sm mb-3' %>
+<%= link_to 'Отмена', 'javascript:history.back()', class: 'btn btn-outline-secondary btn-sm mb-3' %>
 
 <div class="row">
   <div class="col-xl-12">
@@ -11,42 +11,73 @@
               <div class="form-group row">
                 <%= form.label :from_room, 'Помещение', class: 'col-sm-3 col-form-label' %>
                 <div class="col-sm-9">
-                  <%= form.select :from_room,
-                                  options_for_select(@rooms.collect {|i| [i.name, i.id]}, ),
-                                  { include_blank: true },
-                                  class: 'form-control',
-                                  id: 'from-room' %>
+                  <% if @from_device.id %>
+                    <%= form.select :from_room,
+                                    options_for_select(@rooms.collect {|i| [i.name, i.id]}, @from_device.box.room.id),
+                                    { include_blank: true },
+                                    class: 'form-control',
+                                    id: 'from-room' %>
+                  <% else %>
+                    <%= form.select :from_room,
+                                    options_for_select(@rooms.collect {|i| [i.name, i.id]}, ),
+                                    { include_blank: true },
+                                    class: 'form-control',
+                                    id: 'from-room' %>
+                  <% end %>
                 </div>
               </div>
               <div class="form-group row">
-                <%= form.label :from_box, 'Стойка', class: 'col-sm-3 col-form-label' %>
-                <div class="col-sm-9">
-                  <%= form.select :from_box,
-                                  %w(),
-                                  {}, class: 'form-control',
-                                  disabled: true,
-                                  id: 'from-box' %>
+                  <%= form.label :from_box, 'Стойка', class: 'col-sm-3 col-form-label' %>
+                  <div class="col-sm-9">
+                    <% if @from_device.id %>
+                      <%= form.select :from_box,
+                                    options_for_select(@from_device.box.room.boxes.collect {|i| [i.name, i.id]}, @from_device.box.id),
+                                    {}, class: 'form-control',
+                                    id: 'from-box' %>
+                    <% else %>
+                        <%= form.select :from_box,
+                                        %w(),
+                                        {}, class: 'form-control',
+                                        disabled: true,
+                                        id: 'from-box' %>
+                    <% end %>
                 </div>
               </div>
               <div class="form-group row">
-                <%= form.label :from_patchpanel, 'Оборудование', class: 'col-sm-3 col-form-label' %>
-                <div class="col-sm-9">
-                  <%= form.select :from_patchpanel,
-                                  %w(),
-                                  {}, class: 'form-control',
-                                  disabled: true,
-                                  id: 'from-patchpanel' %>
-                </div>
+
+                  <%= form.label :from_patchpanel, 'Оборудование', class: 'col-sm-3 col-form-label' %>
+                  <div class="col-sm-9">
+                    <% if @from_device.id %>
+                      <%= form.select :from_patchpanel,
+                                    options_for_select(@from_device.box.devices.collect {|i| [i.name, i.id]}, @from_device.id),
+                                    {}, class: 'form-control',
+                                    id: 'from-patchpanel' %>
+                    <% else %>
+                      <%= form.select :from_patchpanel,
+                                    %w(),
+                                    {}, class: 'form-control',
+                                    disabled: true,
+                                    id: 'from-patchpanel' %>
+                    <% end %>
+                  </div>
               </div>
               <div class="form-group row">
                 <%= form.label :from_node, 'Порт', class: 'col-sm-3 col-form-label' %>
                 <div class="col-sm-9">
-                  <%= form.select :from_node,
-                                  %w(),
-                                  {}, class: 'form-control',
-                                  disabled: true,
-                                  required: true,
-                                  id: 'from-interface' %>
+                  <% if @from_interface.id %>
+                    <%= form.select :from_node,
+                                    options_for_select(@from_device.interfaces.collect {|i| [i.name, i.id]}, @from_interface.id),
+                                    {}, class: 'form-control',
+                                    required: true,
+                                    id: 'from-interface' %>
+                  <% else %>
+                    <%= form.select :from_node,
+                                    %w(),
+                                    {}, class: 'form-control',
+                                    disabled: true,
+                                    required: true,
+                                    id: 'from-interface' %>
+                  <% end %>
                 </div>
               </div>
               <div class="form-group row">

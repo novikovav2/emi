@@ -134,7 +134,15 @@ class LogicalLinksController < ApplicationController
   # GET /logical_links/new
   def new
     @page_title << 'Новая логическая связь'
-    @logical_link = LogicalLink.new(from_node: Interface.new(),
+    if params[:from_node]
+      @from_interface = Interface.find(params[:from_node])
+      @from_device = @from_interface.device
+    else
+      @from_interface = Interface.new
+      @from_device = Device.new
+    end
+
+    @logical_link = LogicalLink.new(from_node: @from_interface,
                                     to_node: Interface.new())
     @devices = Device.all.order(:name)
   end

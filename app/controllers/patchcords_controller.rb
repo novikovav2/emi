@@ -40,10 +40,16 @@ class PatchcordsController < ApplicationController
   # GET /patchcords/new
   def new
     @page_title << 'Новый патчкорд'
+    if params[:from_node]
+      @from_interface = Interface.find(params[:from_node])
+      @from_device = @from_interface.device
+    else
+      @from_interface = Interface.new
+      @from_device = Device.new
+    end
     @patchcord = Patchcord.new(from_node: Interface.new,
                                to_node: Interface.new)
     @rooms = Room.all.order(:name)
-    # @interfaces = Interface.where(connected: false)
   end
 
   # POST /patchcords

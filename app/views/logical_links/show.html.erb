@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between">
   <div class="ml-0">
-    <%= link_to 'Назад', logical_links_path, class: 'btn btn-outline-secondary mr-2 btn-sm' %>
+    <%= link_to 'Назад', 'javascript:history.back()', class: 'btn btn-outline-secondary mr-2 btn-sm' %>
   </div>
   <div class="mr-0">
     <%= link_to 'Удалить', @logical_link, method: :delete, data: { confirm: 'Are you sure?' },
@@ -46,7 +46,7 @@
           <span class="text-black-50">Стойка:</span> <%= @logical_link.from_node.device.box.name %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Патчпанель:</span> <%= @logical_link.from_node.device.name %>
+          <span class="text-black-50">Оборудование:</span> <%= @logical_link.from_node.device.name %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @logical_link.from_node.name %>
@@ -64,7 +64,7 @@
           <span class="text-black-50">Стойка:</span> <%= @logical_link.to_node.device.box.name %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Патчпанель:</span> <%= @logical_link.to_node.device.name %>
+          <span class="text-black-50">Оборудование:</span> <%= @logical_link.to_node.device.name %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @logical_link.to_node.name %>

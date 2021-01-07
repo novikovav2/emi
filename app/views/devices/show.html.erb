@@ -48,7 +48,8 @@
             <th>Название</th>
             <th>Материал</th>
             <th>Патчкордом подключен в</th>
-            <th>Конечное подключение</th>
+            <th>Логическая связь до</th>
+            <th>Фактическое подключение до</th>
             <th></th>
           </tr>
           </thead>
@@ -64,6 +65,28 @@
                   <%= link_to interface.patchcorded_to.owner.name, owner_path(interface.patchcorded_to.owner) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
                   <%= interface.patchcorded_to.name %>
+                  <%= link_to patchcord_path(interface.query_as(:i1).match('(i1)-[r:PHYSICAL_PATCHCORD]-(:Interface)')
+                                                      .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+                    <i class="far fa-eye"></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to 'Добавить', new_patchcord_path(from_node: interface.id)  %>
+                <% end %>
+              </td>
+              <td>
+                <% if interface.logical_linked_to %>
+                  <%= link_to interface.logical_linked_to.owner.box.name, box_path(interface.logical_linked_to.owner.box) %>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <%= link_to interface.logical_linked_to.owner.name, owner_path(interface.logical_linked_to.owner) %>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <%= interface.logical_linked_to.name %>
+
+                  <%= link_to logical_link_path(interface.query_as(:i1).match('(i1)-[r:LOGICAL_LINK]-(:Interface)')
+                                                  .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+                    <i class="far fa-eye"></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to 'Добавить', new_logical_link_path(from_node: interface.id)  %>
                 <% end %>
               </td>
               <td>
@@ -73,6 +96,8 @@
                   <%= link_to interface.connected_to.owner.name, owner_path(interface.connected_to.owner) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
                   <%= interface.connected_to.name %>
+                <% else %>
+                  -
                 <% end %>
               </td>
               <td>

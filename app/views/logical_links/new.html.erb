@@ -1,4 +1,4 @@
-<%= link_to 'Отмена', logical_links_path, class: 'btn btn-outline-secondary btn-sm mb-3' %>
+<%= link_to 'Отмена', 'javascript:history.back()', class: 'btn btn-outline-secondary btn-sm mb-3' %>
 
 <div class="row">
   <div class="col-xl-12">
@@ -12,7 +12,7 @@
                 <%= form.label :from_device, 'Оборудование', class: 'col-sm-3 col-form-label' %>
                 <div class="col-sm-9">
                   <%= form.select :from_device,
-                                  options_for_select(@devices.collect {|i| [i.name, i.id]}, ),
+                                  options_for_select(@devices.collect {|i| [i.name, i.id]}, @from_device.id ),
                                   { include_blank: true },
                                   class: 'form-control',
                                   id: 'from-device' %>
@@ -21,12 +21,22 @@
               <div class="form-group row">
                 <%= form.label :from_node, 'Порт', class: 'col-sm-3 col-form-label' %>
                 <div class="col-sm-9">
-                  <%= form.select :from_node,
-                                  %w(),
-                                  {}, class: 'form-control',
-                                  disabled: true,
-                                  required: true,
-                                  id: 'from-interface' %>
+                  <% if @from_device.id %>
+                    <%= form.select :from_node,
+                                    options_for_select(@from_device.interfaces.collect {|i| [i.name, i.id]}, @from_interface.id ),
+                                    { include_blank: true },
+                                    class: 'form-control',
+                                    required: true,
+                                    id: 'from-interface' %>
+                  <% else %>
+                    <%= form.select :from_node,
+                                    %w(),
+                                    { include_blank: true },
+                                    class: 'form-control',
+                                    disabled: true,
+                                    required: true,
+                                    id: 'from-interface' %>
+                  <% end %>
                 </div>
               </div>
             </div>
