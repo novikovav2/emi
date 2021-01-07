@@ -70,11 +70,12 @@ class DevicesController < ApplicationController
   # DELETE /devices/1
   # DELETE /devices/1.json
   def destroy
-    @device.interfaces.destroy_all
-    @device.destroy
-    respond_to do |format|
-      format.html { redirect_to devices_url, notice: 'Device was successfully destroyed.' }
-      format.json { head :no_content }
+    if @device.destroy
+      flash[:notice] = 'Device was successfully destroyed.'
+      redirect_to devices_path
+    else
+      flash[:alert] = @device.errors.messages[:base][0]
+      redirect_back(fallback_location: device_path(@device))
     end
   end
 

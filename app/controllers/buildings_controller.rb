@@ -62,10 +62,12 @@ class BuildingsController < ApplicationController
   # DELETE /buildings/1
   # DELETE /buildings/1.json
   def destroy
-    @building.destroy
-    respond_to do |format|
-      format.html { redirect_to buildings_url, notice: 'Building was successfully destroyed.' }
-      format.json { head :no_content }
+    if @building.destroy
+      flash[:notice] = 'Building was successfully destroyed.'
+      redirect_to buildings_path
+    else
+      flash[:alert] = @building.errors.messages[:base][0]
+      redirect_back(fallback_location: building_path(@building))
     end
   end
 

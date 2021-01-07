@@ -17,8 +17,23 @@
         <div class="card-body">
           <p class="card-text">
             <i class="fab fa-perbyte"></i>
-            Помещений:
-            <%= building.rooms ? building.rooms.count : 0 %>
+            Помещений: <%= building.rooms.count %>
+          </p>
+          <p class="card-text">
+            <i class="fas fa-pause"></i>
+            Монтажных шкафов: <%= building.rooms.boxes.count %>
+          </p>
+          <p class="card-text">
+            <i class="fas fa-dice-six"></i>
+            Патчпанелей: <%= building.rooms.boxes.patchpanels.count %>
+          </p>
+          <p class="card-text">
+            <i class="fas fa-microchip"></i>
+            Оборудования: <%= building.rooms.boxes.devices.count %>
+          </p>
+          <p class="card-text">
+            <i class="fas fa-equals"></i>
+            Кабелей СКС: <%= building.rooms.boxes.patchpanels.interfaces.sks_to.count/2 %>
           </p>
           <div class="text-right">
             <%= link_to building, method: :delete, data: { confirm: 'Are you sure?' },

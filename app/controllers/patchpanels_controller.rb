@@ -72,11 +72,12 @@ class PatchpanelsController < ApplicationController
   # DELETE /patchpanels/1
   # DELETE /patchpanels/1.json
   def destroy
-    @patchpanel.interfaces.destroy_all
-    @patchpanel.destroy
-    respond_to do |format|
-      format.html { redirect_to patchpanels_url, notice: 'Patchpanel was successfully destroyed.' }
-      format.json { head :no_content }
+    if @patchpanel.destroy
+      flash[:notice] = 'Patchpanel was successfully destroyed.'
+      redirect_to patchpanels_url
+    else
+      flash[:alert] = @patchpanel.errors.messages[:base][0]
+      redirect_back(fallback_location: patchpanel_path(@patchpanel))
     end
   end
 

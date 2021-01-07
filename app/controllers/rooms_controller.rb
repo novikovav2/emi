@@ -65,10 +65,12 @@ class RoomsController < ApplicationController
   # DELETE /rooms/1
   # DELETE /rooms/1.json
   def destroy
-    @room.destroy
-    respond_to do |format|
-      format.html { redirect_to rooms_url, notice: 'Помещение успешно удалено' }
-      format.json { head :no_content }
+    if @room.destroy
+      flash[:notice] = 'Room was successfully destroyed.'
+      redirect_to rooms_path
+    else
+      flash[:alert] = @room.errors.messages[:base][0]
+      redirect_back(fallback_location: room_path(@room))
     end
   end
 

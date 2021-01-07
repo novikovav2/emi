@@ -89,15 +89,13 @@ class InterfacesController < ApplicationController
   # DELETE /interfaces/1
   # DELETE /interfaces/1.json
   def destroy
-    @interface.destroy
-    flash[:notice] = 'Interface was successfully destroyed.'
-    respond_to do |format|
-      format.html {
-        @device ? redirect_back(fallback_location: device_path(@device)) :
-            redirect_back(fallback_location: patchpanel_path(@patchpanel))
-      }
-      format.json { head :no_content }
+    if @interface.destroy
+      flash[:notice] = 'Interface was successfully destroyed.'
+    else
+      flash[:alert] = @interface.errors.messages[:base][0]
     end
+    @device ? redirect_back(fallback_location: device_path(@device)) :
+      redirect_back(fallback_location: patchpanel_path(@patchpanel))
   end
 
   def generate

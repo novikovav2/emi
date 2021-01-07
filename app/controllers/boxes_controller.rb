@@ -69,10 +69,12 @@ class BoxesController < ApplicationController
   # DELETE /boxes/1
   # DELETE /boxes/1.json
   def destroy
-    @box.destroy
-    respond_to do |format|
-      format.html { redirect_to boxes_url, notice: 'Box was successfully destroyed.' }
-      format.json { head :no_content }
+    if @box.destroy
+      flash[:notice] = 'Box was successfully destroyed.'
+      redirect_to boxes_path
+    else
+      flash[:alert] = @box.errors.messages[:base][0]
+      redirect_back(fallback_location: box_path(@box))
     end
   end
 
