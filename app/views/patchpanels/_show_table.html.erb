@@ -24,6 +24,12 @@
           <%= link_to interface.patchcorded_to.owner.name, owner_path(interface.patchcorded_to.owner) %>
           <i class="fas fa-long-arrow-alt-right"></i>
           <%= interface.patchcorded_to.name %>
+          <%= link_to patchcord_path(interface.query_as(:i1).match('(i1)-[r:PHYSICAL_PATCHCORD]-(:Interface)')
+                                                 .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+            <i class="far fa-eye"></i>
+          <% end %>
+        <% else %>
+          <%= link_to 'Добавить', new_patchcord_path(from_node: interface.id) %>
         <% end %>
       </td>
       <td>
@@ -33,6 +39,12 @@
           <%= link_to interface.sks_to.owner.name, owner_path(interface.sks_to.owner) %>
           <i class="fas fa-long-arrow-alt-right"></i>
           <%= interface.sks_to.name %>
+          <%= link_to cable_path(interface.query_as(:i1).match('(i1)-[r:PHYSICAL_CABLE]-(:Interface)')
+                                                 .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+            <i class="far fa-eye"></i>
+          <% end %>
+        <% else %>
+          <%= link_to 'Добавить', new_cable_path(from_node: interface.id) %>
         <% end %>
       </td>
       <td>

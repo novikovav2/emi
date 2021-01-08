@@ -42,7 +42,7 @@ class PatchcordsController < ApplicationController
     @page_title << 'Новый патчкорд'
     if params[:from_node]
       @from_interface = Interface.find(params[:from_node])
-      @from_device = @from_interface.device
+      @from_device = @from_interface.owner
     else
       @from_interface = Interface.new
       @from_device = Device.new

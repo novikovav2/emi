@@ -41,7 +41,13 @@ class CablesController < ApplicationController
   # GET /cables/new
   def new
     @page_title << 'Новый кабель'
-
+    if params[:from_node]
+      @from_interface = Interface.find(params[:from_node])
+      @from_patchpanel = @from_interface.owner
+    else
+      @from_interface = Interface.new
+      @from_patchpanel = Patchpanel.new
+    end
     @cable = Cable.new(from_node: Interface.new(),
                        to_node: Interface.new())
     @rooms = Room.all.order(:name)

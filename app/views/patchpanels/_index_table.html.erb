@@ -2,10 +2,10 @@
   <thead>
   <tr>
     <th>
-      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
+      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'box' %>
     </th>
     <th>
-      <%= render 'layouts/column_header', human_name: 'Стойка', sort_name: 'box' %>
+      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
     </th>
     <th>К-во интерфейсов</th>
     <th>Действия</th>
@@ -14,8 +14,8 @@
   <tbody>
   <% patchpanels.each do |patchpanel| %>
     <tr>
-      <td><%= link_to patchpanel.name, patchpanel %></td>
       <td><%= link_to patchpanel.box.name, box_path(patchpanel.box) %></td>
+      <td><%= link_to patchpanel.name, patchpanel %></td>
       <td><%= patchpanel.interfaces ? patchpanel.interfaces.count : 0 %></td>
       <td>
         <%= link_to edit_patchpanel_path(patchpanel), class: 'text-muted text-right mr-3' do %>

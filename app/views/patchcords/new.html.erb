@@ -49,7 +49,7 @@
                   <div class="col-sm-9">
                     <% if @from_device.id %>
                       <%= form.select :from_patchpanel,
-                                    options_for_select(@from_device.box.devices.collect {|i| [i.name, i.id]}, @from_device.id),
+                                    options_for_select(@from_device.box.children.collect {|i| [i.name, i.id]}, @from_device.id),
                                     {}, class: 'form-control',
                                     id: 'from-patchpanel' %>
                     <% else %>
