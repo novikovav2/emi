@@ -21,16 +21,21 @@
     <%= form.select :box, Box.all.collect {|x| [x.name, x.id]}, {}, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= form.label :material, 'Тип' %>
-    <%= form.select :material, options_for_select([[human_material(:optic),:optic], [human_material(:copper), :copper]],
-                                                  patchpanel.material),
-                    {}, class: 'form-control',
-                    disabled: disabled
-    %>
+  <div class="form-check form-check-inline">
+    <%= form.radio_button :material, :copper, class: 'form-check-input', disabled: disabled,
+                          checked: patchpanel.material == :copper,
+                          required: true %>
+    <%= form.label :material, human_material(:copper), value: :copper, class: "form-check-label" %>
+  </div>
+  <div class="form-check form-check-inline">
+    <%= form.radio_button :material, :optic, class: 'form-check-input', disabled: disabled,
+                          checked: patchpanel.material == :optic,
+                          required: true %>
+    <%= form.label :material, human_material(:optic), value: :optic, class: "form-check-label" %>
   </div>
 
-  <div class="actions">
+
+  <div class="actions mt-3">
     <%= form.submit 'Сохранить', class: 'btn btn-secondary' %>
   </div>
 <% end %>

@@ -43,10 +43,10 @@
           Начало
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Стойка:</span> <%= @logical_link.from_node.device.box.name %>
+          <span class="text-black-50">Стойка:</span> <%= link_to @logical_link.from_node.device.box.name, box_path(@logical_link.from_node.device.box) %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Оборудование:</span> <%= @logical_link.from_node.device.name %>
+          <span class="text-black-50">Оборудование:</span> <%= link_to @logical_link.from_node.device.name, device_path(@logical_link.from_node.device) %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @logical_link.from_node.name %>
@@ -61,10 +61,10 @@
           Конец
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Стойка:</span> <%= @logical_link.to_node.device.box.name %>
+          <span class="text-black-50">Стойка:</span> <%= link_to @logical_link.to_node.device.box.name, box_path(@logical_link.to_node.device.box) %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Оборудование:</span> <%= @logical_link.to_node.device.name %>
+          <span class="text-black-50">Оборудование:</span> <%= link_to @logical_link.to_node.device.name, device_path(@logical_link.to_node.device) %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @logical_link.to_node.name %>

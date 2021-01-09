@@ -43,10 +43,10 @@
           Начало
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Стойка:</span> <%= @patchcord.from_node.owner.box.name %>
+          <span class="text-black-50">Стойка:</span> <%= link_to @patchcord.from_node.owner.box.name, box_path(@patchcord.from_node.owner.box) %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Патчпанель:</span> <%= @patchcord.from_node.owner.name %>
+          <span class="text-black-50">Оборудование:</span> <%= link_to @patchcord.from_node.owner.name, owner_path(@patchcord.from_node.owner) %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @patchcord.from_node.name %>
@@ -61,10 +61,10 @@
           Конец
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Стойка:</span> <%= @patchcord.to_node.owner.box.name %>
+          <span class="text-black-50">Стойка:</span> <%= link_to @patchcord.to_node.owner.box.name, box_path(@patchcord.to_node.owner.box) %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Патчпанель:</span> <%= @patchcord.to_node.owner.name %>
+          <span class="text-black-50">Оборудование:</span> <%= link_to @patchcord.to_node.owner.name, owner_path(@patchcord.to_node.owner) %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @patchcord.to_node.name %>

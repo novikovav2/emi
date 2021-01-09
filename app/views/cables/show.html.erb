@@ -44,10 +44,10 @@
           Начало
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Стойка:</span> <%= @cable.from_node.patchpanel.box.name %>
+          <span class="text-black-50">Стойка:</span> <%= link_to @cable.from_node.patchpanel.box.name, box_path(@cable.from_node.patchpanel.box) %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Патчпанель:</span> <%= @cable.from_node.patchpanel.name %>
+          <span class="text-black-50">Патчпанель:</span> <%= link_to @cable.from_node.patchpanel.name, patchpanel_path(@cable.from_node.patchpanel) %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @cable.from_node.name %>
@@ -62,10 +62,10 @@
           Конец
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Стойка:</span> <%= @cable.to_node.patchpanel.box.name %>
+          <span class="text-black-50">Стойка:</span> <%= link_to @cable.to_node.patchpanel.box.name, box_path(@cable.to_node.patchpanel.box) %>
         </p>
         <p class="mb-0">
-          <span class="text-black-50">Патчпанель:</span> <%= @cable.to_node.patchpanel.name %>
+          <span class="text-black-50">Патчпанель:</span> <%= link_to @cable.to_node.patchpanel.name, patchpanel_path(@cable.to_node.patchpanel) %>
         </p>
         <p class="mb-0">
           <span class="text-black-50">Интерфейс:</span> <%= @cable.to_node.name %>

@@ -7,6 +7,7 @@
     <th>
       <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
     </th>
+    <th>Тип</th>
     <th>К-во интерфейсов</th>
     <th>Действия</th>
   </tr>
@@ -16,6 +17,7 @@
     <tr>
       <td><%= link_to patchpanel.box.name, box_path(patchpanel.box) %></td>
       <td><%= link_to patchpanel.name, patchpanel %></td>
+      <td><%= human_material(patchpanel.material) %></td>
       <td><%= patchpanel.interfaces ? patchpanel.interfaces.count : 0 %></td>
       <td>
         <%= link_to edit_patchpanel_path(patchpanel), class: 'text-muted text-right mr-3' do %>
