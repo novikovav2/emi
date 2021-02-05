@@ -26,10 +26,10 @@ module Emi
   class Application < Rails::Application
 
     # Enable ActiveGraph generators, e.g:  rails generate model Admin --parent User
-    config.generators do |g|
-      g.orm :active_graph
-      # g.test_framework  :rspec, :fixture => false
-    end
+    # config.generators do |g|
+    #   g.orm :active_graph
+    #   # g.test_framework  :rspec, :fixture => false
+    # end
 
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0

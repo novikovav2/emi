@@ -6,7 +6,7 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb pt-3 mb-3 border-bottom">
     <li class="breadcrumb-item " aria-current="page">
-      <a href="#">Главная</a>
+      <%= link_to 'Главная', root_path %>
     </li>
     <% @page_title.each_with_index do |item, index| %>
       <% if index != @page_title.size - 1 %>

@@ -1,0 +1,137 @@
+<div class="row">
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Здания', buildings_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @buildings %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Помещения', rooms_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @rooms %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Монтажные шкафы', boxes_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @boxes %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Патчпанели', patchpanels_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @patchpanels %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Оборудование', devices_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @devices %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Кабели СКС', cables_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @cables %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Патчкорды', patchcords_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @patchcords %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-group col-xl-3 col-md-5">
+    <div class="card d-block   mb-3">
+      <div class="card-header bg-secondary pb-0">
+        <h4 class="mt-0 h4 card-text">
+          <%= link_to 'Логические связи', logical_links_path, class: 'text-white' %>
+        </h4>
+        <p class="text-small text-white">
+        </p>
+      </div>
+      <div class="card-body">
+        <p class="card-text">
+          Всего: <%= @logical_links %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
