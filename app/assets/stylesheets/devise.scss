@@ -1,0 +1,30 @@
+.devise {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+
+  &_container {
+    margin: 0 auto;
+    width: 300px;
+    text-align: center;
+    //border: 2px solid black;
+  }
+
+  &_input {
+    border-radius: 0;
+
+    &__first {
+      border-radius: 5px 5px 0 0;
+    }
+
+    &__last {
+      border-radius: 0 0 5px 5px;
+    }
+  }
+}
+
+.field {
+  margin-top: 10px;
+}
+
+

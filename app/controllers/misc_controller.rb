@@ -1,4 +1,5 @@
 class MiscController < ApplicationController
+  before_action :authenticate_user!
 
   # Получаем список оборудования или патчпанелей в стойке
   # GET '/box_children/:id'

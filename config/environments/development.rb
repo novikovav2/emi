@@ -64,4 +64,6 @@ Rails.application.configure do
   config.neo4j.driver.password = ENV["NEO4J_PASS"]
   config.neo4j.driver.encryption = false
 
+  # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
 end

@@ -1,4 +1,5 @@
 class CablesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_page_title
   before_action :set_cable, only: [:show, :edit, :update, :destroy]
   before_action :set_where_hash, only: [:index]

@@ -1,4 +1,5 @@
 class ImportsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_page_title
 
   # GET /imports/devices

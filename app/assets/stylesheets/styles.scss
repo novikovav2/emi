@@ -48,3 +48,13 @@
   justify-content: end;
   align-items: center;
 }
+
+.beta-testing-warning {
+  position: absolute;
+  top: 50px;
+  left: 700px;
+  font-size: 24px;
+  color: red;
+  border: 1px solid darkred;
+  padding: 10px 20px;
+}

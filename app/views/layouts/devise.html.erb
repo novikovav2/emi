@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ЭМИ</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body class="devise">
+  <p class="beta-testing-warning">
+    Платформа проходит стадию бета тестирования
+  </p>
+  <div class="devise_container">
+    <%= image_tag 'logo.png', alt: 'logo', class: 'mb-2' %>
+    <%= yield %>
+  </div>
+</body>
+</html>

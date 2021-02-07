@@ -1,4 +1,5 @@
 class DevicesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_page_title
   before_action :set_device, only: [:show, :edit, :update, :destroy]
   before_action :set_where_string, only: [:index]

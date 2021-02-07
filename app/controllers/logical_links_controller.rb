@@ -1,4 +1,5 @@
 class LogicalLinksController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_page_title
   before_action :set_logical_link, only: [:show, :destroy]
   before_action :set_where_string, only: [:index]
