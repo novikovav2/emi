@@ -53,6 +53,6 @@ test:
 #  username: emi
 #  password: <%#= ENV['EMI_DATABASE_PASSWORD'] %>
 
-   production:
-     url: <%= ENV['DATABASE_URL'] %>
-     ssl_mode: disabled
+production:
+  url: <%= ENV['DATABASE_URL'] %>
+  ssl_mode: disabled
