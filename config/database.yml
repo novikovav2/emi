@@ -47,8 +47,12 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: emi_production
-  username: emi
-  password: <%= ENV['EMI_DATABASE_PASSWORD'] %>
+#production:
+#  <<: *default
+#  database: emi_production
+#  username: emi
+#  password: <%#= ENV['EMI_DATABASE_PASSWORD'] %>
+
+   production:
+     url: <%= ENV['DATABASE_URL'] %>
+     ssl_mode: disabled

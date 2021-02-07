@@ -107,4 +107,11 @@ Rails.application.configure do
 
 
   # config.action_mailer.default_url_options = { host: 'sensors.novikovav2.ru', port: 443 }
+  #
+
+  config.neo4j.driver.url = ENV["NEO4J_URL"]
+  config.neo4j.driver.username = ENV["NEO4J_USER"]
+  config.neo4j.driver.password = ENV["NEO4J_PASS"]
+  config.neo4j.driver.encryption = false
+
 end
