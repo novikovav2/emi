@@ -309,6 +309,84 @@ class ImportsController < ApplicationController
     end
   end
 
+  # GET /imports/interfaces
+  def interfaces
+    @page_title << 'Интерфейсы'
+  end
+
+  # POST /imports/interfaces
+  def load_interfaces
+    require 'csv'
+    @page_title << 'Результат импорта'
+
+    @data = []
+    i = 1
+    CSV.foreach(params[:csv], headers: true ) do |row|
+      data_row = {num: i,
+                  type: row['type'],
+                  box: row['box'],
+                  name: row['name'],
+                  interface_name: row['interface_name'],
+                  interface_type: row['interface_type']}
+      status = ''
+      success = false
+
+      box = nil
+      is_device = false
+      is_patchpanel = false
+      box = Box.where(name: row['box'])
+      if box
+        status += 'Box found. '
+        device = nil
+        if row['type'] == 'device'
+          device = box.devices.where(name: row['name']).first
+          is_device = true
+          device ? status += 'Device found. ' : status += 'Device not found. '
+        elsif row['type'] == 'patchpanel'
+          device = box.patchpanels.where(name: row['name']).first
+          is_patchpanel = true
+          device ? status += 'Patchpanel found. ' : status += 'Patchpanel not found. '
+        else
+          status += 'Type incorrect. '
+        end
+      end
+
+
+
+      material_interface = nil
+      if row['interface_type'] == 'optic'
+        material_interface = :optic
+        status += 'Material - optic. '
+      elsif row['interface_type'] == 'copper'
+        material_interface = :copper
+        status += 'Material - copper. '
+      else
+        status += 'Material incorrect. '
+      end
+
+      if device and material_interface
+        if is_device or (is_patchpanel and device.material == material_interface)
+          interface = Interface.new(name: row['interface_name'], material: material_interface)
+          is_device ? interface.device = device : interface.patchpanel = device
+          if interface.save
+            status += 'Interface created. '
+            success = true
+          else
+            status += 'Interface not created. '
+          end
+        else
+          status += 'Materials not equal. '
+
+        end
+      end
+
+      data_row[:status] = status
+      data_row[:success] = success
+      @data << data_row
+      i += 1
+    end
+  end
+
   private
   def set_page_title
     @page_title = ['Импорт']

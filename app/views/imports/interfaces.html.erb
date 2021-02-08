@@ -1,0 +1,14 @@
+<p>Импорт файла в CSV формате. Обязательны следующие поля:</p>
+<ul>
+  <li>type - тип оборудования (device | patchpanel)</li>
+  <li>box - название монтажного шкафа, в котором установлено оборудование (патчпанель)</li>
+  <li>name - название оборудования | патчпанели</li>
+  <li>interface_name - название интерфейса</li>
+  <li>interface_type - тип интерфейса (optic | copper)</li>
+</ul>
+
+<%= form_with url: import_interfaces_url, multipart: true, local: true do  |form| %>
+  <%= form.file_field :csv, required: true %>
+  <br>
+  <%= form.submit 'Импорт', class: "btn btn-secondary btn-sm mt-3" %>
+<% end %>

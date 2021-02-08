@@ -42,4 +42,7 @@ Rails.application.routes.draw do
 
   get 'import/patchcords', to: 'imports#patchcords', as: :import_patchcords
   post 'import/patchcords', to: 'imports#load_patchcords'
+
+  get 'import/interfaces', to: 'imports#interfaces', as: :import_interfaces
+  post 'import/interfaces', to: 'imports#load_interfaces'
 end

@@ -9,13 +9,16 @@
   <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 
-<body class="devise">
+<body>
   <p class="beta-testing-warning">
     Платформа проходит стадию бета тестирования
   </p>
-  <div class="devise_container">
-    <%= image_tag 'logo.png', alt: 'logo', class: 'mb-2' %>
-    <%= yield %>
+  <div class="devise">
+    <div class="devise_container">
+      <%= image_tag 'logo.png', alt: 'logo', class: 'mb-2' %>
+      <%= yield %>
+    </div>
   </div>
+
 </body>
 </html>

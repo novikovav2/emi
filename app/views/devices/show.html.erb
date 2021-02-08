@@ -39,8 +39,13 @@
           <div class="text-muted font-weight-bold text-uppercase">
             Интерфейсы
           </div>
-          <%= link_to 'Добавить', new_device_interface_path(@device),
-                      class: 'btn btn-secondary btn-sm' %>
+          <div>
+            <%= link_to 'Добавить', new_device_interface_path(@device),
+                        class: 'btn btn-secondary btn-sm' %>
+            <%= link_to 'Импорт', import_interfaces_path,
+                        class: 'btn btn-secondary btn-sm' %>
+          </div>
+
         </div>
         <table class="table table-sm table-striped mt-2">
           <thead>

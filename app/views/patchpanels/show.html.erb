@@ -59,6 +59,9 @@
 
             <%= link_to 'Добавить 1шт.', new_patchpanel_interface_path(@patchpanel),
                         class: 'btn btn-secondary btn-sm' %>
+
+            <%= link_to 'Импорт', import_interfaces_path,
+                        class: 'btn btn-secondary btn-sm' %>
           </div>
         </div>
         <%= render 'show_table', interfaces: @interfaces %>
