@@ -115,6 +115,6 @@ Rails.application.configure do
   config.neo4j.driver.encryption = false
 
 
-  config.cache_store = :redis_cache_store, ENV["REDIS_URL"]
+  config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
 
 end
