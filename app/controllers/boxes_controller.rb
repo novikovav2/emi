@@ -5,20 +5,34 @@ class BoxesController < ApplicationController
   before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index, :show]
   before_action :set_order, only: [:index]
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /boxes
   # GET /boxes.json
   def index
-    @boxes_count = Box.all.count
+    @boxes_count = Rails.cache.fetch('boxes_count') do
+                      Box.all.count
+                    end
 
     search = "(b:Box)-[]->(r:Room)"
     request = ActiveGraph::Base.new_query.match(search)
 
-    @boxes = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('b')
+    @boxes = Rails.cache.fetch('boxes') do
+                request.where(@where_string)
+                       .order(@sort_string)
+                       .skip(@skip)
+                       .limit(@limit)
+                       .pluck('b')
+              end
+
 
     # Для фильтрации
-    @boxes_list = request.order('b.name').pluck('distinct b')
-    @rooms = request.order('r.name').pluck('distinct r')
+    @boxes_list = Rails.cache.fetch('boxes_list') do
+                    request.order('b.name').pluck('distinct b')
+                  end
+    @rooms = Rails.cache.fetch('rooms') do
+              request.order('r.name').pluck('distinct r')
+            end
   end
 
   # GET /boxes/1
@@ -127,4 +141,12 @@ class BoxesController < ApplicationController
       @sort_string += ' desc'
     end
   end
+
+  def clear_cache
+    Rails.cache.delete('boxes')
+    Rails.cache.delete('boxes_count')
+    Rails.cache.delete('boxes_list')
+    Rails.cache.delete('rooms')
+  end
 end
+
