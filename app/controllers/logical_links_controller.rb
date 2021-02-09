@@ -27,6 +27,7 @@ class LogicalLinksController < ApplicationController
     # Для фильтрации
     @devices = ActiveGraph::Base.new_query
                                   .match("(d:Device)-[]-(:Interface)-[:LOGICAL_LINK]-(:Interface)")
+                                  .order('d.name')
                                   .pluck('distinct d')
     @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 
@@ -67,19 +68,22 @@ class LogicalLinksController < ApplicationController
 
 
     else
-      request = ActiveGraph::Base.query("MATCH (start:Interface {uuid: $start_id}),
+      @logical_link.from_node.connected_to ? start_node = @logical_link.from_node.connected_to : start_node = @logical_link.from_node
+      @logical_link.to_node.connected_to ? end_node = @logical_link.to_node.connected_to : end_node = @logical_link.to_node
+      request = ActiveGraph::Base.query('MATCH (start:Interface {uuid: $start_id}),
                                          (end:Interface {uuid: $end_id})
                                          CALL gds.alpha.shortestPath.stream({
-                                          nodeQuery: 'match (n) return id(n) as id',
-                                          relationshipQuery: 'match (n)-[r]-(m) return id(n) as source, id(m) as target, r.length as weight',
+                                          nodeQuery: "match (n) return id(n)  as id",
+                                          relationshipQuery: "match (n)-[r]-(m) where type(r) <> \'LOGICAL_LINK\'
+                                                              return id(n) as source, id(m) as target, r.length as weight",
                                           startNode: start,
                                           endNode: end,
-                                          relationshipWeightProperty: 'weight'
+                                          relationshipWeightProperty: "weight"
                                         })
                                         YIELD nodeId, cost
-                                        RETURN gds.util.asNode(nodeId) AS name, cost",
-                                        start_id: @logical_link.from_node.id,
-                                        end_id: @logical_link.to_node.id)
+                                        RETURN gds.util.asNode(nodeId) AS name, cost',
+                                        start_id: start_node.id,
+                                        end_id: end_node.id)
       nodes = []
       loop do
         begin

@@ -19,8 +19,8 @@ class DevicesController < ApplicationController
 
     # Для фильтрации
     @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
-    @devices_list = request.pluck('distinct n')
-    @boxes = request.pluck('distinct b')
+    @devices_list = request.order('n.name').pluck('distinct n')
+    @boxes = request.order('b.name').pluck('distinct b')
   end
 
   # GET /devices/1
@@ -110,7 +110,7 @@ class DevicesController < ApplicationController
   end
 
     def set_limit_skip
-      @limit = 10
+      @limit = 20
       @page = params['page'] ?  params['page'].to_i : 1
       @skip = @limit * ( @page - 1 )
     end

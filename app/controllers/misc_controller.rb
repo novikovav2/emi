@@ -79,9 +79,9 @@ class MiscController < ApplicationController
                           .params(search: params[:search_string].downcase )
                          .order('p.name')
 
-    search_logical_link = "(d:Device)-[]-(:Interface)-[r:LOGICAL_LINK]-(:Interface)"
+    search_logical_link = "(d:Device)-[]-(i:Interface)-[r:LOGICAL_LINK]-(:Interface)"
     query_logical_link = ActiveGraph::Base.new_query.match(search_logical_link)
-                                          .where("toLower(d.name) contains $search")
+                                          .where("toLower(d.name) contains $search or toLower(i.name) contains $search")
                                           .params(search: params[:search_string].downcase )
     @logical_links = query_logical_link.pluck('distinct r')
   end

@@ -29,6 +29,7 @@ class CablesController < ApplicationController
     # Это необходимо для фильтра
     @boxes = ActiveGraph::Base.new_query
                 .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
+                .order('b.name')
                 .pluck('distinct b')
     @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 

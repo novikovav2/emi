@@ -18,7 +18,7 @@
 
   <div class="form-group">
     <%= form.label :box, 'Монтажный шкаф' %>
-    <%= form.select :box, Box.all.collect {|x| [x.name, x.id]}, {}, class: 'form-control' %>
+    <%= form.select :box, Box.all.order(:name).collect {|x| [x.name, x.id]}, {}, class: 'form-control' %>
   </div>
 
   <div class="form-check form-check-inline">

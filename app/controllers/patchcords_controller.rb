@@ -28,6 +28,7 @@ class PatchcordsController < ApplicationController
     # Это необходимо для фильтра
     @boxes = ActiveGraph::Base.new_query
                               .match("(b:Box)<-[]-()<-[]-(:Interface)-[:PHYSICAL_PATCHCORD]->(:Interface)")
+                              .order('b.name')
                               .pluck('distinct b')
     @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 

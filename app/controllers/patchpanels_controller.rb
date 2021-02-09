@@ -16,8 +16,8 @@ class PatchpanelsController < ApplicationController
 
       @patchpanels = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('p')
       @patchpanels_count = request.count
-      @patchpaneles_list = request.pluck('distinct p')
-      @boxes = request.pluck('distinct b')
+      @patchpaneles_list = request.order('p.name').pluck('distinct p')
+      @boxes = request.order('b.name').pluck('distinct b')
   end
 
   # GET /patchpanels/1
@@ -111,7 +111,7 @@ class PatchpanelsController < ApplicationController
   end
 
   def set_limit_skip
-    @limit = 10
+    @limit = 20
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
   end

@@ -17,8 +17,8 @@ class BoxesController < ApplicationController
     @boxes = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('b')
 
     # Для фильтрации
-    @boxes_list = request.pluck('distinct b')
-    @rooms = request.pluck('distinct r')
+    @boxes_list = request.order('b.name').pluck('distinct b')
+    @rooms = request.order('r.name').pluck('distinct r')
   end
 
   # GET /boxes/1
@@ -108,7 +108,7 @@ class BoxesController < ApplicationController
   end
 
   def set_limit_skip
-    @limit = 10
+    @limit = 20
     @page = params['page'] ?  params['page'].to_i : 1
     @skip = @limit * ( @page - 1 )
   end

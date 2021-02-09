@@ -114,4 +114,7 @@ Rails.application.configure do
   config.neo4j.driver.password = ENV["NEO4J_PASS"]
   config.neo4j.driver.encryption = false
 
+
+  config.cache_store = :redis_store, ENV["REDIS_URL"], { expires_in: 90.minutes }
+
 end

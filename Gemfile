@@ -54,4 +54,7 @@ end
 
 
 # https://devcenter.heroku.com/articles/h12-request-timeout-in-ruby-mri
-gem 'rack-timeout'
+group :production do
+  gem 'rack-timeout'
+end
+
