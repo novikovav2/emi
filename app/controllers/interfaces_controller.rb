@@ -3,6 +3,7 @@ class InterfacesController < ApplicationController
   before_action :set_page_title
   before_action :set_interface, only: [:show, :edit, :update, :destroy]
   before_action :set_owner
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /interfaces
   # GET /interfaces.json
@@ -142,6 +143,15 @@ class InterfacesController < ApplicationController
       @page_title = ['Оборудование']
     else
       @page_title = ['Патчпанели']
+    end
+  end
+
+  def clear_cache
+    Rails.cache.delete_matched('/interfaces*')
+    Rails.cache.delete_matched('/cables/data*')
+    Rails.cache.delete_matched('/patchcords/data*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
     end
   end
 end

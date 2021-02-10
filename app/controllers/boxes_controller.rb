@@ -156,6 +156,7 @@ class BoxesController < ApplicationController
   def clear_cache
     Rails.cache.delete_matched('/boxes*')
     Rails.cache.delete_matched('/cables/data*')
+    Rails.cache.delete_matched('/patchcords/data*')
     if params[:id]
       Rails.cache.delete(params[:id])
     end

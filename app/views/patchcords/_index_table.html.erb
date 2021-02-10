@@ -32,19 +32,19 @@
   <% patchcords.each do |patchcord| %>
     <tr>
       <td>
-        <%= link_to patchcord, class: 'text-muted text-right mr-3' do %>
+        <%= link_to patchcord_path(patchcord[:rel]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-eye"></i>
         <% end %>
       </td>
-      <td><%= link_to patchcord.from_node.owner.box.name, box_path(patchcord.from_node.owner.box) %></td>
-      <td><%= link_to patchcord.from_node.owner.name, owner_path(patchcord.from_node.owner) %></td>
-      <td><%= patchcord.from_node.name %></td>
-      <td><%= link_to patchcord.to_node.owner.box.name, box_path(patchcord.from_node.owner.box) %></td>
-      <td><%= link_to patchcord.to_node.owner.name, owner_path(patchcord.to_node.owner) %></td>
-      <td><%= patchcord.to_node.name %></td>
-      <td><%= human_material(patchcord.material) %></td>
+      <td><%= link_to patchcord[:from_box].name, box_path(patchcord[:from_box]) %></td>
+      <td><%= link_to patchcord[:from_owner].name, owner_path(patchcord[:from_owner]) %></td>
+      <td><%= patchcord[:from_interface].name %></td>
+      <td><%= link_to patchcord[:to_box].name, box_path(patchcord[:to_box]) %></td>
+      <td><%= link_to patchcord[:to_owner].name, owner_path(patchcord[:to_owner]) %></td>
+      <td><%= patchcord[:to_interface].name %></td>
+      <td><%= human_material(patchcord[:rel].material) %></td>
       <td>
-        <%= link_to patchcord, method: :delete, data: { confirm: 'Are you sure?' },
+        <%= link_to patchcord_path(patchcord[:rel]), method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'text-muted text-right' do %>
           <i class="far fa-trash-alt"></i>
         <% end %>

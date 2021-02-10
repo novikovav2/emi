@@ -5,6 +5,7 @@ class PatchcordsController < ApplicationController
   before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index]
   before_action :set_order, only: [:index]
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /patchcords
   # GET /patchcords.json
@@ -15,21 +16,44 @@ class PatchcordsController < ApplicationController
                 (i2:Interface)-[]-(p2)-[]-(b2:Box)"
     request = ActiveGraph::Base.new_query.match(search)
 
-    @patchcords = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit)
-                    .pluck('r')
+    cache_key = "/patchcords/data/" + Digest::SHA1.hexdigest(@where_string + @sort_string + @skip.to_s + @limit.to_s)
+    @patchcords = Rails.cache.fetch(cache_key) do
+                      request.where(@where_string)
+                         .order(@sort_string)
+                         .skip(@skip)
+                         .limit(@limit)
+                         .pluck('b1, p1, i1, r, i2, p2, b2')
+                         .collect do |result| {
+                            from_box: result[0],
+                            from_owner: result[1],
+                            from_interface: result[2],
+                            rel: result[3],
+                            to_interface: result[4],
+                            to_owner: result[5],
+                            to_box: result[6]
+                          }
+                          end
+                      end
 
-    @patchcords_count = request.count
+    @patchcords_count = Rails.cache.fetch('/patchcords/count') do
+      request.count
+    end
 
     if @where_string.length > 1
-      @filtered_count = request.where(@where_string).count
-    end
+      @filtered_count = Rails.cache.fetch("/patchcords/filtered_count/" + Digest::SHA1.hexdigest(@where_string)) do
+                          request.where(@where_string).count
+      end
+      end
 
     # Находим все Box, из/в которые приходят кабели СКС
     # Это необходимо для фильтра
-    @boxes = ActiveGraph::Base.new_query
+    @boxes = Rails.cache.fetch("/patchcords/box_list") do
+                  ActiveGraph::Base.new_query
                               .match("(b:Box)<-[]-()<-[]-(:Interface)-[:PHYSICAL_PATCHCORD]->(:Interface)")
                               .order('b.name')
                               .pluck('distinct b')
+                  end
+
     @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 
   end
@@ -87,7 +111,9 @@ class PatchcordsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_patchcord
-      @patchcord = Patchcord.find(params[:id])
+      @patchcord = Rails.cache.fetch(params[:id]) do
+        Patchcord.find(params[:id])
+      end
     end
 
     # Only allow a list of trusted parameters through.
@@ -174,6 +200,13 @@ class PatchcordsController < ApplicationController
 
     if @current_order == 1
       @sort_string += ' desc'
+    end
+  end
+
+  def clear_cache
+    Rails.cache.delete_matched('/patchcords*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
     end
   end
 end

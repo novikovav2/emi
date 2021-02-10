@@ -133,6 +133,7 @@ class DevicesController < ApplicationController
 
   def clear_cache
     Rails.cache.delete_matched('/devices*')
+    Rails.cache.delete_matched('/patchcords/data*')
     if params[:id]
       Rails.cache.delete(params[:id])
     end
