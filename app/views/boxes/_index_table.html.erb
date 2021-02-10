@@ -14,17 +14,13 @@
   <tbody>
   <% boxes.each do |box| %>
     <tr>
-      <td><%= link_to box.name, box %></td>
-      <% if  box.room %>
-        <td><%= link_to box.room.name, box.room %></td>
-      <% else %>
-        <td>-</td>
-      <% end %>
+      <td><%= link_to box[:name], box_path(box[:id]) %></td>
+      <td><%= link_to box[:room_name], room_path(box[:room_id]) %></td>
       <td>
-        <%= link_to edit_box_path(box), class: 'text-muted text-right mr-3' do %>
+        <%= link_to edit_box_path(box[:id]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-edit"></i>
         <% end %>
-        <%= link_to box, method: :delete, data: { confirm: 'Are you sure?' },
+        <%= link_to box_path(box[:id]), method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'text-muted text-right' do %>
           <i class="far fa-trash-alt"></i>
         <% end %>
