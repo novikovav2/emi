@@ -10,27 +10,30 @@ class BoxesController < ApplicationController
   # GET /boxes
   # GET /boxes.json
   def index
-    @boxes_count = Rails.cache.fetch('boxes_count') do
+    cache_key = '/boxes'
+    @boxes_count = Rails.cache.fetch(cache_key + '/count') do
                       Box.all.count
                     end
 
     search = "(b:Box)-[]->(r:Room)"
     request = ActiveGraph::Base.new_query.match(search)
 
-    @boxes = Rails.cache.fetch('boxes') do
-                request.where(@where_string)
-                       .order(@sort_string)
-                       .skip(@skip)
-                       .limit(@limit)
-                       .pluck('b')
-              end
+    @boxes = Rails.cache.fetch(cache_key + '/data/#{@where_string}/#{@sort_string}/#{@skip}/#{@limit}') do
+                  request.where(@where_string)
+                         .order(@sort_string)
+                         .skip(@skip)
+                         .limit(@limit)
+                         .pluck('b')
+                end
+
+
 
 
     # Для фильтрации
-    @boxes_list = Rails.cache.fetch('boxes_list') do
+    @boxes_list = Rails.cache.fetch(cache_key + '/boxes_list') do
                     request.order('b.name').pluck('distinct b')
                   end
-    @rooms = Rails.cache.fetch('rooms') do
+    @rooms = Rails.cache.fetch(cache_key + '/rooms') do
               request.order('r.name').pluck('distinct r')
             end
   end
@@ -96,7 +99,9 @@ class BoxesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_box
-      @box = Box.find(params[:id])
+      @box = Rails.cache.fetch(params[:id]) do
+        Box.find(params[:id])
+      end
       @page_title << @box.name
     end
 
@@ -143,10 +148,10 @@ class BoxesController < ApplicationController
   end
 
   def clear_cache
-    Rails.cache.delete('boxes')
-    Rails.cache.delete('boxes_count')
-    Rails.cache.delete('boxes_list')
-    Rails.cache.delete('rooms')
+    Rails.cache.delete_matched('/boxes*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
+    end
   end
 end
 
