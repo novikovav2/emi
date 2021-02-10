@@ -5,6 +5,7 @@ class DevicesController < ApplicationController
   before_action :set_where_string, only: [:index]
   before_action :set_limit_skip, only: [:index]
   before_action :set_order, only: [:index]
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /devices
   # GET /devices.json
@@ -127,6 +128,13 @@ class DevicesController < ApplicationController
 
     if @current_order == 1
       @sort_string += ' desc'
+    end
+  end
+
+  def clear_cache
+    Rails.cache.delete_matched('/devices*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
     end
   end
 end

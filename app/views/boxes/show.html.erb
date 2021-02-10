@@ -23,9 +23,9 @@
           </tr>
           </thead>
           <tbody>
-          <% @box.devices.order(:name).each do |device| %>
+          <% @devices.each do |device| %>
             <tr>
-              <td><%= link_to device.name, device %></td>
+              <td><%= link_to device.name, device_path(device.id) %></td>
             </tr>
           <% end %>
           </tbody>
@@ -47,19 +47,13 @@
           <tr>
             <th>Название</th>
             <th>Тип</th>
-            <th>Интерфейсов</th>
           </tr>
           </thead>
           <tbody>
-          <% @box.patchpanels.order(:name).each do |patchpanel| %>
+          <% @patchpanels.each do |patchpanel| %>
             <tr>
               <td><%= link_to patchpanel.name, patchpanel %></td>
               <td><%= human_material(patchpanel.material) %></td>
-              <td>
-                <%= patchpanel.interfaces.where(connected: false).count %>
-                /
-                <%= patchpanel.interfaces.count %>
-              </td>
             </tr>
           <% end %>
           </tbody>

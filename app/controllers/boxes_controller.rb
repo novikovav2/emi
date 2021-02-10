@@ -45,7 +45,13 @@ class BoxesController < ApplicationController
   # GET /boxes/1
   # GET /boxes/1.json
   def show
+    @devices = Rails.cache.fetch("/devices/box/#{@box.id}") do
+      @box.devices.order(:name)
+    end
 
+    @patchpanels = Rails.cache.fetch("/patchpanels/box/#{@box.id}") do
+      @box.patchpanels.order(:name)
+    end
   end
 
   # GET /boxes/new

@@ -7,6 +7,7 @@ class PatchpanelsController < ApplicationController
   before_action :set_order_for_index, only: [:index]
   before_action :set_order_for_show, only: [:show]
   before_action :change_sort_order, only: [:index, :show]
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /patchpanels
   # GET /patchpanels.json
@@ -141,6 +142,13 @@ class PatchpanelsController < ApplicationController
   def change_sort_order
     if @current_order == 1
       @sort_string += ' desc'
+    end
+  end
+
+  def clear_cache
+    Rails.cache.delete_matched('/patchpanels*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
     end
   end
 end

@@ -60,7 +60,8 @@ class PatchcordsController < ApplicationController
     from_interface = Interface.find(patchcord_params['from_node'])
     to_interface = Interface.find(patchcord_params['to_node'])
     @patchcord = Patchcord.new(from_node: from_interface,
-                               to_node: to_interface)
+                               to_node: to_interface,
+                               length: patchcord_params['length'])
 
     respond_to do |format|
       if @patchcord.save
@@ -91,7 +92,7 @@ class PatchcordsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def patchcord_params
-      params.fetch(:patchcord, {}).permit(:from_node, :to_node)
+      params.fetch(:patchcord, {}).permit(:from_node, :to_node, :length)
     end
 
     def set_page_title
