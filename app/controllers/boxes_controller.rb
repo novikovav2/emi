@@ -10,15 +10,14 @@ class BoxesController < ApplicationController
   # GET /boxes
   # GET /boxes.json
   def index
-    cache_key = '/boxes'
-    @boxes_count = Rails.cache.fetch(cache_key + '/count') do
+    @boxes_count = Rails.cache.fetch('/boxescount') do
                       Box.all.count
                     end
 
     search = "(b:Box)-[]->(r:Room)"
     request = ActiveGraph::Base.new_query.match(search)
 
-    @boxes = Rails.cache.fetch(cache_key + '/data/#{@where_string}/#{@sort_string}/#{@skip}/#{@limit}') do
+    @boxes = Rails.cache.fetch("/boxes/data/#{@where_string}/#{@sort_string}/#{@skip}/#{@limit}") do
                   request.where(@where_string)
                          .order(@sort_string)
                          .skip(@skip)
@@ -30,10 +29,10 @@ class BoxesController < ApplicationController
 
 
     # Для фильтрации
-    @boxes_list = Rails.cache.fetch(cache_key + '/boxes_list') do
+    @boxes_list = Rails.cache.fetch('/boxes/boxes_list') do
                     request.order('b.name').pluck('distinct b')
                   end
-    @rooms = Rails.cache.fetch(cache_key + '/rooms') do
+    @rooms = Rails.cache.fetch('/boxes/rooms') do
               request.order('r.name').pluck('distinct r')
             end
   end
