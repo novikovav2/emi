@@ -5,6 +5,7 @@ class CablesController < ApplicationController
   before_action :set_where_hash, only: [:index]
   before_action :set_limit_skip, only: [:index]
   before_action :set_order, only: [:index]
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /cables
   # GET /cables.json
@@ -15,22 +16,47 @@ class CablesController < ApplicationController
                 (i2:Interface)-[]-(p2:Patchpanel)-[]-(b2:Box)"
     request = ActiveGraph::Base.new_query.match(search)
 
-    @cables = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck(' r')
+    cache_key = "/cables/data/" + Digest::SHA1.hexdigest(@where_string + @sort_string + @skip.to_s + @limit.to_s)
+    @cables = Rails.cache.fetch(cache_key) do
+                      request.where(@where_string)
+                     .order(@sort_string)
+                     .skip(@skip)
+                     .limit(@limit)
+                     .pluck('b1, p1, i1, r, i2, p2, b2')
+                     .collect do |result| {
+                        from_box: result[0],
+                        from_patchpanel: result[1],
+                        from_interface: result[2],
+                        rel: result[3],
+                        to_interface: result[4],
+                        to_patchpanel: result[5],
+                        to_box: result[6]
+                      }
+                      end
+    end
 
-    @cables_count = request.count
+    @cables_count = Rails.cache.fetch('/cables/count') do
+      request.count
+    end
 
     if @where_string.length > 1
-      @filtered_count = ActiveGraph::Base.new_query
-                                       .match(search)
-                                       .where(@where_string)
-                                       .pluck('r').count
-    end
+      @filtered_count = Rails.cache.fetch("/cables/filtered_count/" + Digest::SHA1.hexdigest(@where_string)) do
+                                ActiveGraph::Base.new_query
+                                                 .match(search)
+                                                 .where(@where_string)
+                                                 .pluck('r').count
+                              end
+      end
+
     # Находим все Box, из/в которые приходят кабели СКС
     # Это необходимо для фильтра
-    @boxes = ActiveGraph::Base.new_query
-                .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
-                .order('b.name')
-                .pluck('distinct b')
+    @boxes = Rails.cache.fetch("/cables/box_list") do
+                    ActiveGraph::Base.new_query
+                                     .match("(b:Box)-[]-(:Patchpanel)-[]-(:Interface)-[:PHYSICAL_CABLE]-(:Interface)")
+                                     .order('b.name')
+                                     .pluck('distinct b')
+                  end
+
     @materials = [{id: 0, name: :copper}, {id: 1, name: :optic}]
 
   end
@@ -109,7 +135,9 @@ class CablesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cable
-      @cable = Cable.find(params[:id])
+      @cable = Rails.cache.fetch(params[:id]) do
+        Cable.find(params[:id])
+      end
       @page_title << @cable.from_node.patchpanel.box.name + '.' +
                       @cable.from_node.patchpanel.name + '.' +
                       @cable.from_node.name +
@@ -195,6 +223,13 @@ class CablesController < ApplicationController
 
     if @current_order == 1
       @sort_string += ' desc'
+    end
+  end
+
+  def clear_cache
+    Rails.cache.delete_matched('/cables*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
     end
   end
 

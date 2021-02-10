@@ -4,6 +4,7 @@ class RoomsController < ApplicationController
   before_action :set_room, only: [:show, :edit, :update, :destroy]
   before_action :set_limit_skip, only: [:index, :show]
   before_action :set_order, only: [:index]
+  after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /rooms
   # GET /rooms.json
@@ -109,6 +110,14 @@ class RoomsController < ApplicationController
 
     if @current_order == 1
       @sort_string += ' desc'
+    end
+  end
+
+  def clear_cache
+    Rails.cache.delete_matched('/rooms*')
+    Rails.cache.delete_matched('/boxes/data/*')
+    if params[:id]
+      Rails.cache.delete(params[:id])
     end
   end
 

@@ -17,8 +17,7 @@ class BoxesController < ApplicationController
     search = "(b:Box)-[]->(r:Room)"
     request = ActiveGraph::Base.new_query.match(search)
 
-    cache_key = "/boxes/data/" + Digest::SHA1.hexdigest("#{@where_string.to_i}/#{@sort_string}/#{@skip}/#{@limit}")
-    puts cache_key
+    cache_key = "/boxes/data/" + Digest::SHA1.hexdigest(@where_string + @sort_string + @skip.to_s + @limit.to_s)
     @boxes = Rails.cache.fetch(cache_key) do
                   request.where(@where_string)
                          .order(@sort_string)
@@ -154,6 +153,7 @@ class BoxesController < ApplicationController
 
   def clear_cache
     Rails.cache.delete_matched('/boxes*')
+    Rails.cache.delete_matched('/cables/data*')
     if params[:id]
       Rails.cache.delete(params[:id])
     end

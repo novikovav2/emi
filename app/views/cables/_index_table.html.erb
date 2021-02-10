@@ -32,23 +32,23 @@
   <% cables.each do |cable| %>
     <tr>
       <td>
-        <%= link_to cable, class: 'text-muted text-right mr-3' do %>
+        <%= link_to cable_path(cable[:rel]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-eye"></i>
         <% end %>
       </td>
-      <td><%= link_to cable.from_node.patchpanel.box.name, box_path(cable.from_node.patchpanel.box) %></td>
-      <td><%= link_to cable.from_node.patchpanel.name, patchpanel_path(cable.from_node.patchpanel) %></td>
-      <td><%= cable.from_node.name %></td>
-      <td><%= link_to cable.to_node.patchpanel.box.name, box_path(cable.to_node.patchpanel.box) %></td>
-      <td><%= link_to cable.to_node.patchpanel.name, patchpanel_path(cable.to_node.patchpanel) %></td>
-      <td><%= cable.to_node.name %></td>
-      <td><%= human_material(cable.material) %></td>
-      <td><%= cable.length %></td>
+      <td><%= link_to cable[:from_box].name, box_path(cable[:from_box]) %></td>
+      <td><%= link_to cable[:from_patchpanel].name, patchpanel_path(cable[:from_patchpanel]) %></td>
+      <td><%= cable[:from_interface].name %></td>
+      <td><%= link_to cable[:to_box].name, box_path(cable[:to_box]) %></td>
+      <td><%= link_to cable[:to_patchpanel].name, patchpanel_path(cable[:to_patchpanel]) %></td>
+      <td><%= cable[:to_interface].name %></td>
+      <td><%= human_material(cable[:rel].material) %></td>
+      <td><%= cable[:rel].length %></td>
       <td>
-        <%= link_to edit_cable_path(cable), class: 'text-muted text-right mr-3' do %>
+        <%= link_to edit_cable_path(cable[:rel]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-edit"></i>
         <% end %>
-        <%= link_to cable, method: :delete, data: { confirm: 'Are you sure?' },
+        <%= link_to cable_path(cable[:rel]), method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'text-muted text-right' do %>
           <i class="far fa-trash-alt"></i>
         <% end %>
