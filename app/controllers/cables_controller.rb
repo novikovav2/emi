@@ -135,9 +135,8 @@ class CablesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cable
-      @cable = Rails.cache.fetch(params[:id]) do
-        Cable.find(params[:id])
-      end
+      @cable = Cable.find(params[:id])
+
       @page_title << @cable.from_node.patchpanel.box.name + '.' +
                       @cable.from_node.patchpanel.name + '.' +
                       @cable.from_node.name +
