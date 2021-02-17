@@ -101,9 +101,11 @@ class InterfacesController < ApplicationController
   end
 
   def generate
+    last_int = @patchpanel.interfaces.count
+
     if generate_params.to_i
       (1..generate_params.to_i).each do |i|
-        int = Interface.create(name: i, material: @patchpanel.material)
+        int = Interface.create(name: i + last_int, material: @patchpanel.material)
         @patchpanel.interfaces << int
       end
       redirect_to patchpanel_path(@patchpanel), notice: 'Interface was successfully generated.'
