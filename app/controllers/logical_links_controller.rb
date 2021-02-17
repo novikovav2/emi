@@ -13,9 +13,25 @@ class LogicalLinksController < ApplicationController
 
     search = "(d1:Device)-[]-(i1:Interface)-[r:LOGICAL_LINK]->
                 (i2:Interface)-[]-(d2:Device)"
-    request = ActiveGraph::Base.new_query.match(search)
+    optional = "p = (i1)-[:PHYSICAL_PATCHCORD|PHYSICAL_CABLE]-(i2)
+                WITH *, relationships(p) AS r1"
 
-    @logical_links = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck(' r')
+    request = ActiveGraph::Base.new_query.match(search).optional_match(optional)
+
+    @logical_links = request.where(@where_string)
+                            .order(@sort_string)
+                            .skip(@skip)
+                            .limit(@limit)
+                            .pluck('d1, i1, r, i2, d2, count(r1)')
+                             .collect do |result| {
+                                from_device: result[0],
+                                from_interface: result[1],
+                                rel: result[2],
+                                to_interface: result[3],
+                                to_device: result[4],
+                                status: result[5]
+                              }
+                              end
 
     @logical_links_count = request.count('r')
     @filtered_count = request.where(@where_string).count

@@ -18,8 +18,7 @@ class BoxesController < ApplicationController
     request = ActiveGraph::Base.new_query.match(search)
 
     cache_key = "/boxes/data/" + Digest::SHA1.hexdigest(@where_string + @sort_string + @skip.to_s + @limit.to_s)
-    @boxes = Rails.cache.fetch(cache_key) do
-                  request.where(@where_string)
+    @boxes = request.where(@where_string)
                          .order(@sort_string)
                          .skip(@skip)
                          .limit(@limit)
@@ -31,15 +30,10 @@ class BoxesController < ApplicationController
                             room_name: result[1].name
                           }
                           end
-    end
 
     # Для фильтрации
-    @boxes_list = Rails.cache.fetch('/boxes/boxes_list') do
-                    request.order('b.name').pluck('distinct b')
-    end
-    @rooms = Rails.cache.fetch('/boxes/rooms') do
-              request.order('r.name').pluck('distinct r')
-    end
+    @boxes_list = request.order('b.name').pluck('distinct b')
+    @rooms = request.order('r.name').pluck('distinct r')
   end
 
   # GET /boxes/1
@@ -105,9 +99,7 @@ class BoxesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_box
-      @box = Rails.cache.fetch(params[:id]) do
-        Box.find(params[:id])
-      end
+      @box = Box.find(params[:id])
       @page_title << @box.name
     end
 

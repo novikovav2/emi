@@ -24,18 +24,18 @@
   <% logical_links.each do |logical_link| %>
     <tr>
       <td>
-        <%= link_to logical_link, class: 'text-muted text-right mr-3' do %>
+        <%= link_to logical_link_path(logical_link[:rel]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-eye"></i>
         <% end %>
       </td>
-      <td><%= link_to logical_link.from_node.device.name, device_path(logical_link.from_node.device.id) %></td>
-      <td><%= logical_link.from_node.name %></td>
-      <td><%= link_to logical_link.to_node.device.name, device_path(logical_link.to_node.device.id) %></td>
-      <td><%= logical_link.to_node.name %></td>
-      <td><%= human_material(logical_link.from_node.material) %></td>
-      <td><%= pretty_status(logical_link.connected?) %></td>
+      <td><%= link_to logical_link[:from_device].name, device_path(logical_link[:from_device].id) %></td>
+      <td><%= logical_link[:from_interface].name %></td>
+      <td><%= link_to logical_link[:to_device].name, device_path(logical_link[:to_device].id) %></td>
+      <td><%= logical_link[:to_interface].name %></td>
+      <td><%= human_material(logical_link[:from_interface].material) %></td>
+      <td><%= pretty_status(logical_link[:status]) %></td>
       <td>
-        <%= link_to logical_link, method: :delete, data: { confirm: 'Are you sure?' },
+        <%= link_to logical_link_path(logical_link[:rel]), method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'text-muted text-right' do %>
           <i class="far fa-trash-alt"></i>
         <% end %>

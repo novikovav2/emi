@@ -2,10 +2,10 @@
   <thead>
   <tr>
     <th>
-      <%= render 'layouts/column_header', human_name: 'Название', sort_name: 'name' %>
+      Название
     </th>
     <th>
-      <%= render 'layouts/column_header', human_name: 'Патчкордом подключен в', sort_name: 'connected' %>
+      Патчкордом подключен в
     </th>
     <th>
       СКС связан с
@@ -16,42 +16,40 @@
   <tbody>
   <% interfaces.each do |interface| %>
     <tr>
-      <td><%= interface.name %></td>
+      <td><%= interface[:self].name %></td>
       <td>
-        <% if interface.patchcorded_to %>
-          <%= link_to interface.patchcorded_to.owner.box.name, box_path(interface.patchcorded_to.owner.box) %>
+        <% if interface[:patchcorded_to_int] %>
+          <%= link_to interface[:patchcorded_to_box].name, box_path(interface[:patchcorded_to_box]) %>
           <i class="fas fa-long-arrow-alt-right"></i>
-          <%= link_to interface.patchcorded_to.owner.name, owner_path(interface.patchcorded_to.owner) %>
+          <%= link_to interface[:patchcorded_to_device].name, owner_path(interface[:patchcorded_to_device]) %>
           <i class="fas fa-long-arrow-alt-right"></i>
-          <%= interface.patchcorded_to.name %>
-          <%= link_to patchcord_path(interface.query_as(:i1).match('(i1)-[r:PHYSICAL_PATCHCORD]-(:Interface)')
-                                                 .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+          <%= interface[:patchcorded_to_int].name %>
+          <%= link_to patchcord_path(interface[:patchcord]), class: 'text-muted text-right mr-3' do %>
             <i class="far fa-eye"></i>
           <% end %>
         <% else %>
-          <%= link_to 'Добавить', new_patchcord_path(from_node: interface.id) %>
+          <%= link_to 'Добавить', new_patchcord_path(from_node: interface[:self].id) %>
         <% end %>
       </td>
       <td>
-        <% if interface.sks_to %>
-          <%= link_to interface.sks_to.owner.box.name, box_path(interface.sks_to.owner.box) %>
+        <% if interface[:cable_to_int] %>
+          <%= link_to interface[:cable_to_box].name, box_path(interface[:cable_to_box]) %>
           <i class="fas fa-long-arrow-alt-right"></i>
-          <%= link_to interface.sks_to.owner.name, owner_path(interface.sks_to.owner) %>
+          <%= link_to interface[:cable_to_device].name, owner_path(interface[:cable_to_device]) %>
           <i class="fas fa-long-arrow-alt-right"></i>
-          <%= interface.sks_to.name %>
-          <%= link_to cable_path(interface.query_as(:i1).match('(i1)-[r:PHYSICAL_CABLE]-(:Interface)')
-                                                 .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+          <%= interface[:cable_to_int].name %>
+          <%= link_to cable_path(interface[:cable]), class: 'text-muted text-right mr-3' do %>
             <i class="far fa-eye"></i>
           <% end %>
         <% else %>
-          <%= link_to 'Добавить', new_cable_path(from_node: interface.id) %>
+          <%= link_to 'Добавить', new_cable_path(from_node: interface[:self].id) %>
         <% end %>
       </td>
       <td>
-        <%= link_to edit_patchpanel_interface_path(@patchpanel, interface), class: 'text-muted text-right mr-3' do %>
+        <%= link_to edit_patchpanel_interface_path(@patchpanel, interface[:self]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-edit"></i>
         <% end %>
-        <%= link_to patchpanel_interface_path(@patchpanel, interface),
+        <%= link_to patchpanel_interface_path(@patchpanel, interface[:self]),
                     method: :delete,
                     class: 'text-muted text-right',
                     remote: true do %>
@@ -62,6 +60,3 @@
   <% end %>
   </tbody>
 </table>
-<%= render 'layouts/paginator', items_number: @interfaces_count,
-           current_page: @page,
-           limit: @limit %>

@@ -15,15 +15,15 @@
   <tbody>
   <% patchpanels.each do |patchpanel| %>
     <tr>
-      <td><%= link_to patchpanel.box.name, box_path(patchpanel.box) %></td>
-      <td><%= link_to patchpanel.name, patchpanel %></td>
-      <td><%= human_material(patchpanel.material) %></td>
-      <td><%= patchpanel.interfaces ? patchpanel.interfaces.count : 0 %></td>
+      <td><%= link_to patchpanel[:box].name, box_path(patchpanel[:box]) %></td>
+      <td><%= link_to patchpanel[:self].name, patchpanel[:self] %></td>
+      <td><%= human_material(patchpanel[:self].material) %></td>
+      <td><%= patchpanel[:int_count] %></td>
       <td>
-        <%= link_to edit_patchpanel_path(patchpanel), class: 'text-muted text-right mr-3' do %>
+        <%= link_to edit_patchpanel_path(patchpanel[:self]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-edit"></i>
         <% end %>
-        <%= link_to patchpanel, method: :delete, data: { confirm: 'Are you sure?' },
+        <%= link_to patchpanel[:self], method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'text-muted text-right' do %>
           <i class="far fa-trash-alt"></i>
         <% end %>

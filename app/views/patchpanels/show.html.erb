@@ -64,7 +64,9 @@
                         class: 'btn btn-secondary btn-sm' %>
           </div>
         </div>
-        <%= render 'show_table', interfaces: @interfaces %>
+        <div class="table-scroll">
+          <%= render 'show_table', interfaces: @interfaces %>
+        </div>
       </div>
     </div>
   </div>

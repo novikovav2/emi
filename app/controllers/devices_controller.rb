@@ -10,11 +10,24 @@ class DevicesController < ApplicationController
   # GET /devices
   # GET /devices.json
   def index
-    search = "(n:Device)-[]-(b:Box)"
-    request = ActiveGraph::Base.new_query.match(search)
+    search = "(n:Device)-[]-(b:Box)
+              optional match (i1:Interface {material: $copper})-[]->(n)
+              optional match (i2:Interface {material: $optic})-[]->(n)"
+    request = ActiveGraph::Base.new_query.match(search).params(copper: 0, optic: 1)
 
     @devices = Device.new
-    @devices = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('n')
+    @devices = request.where(@where_string)
+                      .order(@sort_string)
+                      .skip(@skip)
+                      .limit(@limit)
+                      .pluck('n, b, count(i1), count(i2)')
+                       .collect do |result| {
+                          self: result[0],
+                          box: result[1],
+                          copper_count: result[2],
+                          optic_count: result[3]
+                        }
+                        end
 
     @devices_count = request.count('n')
 
@@ -27,6 +40,32 @@ class DevicesController < ApplicationController
   # GET /devices/1
   # GET /devices/1.json
   def show
+    search = "(d {uuid: $uuid})<-[:INTERFACE_OF_DEVICE]-(i:Interface)
+              OPTIONAL MATCH (i)-[p:PHYSICAL_PATCHCORD]-(i1:Interface)--(d1)--(b1:Box)
+              OPTIONAL MATCH (i)-[l:LOGICAL_LINK]-(i2:Interface)--(d2:Device)--(b2:Box)
+              OPTIONAL MATCH (i)-[:PHYSICAL_PATCHCORD|PHYSICAL_CABLE *1..100]-(i3:Interface)--(d3)--(b3:Box)"
+
+    @interfaces = @device.query_as(:d)
+                         .match(search)
+                         .params(uuid: @device.id)
+                         .order_by('i.name')
+                         .pluck('i, i1, d1, b1, i2, d2, b2,
+                                last(collect(i3)), last(collect(d3)), last(collect(b3)), p, l')
+                          .collect do |result| {
+                            self: result[0],
+                            patchcorded_to_int: result[1],
+                            patchcorded_to_device: result[2],
+                            patchcorded_to_box: result[3],
+                            logical_linked_to_int: result[4],
+                            logical_linked_to_device: result[5],
+                            logical_linked_to_box: result[6],
+                            connected_to_int: result[7],
+                            connected_to_device: result[8],
+                            connected_to_box: result[9],
+                            patchcord: result[10],
+                            logical_link: result[11]
+                          }
+                          end
   end
 
   # GET /devices/new

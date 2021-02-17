@@ -2,21 +2,34 @@ class PatchpanelsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_page_title
   before_action :set_patchpanel, only: [:show, :edit, :update, :destroy]
-  before_action :set_limit_skip, only: [:index, :show]
+  before_action :set_limit_skip, only: [:index]
   before_action :set_where_string, only: [:index]
   before_action :set_order_for_index, only: [:index]
-  before_action :set_order_for_show, only: [:show]
-  before_action :change_sort_order, only: [:index, :show]
+  before_action :change_sort_order, only: [:index]
   after_action :clear_cache, only: [:create, :update, :destroy]
 
   # GET /patchpanels
   # GET /patchpanels.json
   def index
-      search = "(p:Patchpanel)-[]->(b:Box)"
+      search = "(p:Patchpanel)-[]->(b:Box)
+                optional match (i:Interface)-[]->(p)"
       request = ActiveGraph::Base.new_query.match(search)
 
-      @patchpanels = request.where(@where_string).order(@sort_string).skip(@skip).limit(@limit).pluck('p')
-      @patchpanels_count = request.count
+      @patchpanels = request.where(@where_string)
+                            .order(@sort_string)
+                            .skip(@skip)
+                            .limit(@limit)
+                            .pluck('p, b, count(i)')
+                            .collect do |result| {
+                                self: result[0],
+                                box: result[1],
+                                int_count: result[3],
+                            }
+                            end
+
+      @patchpanels_count = ActiveGraph::Base.new_query
+                                            .match("(p:Patchpanel)-[]->(b:Box)")
+                                            .count('p')
       @patchpaneles_list = request.order('p.name').pluck('distinct p')
       @boxes = request.order('b.name').pluck('distinct b')
   end
@@ -24,10 +37,35 @@ class PatchpanelsController < ApplicationController
   # GET /patchpanels/1
   # GET /patchpanels/1.json
   def show
-    search = "(p:Patchpanel)<-[:`INTERFACE_OF_PATCHPANEL`]-(i:Interface)"
-    query = ActiveGraph::Base.new_query.match(search).where('p.uuid = ' + '"' + @patchpanel.id + '"')
-    @interfaces_count = query.count
-    @interfaces = query.order(@sort_string).skip(@skip).limit(@limit).pluck(:i)
+    # search = "(p:Patchpanel)<-[:`INTERFACE_OF_PATCHPANEL`]-(i:Interface)"
+    # query = ActiveGraph::Base.new_query
+    #                          .match(search)
+    #                          .where('p.uuid = ' + '"' + @patchpanel.id + '"')
+    # @interfaces_count = query.count('i')
+    # @interfaces = query.order(@sort_string).skip(@skip).limit(@limit).pluck(:i)
+
+    search = "(p {uuid: $uuid})<-[:INTERFACE_OF_PATCHPANEL]-(i:Interface)
+              OPTIONAL MATCH (i)-[patchcord:PHYSICAL_PATCHCORD]-(i1:Interface)--(d1)--(b1:Box)
+              OPTIONAL MATCH (i)-[cable:PHYSICAL_CABLE]-(i2:Interface)--(d2:Patchpanel)--(b2:Box)"
+
+    @interfaces = @patchpanel.query_as(:p)
+                         .match(search)
+                         .params(uuid: @patchpanel.id)
+                         .order_by('i.name')
+                         .pluck('i, i1, d1, b1, i2, d2, b2, patchcord, cable')
+                         .collect do |result| {
+                            self: result[0],
+                            patchcorded_to_int: result[1],
+                            patchcorded_to_device: result[2],
+                            patchcorded_to_box: result[3],
+                            cable_to_int: result[4],
+                            cable_to_device: result[5],
+                            cable_to_box: result[6],
+                            patchcord: result[7],
+                            cable: result[8]
+                          }
+    end
+
   end
 
   # GET /patchpanels/new
@@ -125,17 +163,6 @@ class PatchpanelsController < ApplicationController
       @sort_string = 'p.name'
     elsif @current_sort == 'box'
       @sort_string = 'b.name'
-    end
-  end
-
-  def set_order_for_show
-    @current_order = params[:order].to_i || 0
-    @current_sort = params[:sort] || 'name'
-
-    if @current_sort == 'name'
-      @sort_string = 'i.name'
-    elsif @current_sort == 'connected'
-      @sort_string = 'i.connected'
     end
   end
 

@@ -47,6 +47,7 @@
           </div>
 
         </div>
+        <div class="table-scroll">
         <table class="table table-sm table-striped mt-2">
           <thead>
           <tr>
@@ -59,57 +60,55 @@
           </tr>
           </thead>
           <tbody>
-          <% @device.interfaces.order_by(:name).each do |interface| %>
+          <% @interfaces.each do |interface| %>
             <tr>
-              <td><%= interface.name %></td>
-              <td><%= human_material(interface.material) %></td>
+              <td><%= interface[:self].name %></td>
+              <td><%= human_material(interface[:self].material) %></td>
               <td>
-                <% if interface.patchcorded_to %>
-                  <%= link_to interface.patchcorded_to.owner.box.name, box_path(interface.patchcorded_to.owner.box) %>
+                <% if interface[:patchcorded_to_int] %>
+                  <%= link_to interface[:patchcorded_to_box].name, box_path(interface[:patchcorded_to_box]) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
-                  <%= link_to interface.patchcorded_to.owner.name, owner_path(interface.patchcorded_to.owner) %>
+                  <%= link_to interface[:patchcorded_to_device].name, owner_path(interface[:patchcorded_to_device]) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
-                  <%= interface.patchcorded_to.name %>
-                  <%= link_to patchcord_path(interface.query_as(:i1).match('(i1)-[r:PHYSICAL_PATCHCORD]-(:Interface)')
-                                                      .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+                  <%= interface[:patchcorded_to_int].name %>
+                  <%= link_to patchcord_path(interface[:patchcord].id), class: 'text-muted text-right mr-3' do %>
                     <i class="far fa-eye"></i>
                   <% end %>
                 <% else %>
-                  <%= link_to 'Добавить', new_patchcord_path(from_node: interface.id)  %>
+                  <%= link_to 'Добавить', new_patchcord_path(from_node: interface[:self].id)  %>
                 <% end %>
               </td>
               <td>
-                <% if interface.logical_linked_to %>
-                  <%= link_to interface.logical_linked_to.owner.box.name, box_path(interface.logical_linked_to.owner.box) %>
+                <% if interface[:logical_linked_to_int] %>
+                  <%= link_to interface[:logical_linked_to_box].name, box_path(interface[:logical_linked_to_box]) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
-                  <%= link_to interface.logical_linked_to.owner.name, owner_path(interface.logical_linked_to.owner) %>
+                  <%= link_to interface[:logical_linked_to_device].name, owner_path(interface[:logical_linked_to_device]) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
-                  <%= interface.logical_linked_to.name %>
+                  <%= interface[:logical_linked_to_int].name %>
 
-                  <%= link_to logical_link_path(interface.query_as(:i1).match('(i1)-[r:LOGICAL_LINK]-(:Interface)')
-                                                  .pluck(:r).first.id), class: 'text-muted text-right mr-3' do %>
+                  <%= link_to logical_link_path(interface[:logical_link].id), class: 'text-muted text-right mr-3' do %>
                     <i class="far fa-eye"></i>
                   <% end %>
                 <% else %>
-                  <%= link_to 'Добавить', new_logical_link_path(from_node: interface.id)  %>
+                  <%= link_to 'Добавить', new_logical_link_path(from_node: interface[:self].id)  %>
                 <% end %>
               </td>
               <td>
-                <% if interface.connected_to %>
-                  <%= link_to interface.connected_to.owner.box.name, box_path(interface.connected_to.owner.box) %>
+                <% if interface[:connected_to_int] %>
+                  <%= link_to interface[:connected_to_box].name, box_path(interface[:connected_to_box]) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
-                  <%= link_to interface.connected_to.owner.name, owner_path(interface.connected_to.owner) %>
+                  <%= link_to interface[:connected_to_device].name, owner_path(interface[:connected_to_device]) %>
                   <i class="fas fa-long-arrow-alt-right"></i>
-                  <%= interface.connected_to.name %>
+                  <%= interface[:connected_to_int].name %>
                 <% else %>
                   -
                 <% end %>
               </td>
               <td>
-                <%= link_to edit_device_interface_path(@device, interface), class: 'text-muted text-right mr-3' do %>
+                <%= link_to edit_device_interface_path(@device, interface[:self]), class: 'text-muted text-right mr-3' do %>
                   <i class="far fa-edit"></i>
                 <% end %>
-                <%= link_to device_interface_path(@device, interface),
+                <%= link_to device_interface_path(@device, interface[:self]),
                             method: :delete, data: { confirm: 'Are you sure?' },
                             class: 'text-muted text-right' do %>
                   <i class="far fa-trash-alt"></i>
@@ -119,6 +118,7 @@
           <% end %>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   </div>

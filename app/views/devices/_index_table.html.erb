@@ -16,21 +16,21 @@
   <tbody>
   <% devices.each do |device| %>
     <tr>
-      <td><%= link_to device.name, device %></td>
+      <td><%= link_to device[:self].name, device[:self] %></td>
 
-      <% if device.box %>
-        <td><%= link_to device.box.name, box_path(device.box) %></td>
+      <% if device[:box] %>
+        <td><%= link_to device[:box].name, box_path(device[:box]) %></td>
       <% else %>
         <td>-</td>
       <% end %>
 
-      <td><%= device.interfaces ? device.interfaces.where(material: 'optic').count : 0 %></td>
-      <td><%= device.interfaces ? device.interfaces.where(material: 'copper').count : 0 %></td>
+      <td><%= device[:optic_count] %></td>
+      <td><%= device[:copper_count] %></td>
       <td>
-        <%= link_to edit_device_path(device), class: 'text-muted text-right mr-3' do %>
+        <%= link_to edit_device_path(device[:self]), class: 'text-muted text-right mr-3' do %>
           <i class="far fa-edit"></i>
         <% end %>
-        <%= link_to device, method: :delete, data: { confirm: 'Are you sure?' },
+        <%= link_to device[:self], method: :delete, data: { confirm: 'Are you sure?' },
                     class: 'text-muted text-right' do %>
           <i class="far fa-trash-alt"></i>
         <% end %>
